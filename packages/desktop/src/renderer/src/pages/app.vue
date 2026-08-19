@@ -64,6 +64,7 @@ import { useListenForMainStore } from '@/store/listenForMain'
 import { usePreferencesStore } from '@/store/preferences'
 import { useEditorStore } from '@/store/editor'
 import { useCommentsStore } from '@/store/comments'
+import { resolveCommentAuthorName } from '@/util/commentAuthor'
 import { useCommandCenterStore } from '@/store/commandCenter'
 import { useProjectStore } from '@/store/project'
 import { useAutoUpdatesStore } from '@/store/autoUpdates'
@@ -234,9 +235,7 @@ onMounted(async () => {
       selection = s as typeof selection
     })
     if (!selection) return
-    const authorPref = String(preferencesStore.commentAuthorName ?? '').trim()
-    const authorName =
-      authorPref || (await window.electron.ipcRenderer.invoke('mt::comments::author-name'))
+    const authorName = await resolveCommentAuthorName()
     const draftId = commentsStore.createDraft({
       tabId,
       sourceCode: false,
@@ -245,20 +244,22 @@ onMounted(async () => {
     })
     if (!draftId) return
     layoutStore.SET_COMMENTS_PANE(true)
+    dispatchCommentsPaneMenu()
     commentsStore.select(draftId)
-    commentsStore.markDirty(tabId)
   }
 
-  window.electron.ipcRenderer.on('mt::editor-new-comment', () => {
-    void beginNewComment()
-  })
+  const runNewComment = (): void => {
+    beginNewComment().catch((err) => {
+      console.error('Failed to start a new comment', err)
+    })
+  }
+
+  window.electron.ipcRenderer.on('mt::editor-new-comment', runNewComment)
   window.electron.ipcRenderer.on('mt::toggle-comments-pane', () => {
     layoutStore.TOGGLE_COMMENTS_PANE()
     dispatchCommentsPaneMenu()
   })
-  bus.on('edit:new-comment', () => {
-    void beginNewComment()
-  })
+  bus.on('edit:new-comment', runNewComment)
   bus.on('view:toggle-comments', () => {
     layoutStore.TOGGLE_COMMENTS_PANE()
     dispatchCommentsPaneMenu()
@@ -317,5 +318,9 @@ onMounted(async () => {
   display: flex;
   flex-direction: row;
   min-height: 0;
+  /* Containing block for the comment leader overlay, which is teleported here
+     so the dashed path can cross from the editor into the comments pane
+     without being clipped by the editor's own `overflow: hidden`. */
+  position: relative;
 }
 </style>

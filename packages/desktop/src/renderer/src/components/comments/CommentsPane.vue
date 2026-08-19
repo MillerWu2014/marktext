@@ -10,12 +10,13 @@
       class="drag-handle"
     />
     <header class="comments-header">
-      <span class="comments-title">Comments</span>
+      <span class="comments-title">{{ t('comments.title') }}</span>
       <span class="open-count">{{ openCount }}</span>
       <button
         type="button"
         class="close-button"
-        aria-label="Close comments pane"
+        :aria-label="t('comments.closePane')"
+        :title="t('comments.closePane')"
         @click="closePane"
       >
         <CloseIcon />
@@ -28,7 +29,7 @@
         :class="{ active: filter === 'open' }"
         @click="setFilter('open')"
       >
-        Open
+        {{ t('comments.open') }}
       </button>
       <button
         type="button"
@@ -36,7 +37,7 @@
         :class="{ active: filter === 'resolved' }"
         @click="setFilter('resolved')"
       >
-        Resolved
+        {{ t('comments.resolved') }}
       </button>
     </div>
     <div
@@ -59,7 +60,7 @@
         v-if="showEmptyCopy"
         class="empty-copy"
       >
-        Select text, then New Comment
+        {{ t('comments.empty') }}
       </p>
     </div>
   </div>
@@ -68,12 +69,14 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 import { Close as CloseIcon } from '@element-plus/icons-vue'
 import { useLayoutStore } from '@/store/layout'
 import { useCommentsStore } from '@/store/comments'
 import { useEditorStore } from '@/store/editor'
 import CommentCard from './CommentCard.vue'
 
+const { t } = useI18n()
 const layoutStore = useLayoutStore()
 const commentsStore = useCommentsStore()
 const editorStore = useEditorStore()

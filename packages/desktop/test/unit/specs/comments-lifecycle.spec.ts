@@ -61,7 +61,7 @@ describe('comments lifecycle', () => {
     expect(tab.isSaved).toBe(false)
   })
 
-  it('tryPersistForPath returns false when invoke rejects', async () => {
+  it('tryPersistForPath returns false when invoke rejects', async() => {
     invoke.mockRejectedValueOnce(new Error('disk full'))
     const store = useCommentsStore()
     store.createDraft({ tabId: 't1', sourceCode: false, authorName: 'Ada', selection })

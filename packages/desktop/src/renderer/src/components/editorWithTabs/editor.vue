@@ -135,7 +135,11 @@ import { addCommonStyle, setEditorWidth } from '@/util/theme'
 import { usePreferencesStore } from '@/store/preferences'
 import { useEditorStore } from '@/store/editor'
 import { useCommentsStore } from '@/store/comments'
-import { findQuoteDomRange, setDomSelectionForRange } from '@/util/commentQuoteDom'
+import {
+  findQuoteDomRange,
+  prepareQuoteSearch,
+  setDomSelectionForRange
+} from '@/util/commentQuoteDom'
 import { useProjectStore } from '@/store/project'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
@@ -295,8 +299,11 @@ const getCommentSelection = (): {
     endOffset: startOffset + text.length
   }
 }
-const handleCommentsGetSelection = (cb: (s: unknown) => void): void => {
-  cb(getCommentSelection())
+// The bus is typed as mitt's `Handler<unknown>`; the caller passes a callback
+// it wants filled in with the current selection.
+const handleCommentsGetSelection = (event: unknown): void => {
+  if (typeof event !== 'function') return
+  ;(event as (selection: unknown) => void)(getCommentSelection())
 }
 
 interface CommentsScrollToPayload {
@@ -328,7 +335,7 @@ const handleCommentsScrollTo = (payload: unknown): void => {
       (editor.value?.domNode as Element | undefined)
     if (!root) return
 
-    const match = findQuoteDomRange(root, quote, startOffset)
+    const match = findQuoteDomRange(prepareQuoteSearch(root), quote, startOffset)
     if (match) {
       setDomSelectionForRange(match)
     }

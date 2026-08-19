@@ -14,6 +14,13 @@ interface TextSegment {
   end: number
 }
 
+// A single walk over the editor DOM, reusable for every comment in one
+// recompute pass. Walking per comment is O(threads × DOM nodes).
+export interface QuoteSearchIndex {
+  segments: TextSegment[]
+  fullText: string
+}
+
 const collectTextSegments = (root: Element): TextSegment[] => {
   const segments: TextSegment[] = []
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
@@ -42,16 +49,20 @@ const offsetToPoint = (segments: TextSegment[], offset: number): { node: Text; o
   return { node: last.node, offset: last.node.data.length }
 }
 
+export const prepareQuoteSearch = (root: Element): QuoteSearchIndex => {
+  const segments = collectTextSegments(root)
+  return { segments, fullText: segments.map((s) => s.node.data).join('') }
+}
+
 export const findQuoteDomRange = (
-  root: Element,
+  index: QuoteSearchIndex,
   quote: string,
   hintOffset: number
 ): QuoteDomRange | null => {
   if (!quote) return null
-  const segments = collectTextSegments(root)
+  const { segments, fullText } = index
   if (!segments.length) return null
 
-  const fullText = segments.map((s) => s.node.data).join('')
   const hits = indexesOf(fullText, quote)
   if (!hits.length) return null
 

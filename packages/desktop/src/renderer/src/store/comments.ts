@@ -126,7 +126,8 @@ export const useCommentsStore = defineStore('comments', () => {
 
   const commitDraft = (tabId: string, body: string): string | null => {
     const draft = drafts.value[tabId]
-    if (!draft || !body.trim()) return null
+    const trimmed = body.trim()
+    if (!draft || !trimmed) return null
 
     const ctx = extractQuoteContext(
       draft.selection.markdown,
@@ -135,14 +136,14 @@ export const useCommentsStore = defineStore('comments', () => {
     )
     const now = new Date().toISOString()
     const thread: ICommentThread = {
-      id: crypto.randomUUID(),
+      id: draft.id,
       status: 'open',
       orphaned: false,
       ...ctx,
       createdAt: now,
       updatedAt: now,
       author: { name: draft.authorName },
-      body,
+      body: trimmed,
       replies: []
     }
     ensureTab(tabId).push(thread)
@@ -164,6 +165,8 @@ export const useCommentsStore = defineStore('comments', () => {
     authorName: string,
     body: string
   ): void => {
+    const trimmed = body.trim()
+    if (!trimmed) return
     const thread = findThread(tabId, threadId)
     if (!thread) return
     const now = new Date().toISOString()
@@ -172,9 +175,17 @@ export const useCommentsStore = defineStore('comments', () => {
       author: { name: authorName },
       createdAt: now,
       updatedAt: now,
-      body
+      body: trimmed
     })
     thread.updatedAt = now
+    markDirty(tabId)
+  }
+
+  const editThreadBody = (tabId: string, threadId: string, body: string): void => {
+    const thread = findThread(tabId, threadId)
+    if (!thread) return
+    thread.body = body
+    thread.updatedAt = new Date().toISOString()
     markDirty(tabId)
   }
 
@@ -229,11 +240,17 @@ export const useCommentsStore = defineStore('comments', () => {
     hoveredId.value = id
   }
 
-  const loadForTab = async (
+  const loadForTab = async(
     tabId: string,
     pathname: string,
     markdown: string
   ): Promise<void> => {
+    // An untitled tab has no sidecar to read and no path to derive one from.
+    if (!pathname) {
+      byTab.value[tabId] = []
+      clearDirty(tabId)
+      return
+    }
     try {
       const file = await window.electron.ipcRenderer.invoke('mt::comments::load', pathname)
       if (!file) {
@@ -249,10 +266,20 @@ export const useCommentsStore = defineStore('comments', () => {
     }
   }
 
-  const persistForPath = async (tabId: string, pathname: string): Promise<void> => {
+  // A clean tab is never written: that keeps a corrupt sidecar (loaded as an
+  // empty list) on disk until the user creates comments, and stops a plain
+  // markdown save from touching a file that holds no comments.
+  const persistForPath = async(
+    tabId: string,
+    pathname: string,
+    opts?: { force?: boolean }
+  ): Promise<void> => {
     if (!pathname) return
+    const dirty = isDirty(tabId)
+    if (!opts?.force && !dirty) return
     const threads = threadsForTab(tabId)
     if (threads.length === 0) {
+      if (!dirty) return
       await window.electron.ipcRenderer.invoke('mt::comments::remove', pathname)
       clearDirty(tabId)
     } else {
@@ -298,10 +325,12 @@ export const useCommentsStore = defineStore('comments', () => {
     threadsForTab,
     isDirty,
     markDirty,
+    clearDirty,
     createDraft,
     commitDraft,
     discardDraft,
     addReply,
+    editThreadBody,
     setStatus,
     deleteThread,
     deleteReply,
@@ -317,9 +346,13 @@ export const useCommentsStore = defineStore('comments', () => {
   }
 })
 
-export const tryPersistForPath = async (tabId: string, pathname: string): Promise<boolean> => {
+export const tryPersistForPath = async(
+  tabId: string,
+  pathname: string,
+  opts?: { force?: boolean }
+): Promise<boolean> => {
   try {
-    await useCommentsStore().persistForPath(tabId, pathname)
+    await useCommentsStore().persistForPath(tabId, pathname, opts)
     return true
   } catch {
     return false

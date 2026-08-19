@@ -11,7 +11,7 @@ import {
 } from 'common/comments'
 import type { ICommentThread } from '@shared/types/comments'
 
-const thread = (partial: Partial<ICommentThread>): ICommentThread => ({
+const thread = (partial: Partial<ICommentThread> = {}): ICommentThread => ({
   id: 'c1',
   status: 'open',
   orphaned: false,
@@ -57,8 +57,6 @@ describe('extractQuoteContext', () => {
 })
 
 describe('bindComment', () => {
-  const md = 'then review the budget before Friday. then review the budget before Friday.'
-
   it('binds a unique prefix+quote+suffix match', () => {
     const one = 'Please review the budget before Friday.'
     const t = thread({

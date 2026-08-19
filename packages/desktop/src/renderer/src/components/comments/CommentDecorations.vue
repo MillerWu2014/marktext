@@ -3,12 +3,6 @@
     ref="overlayRef"
     class="comment-decorations"
   >
-    <svg
-      v-if="leaderD"
-      class="comment-leader"
-    >
-      <path :d="leaderD" />
-    </svg>
     <div
       v-for="rect in underlineRects"
       :key="rect.key"
@@ -21,6 +15,16 @@
       @click.stop="handleUnderlineClick"
     />
   </div>
+  <!-- `.editor-body` spans the document and the comments pane; the editor's own
+       ancestors set `overflow: hidden`, which would clip the leader. -->
+  <teleport
+    v-if="leaderD"
+    to=".editor-body"
+  >
+    <svg class="comment-leader">
+      <path :d="leaderD" />
+    </svg>
+  </teleport>
 </template>
 
 <script setup lang="ts">
@@ -34,6 +38,7 @@ import { useEditorStore } from '@/store/editor'
 import { useLayoutStore } from '@/store/layout'
 import {
   findQuoteDomRange,
+  prepareQuoteSearch,
   rectsForQuoteRange,
   setDomSelectionForRange,
   type UnderlineRect
@@ -82,9 +87,10 @@ const recomputeUnderlines = (): void => {
     return
   }
 
+  const searchIndex = prepareQuoteSearch(root)
   const rects: UnderlineRect[] = []
   for (const thread of threadsToDraw.value) {
-    const match = findQuoteDomRange(root, thread.quote, thread.startOffset)
+    const match = findQuoteDomRange(searchIndex, thread.quote, thread.startOffset)
     if (!match) continue
     rects.push(
       ...rectsForQuoteRange(match, thread.id, thread.startOffset, thread.endOffset, overlay)
@@ -96,7 +102,8 @@ const recomputeUnderlines = (): void => {
 
 const recomputeLeader = (): void => {
   const overlay = overlayRef.value
-  if (!overlay || !showCommentsPane.value) {
+  const leaderHost = document.querySelector('.editor-body')
+  if (!overlay || !leaderHost || !showCommentsPane.value) {
     leaderD.value = ''
     return
   }
@@ -126,7 +133,9 @@ const recomputeLeader = (): void => {
     return
   }
 
-  const overlayRect = overlay.getBoundingClientRect()
+  // The leader lives in `.editor-body`, so both endpoints are expressed in that
+  // element's coordinate space rather than the editor overlay's.
+  const hostRect = leaderHost.getBoundingClientRect()
   const uRect = underlineEl.getBoundingClientRect()
   const cRect = cardEl.getBoundingClientRect()
   if (cRect.width === 0) {
@@ -135,12 +144,12 @@ const recomputeLeader = (): void => {
   }
 
   const from = {
-    x: uRect.right - overlayRect.left,
-    y: uRect.top + uRect.height / 2 - overlayRect.top
+    x: uRect.right - hostRect.left,
+    y: uRect.top + uRect.height / 2 - hostRect.top
   }
   const to = {
-    x: cRect.left - overlayRect.left,
-    y: cRect.top + cRect.height / 2 - overlayRect.top
+    x: cRect.left - hostRect.left,
+    y: cRect.top + cRect.height / 2 - hostRect.top
   }
 
   leaderD.value = leaderPath(from, to)
@@ -160,7 +169,7 @@ const handleUnderlineClick = (event: MouseEvent): void => {
 
   const root = getEditorRoot()
   if (!root) return
-  const match = findQuoteDomRange(root, hit.quote, hit.startOffset)
+  const match = findQuoteDomRange(prepareQuoteSearch(root), hit.quote, hit.startOffset)
   if (match) {
     setDomSelectionForRange(match)
   }
@@ -287,6 +296,7 @@ defineExpose({
   height: 100%;
   overflow: visible;
   pointer-events: none;
+  z-index: 6;
 }
 
 .comment-leader path {

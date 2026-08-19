@@ -2,7 +2,7 @@ import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'fs
 import { tmpdir } from 'os'
 import path from 'path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { COMMENTS_FILE_VERSION, CommentsSidecarError } from '@shared/types/comments'
+import { COMMENTS_FILE_VERSION, type ICommentThread } from '@shared/types/comments'
 import { sidecarPath } from 'common/comments'
 import {
   loadCommentsFile,
@@ -23,16 +23,16 @@ afterEach(() => {
 
 const sample = {
   version: COMMENTS_FILE_VERSION,
-  comments: []
-} as const
+  comments: [] as ICommentThread[]
+}
 
 describe('comments sidecar IO', () => {
-  it('returns null when the sidecar is missing', async () => {
+  it('returns null when the sidecar is missing', async() => {
     const md = path.join(tempDir(), 'notes.md')
     expect(await loadCommentsFile(md)).toBeNull()
   })
 
-  it('round-trips a valid file', async () => {
+  it('round-trips a valid file', async() => {
     const md = path.join(tempDir(), 'notes.md')
     await saveCommentsFile(md, { version: 1, comments: [] })
     expect(existsSync(sidecarPath(md))).toBe(true)
@@ -41,14 +41,14 @@ describe('comments sidecar IO', () => {
     expect(loaded?.comments).toEqual([])
   })
 
-  it('preserves unknown keys', async () => {
+  it('preserves unknown keys', async() => {
     const md = path.join(tempDir(), 'notes.md')
     await saveCommentsFile(md, { version: 1, comments: [], extra: true } as never)
     const loaded = await loadCommentsFile(md)
     expect((loaded as { extra?: boolean } | null)?.extra).toBe(true)
   })
 
-  it('throws UNREADABLE on corrupt JSON and does not rewrite the file', async () => {
+  it('throws UNREADABLE on corrupt JSON and does not rewrite the file', async() => {
     const md = path.join(tempDir(), 'notes.md')
     const side = sidecarPath(md)
     writeFileSync(side, '{not json')
@@ -56,18 +56,18 @@ describe('comments sidecar IO', () => {
     expect(readFileSync(side, 'utf-8')).toBe('{not json')
   })
 
-  it('throws BAD_VERSION for version !== 1', async () => {
+  it('throws BAD_VERSION for version !== 1', async() => {
     const md = path.join(tempDir(), 'notes.md')
     writeFileSync(sidecarPath(md), JSON.stringify({ version: 2, comments: [] }))
     await expect(loadCommentsFile(md)).rejects.toMatchObject({ code: 'BAD_VERSION' })
   })
 
-  it('remove succeeds when the file is already gone', async () => {
+  it('remove succeeds when the file is already gone', async() => {
     const md = path.join(tempDir(), 'notes.md')
     await expect(removeCommentsFile(md)).resolves.toBeUndefined()
   })
 
-  it('remove deletes an existing sidecar', async () => {
+  it('remove deletes an existing sidecar', async() => {
     const md = path.join(tempDir(), 'notes.md')
     await saveCommentsFile(md, { ...sample })
     await removeCommentsFile(md)

@@ -14,7 +14,7 @@ const isCommentsFile = (value: unknown): value is ICommentsFile => {
   return v.version === COMMENTS_FILE_VERSION && Array.isArray(v.comments)
 }
 
-export const loadCommentsFile = async (markdownPath: string): Promise<ICommentsFile | null> => {
+export const loadCommentsFile = async(markdownPath: string): Promise<ICommentsFile | null> => {
   const side = sidecarPath(markdownPath)
   let raw: string
   try {
@@ -44,7 +44,7 @@ export const loadCommentsFile = async (markdownPath: string): Promise<ICommentsF
   return parsed
 }
 
-export const saveCommentsFile = async (
+export const saveCommentsFile = async(
   markdownPath: string,
   file: ICommentsFile
 ): Promise<void> => {
@@ -52,7 +52,7 @@ export const saveCommentsFile = async (
   await writeFile(side, JSON.stringify(file, null, 2), undefined, 'utf-8')
 }
 
-export const removeCommentsFile = async (markdownPath: string): Promise<void> => {
+export const removeCommentsFile = async(markdownPath: string): Promise<void> => {
   const side = sidecarPath(markdownPath)
   try {
     await unlink(side)

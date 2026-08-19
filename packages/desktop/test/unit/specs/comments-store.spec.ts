@@ -92,7 +92,7 @@ describe('useCommentsStore', () => {
     expect(store.visibleThreads.map((t) => t.body)).toEqual(['two'])
   })
 
-  it('persistForPath saves when comments exist and removes when empty', async () => {
+  it('persistForPath saves when comments exist and removes when empty', async() => {
     const store = useCommentsStore()
     store.createDraft({ tabId: 't1', sourceCode: false, authorName: 'Ada', selection })
     store.commitDraft('t1', 'body')
@@ -101,5 +101,97 @@ describe('useCommentsStore', () => {
     store.deleteThread('t1', store.threadsForTab('t1')[0]!.id, true)
     await store.persistForPath('t1', '/docs/notes.md')
     expect(invoke).toHaveBeenCalledWith('mt::comments::remove', '/docs/notes.md')
+  })
+
+  it('leaves a corrupt sidecar on disk when the user never created comments', async() => {
+    const store = useCommentsStore()
+    invoke.mockRejectedValueOnce(new Error('unreadable'))
+    await expect(store.loadForTab('t1', '/docs/notes.md', 'the budget before')).rejects.toThrow(
+      'unreadable'
+    )
+    invoke.mockReset()
+    invoke.mockResolvedValue(null)
+
+    await store.persistForPath('t1', '/docs/notes.md')
+
+    expect(invoke).not.toHaveBeenCalled()
+  })
+
+  it('skips persist for a comment-free tab that never went dirty', async() => {
+    const store = useCommentsStore()
+    await store.loadForTab('t1', '/docs/notes.md', 'the budget before')
+    invoke.mockReset()
+    invoke.mockResolvedValue(null)
+
+    await store.persistForPath('t1', '/docs/notes.md')
+
+    expect(invoke).not.toHaveBeenCalled()
+  })
+
+  it('keeps an untitled tab in memory instead of loading a sidecar', async() => {
+    const store = useCommentsStore()
+    await store.loadForTab('t1', '', 'the budget before')
+    expect(invoke).not.toHaveBeenCalled()
+    expect(store.threadsForTab('t1')).toEqual([])
+  })
+
+  it('force-saves a clean tab that still has comments', async() => {
+    const store = useCommentsStore()
+    store.createDraft({ tabId: 't1', sourceCode: false, authorName: 'Ada', selection })
+    store.commitDraft('t1', 'body')
+    await store.persistForPath('t1', '/docs/notes.md')
+    invoke.mockReset()
+    invoke.mockResolvedValue(null)
+
+    await store.persistForPath('t1', '/docs/other.md', { force: true })
+
+    expect(invoke).toHaveBeenCalledWith('mt::comments::save', '/docs/other.md', expect.objectContaining({ version: 1 }))
+  })
+
+  it('force-persist of an empty clean tab neither saves nor removes', async() => {
+    const store = useCommentsStore()
+    await store.loadForTab('t1', '/docs/notes.md', 'the budget before')
+    invoke.mockReset()
+    invoke.mockResolvedValue(null)
+
+    await store.persistForPath('t1', '/docs/other.md', { force: true })
+
+    expect(invoke).not.toHaveBeenCalled()
+  })
+
+  it('editThreadBody updates the body, bumps updatedAt, and dirties', () => {
+    const store = useCommentsStore()
+    store.createDraft({ tabId: 't1', sourceCode: false, authorName: 'Ada', selection })
+    const id = store.commitDraft('t1', 'body')!
+    const before = store.threadsForTab('t1')[0]!.updatedAt
+    store.clearDirty('t1')
+
+    store.editThreadBody('t1', id, 'revised body')
+
+    const thread = store.threadsForTab('t1')[0]!
+    expect(thread.body).toBe('revised body')
+    expect(Date.parse(thread.updatedAt)).toBeGreaterThanOrEqual(Date.parse(before))
+    expect(store.isDirty('t1')).toBe(true)
+  })
+
+  it('commitDraft trims the body and keeps the draft id', () => {
+    const store = useCommentsStore()
+    const draftId = store.createDraft({
+      tabId: 't1',
+      sourceCode: false,
+      authorName: 'Ada',
+      selection
+    })
+    const id = store.commitDraft('t1', '  please check  ')
+    expect(id).toBe(draftId)
+    expect(store.threadsForTab('t1')[0]?.body).toBe('please check')
+  })
+
+  it('addReply ignores a whitespace-only body', () => {
+    const store = useCommentsStore()
+    store.createDraft({ tabId: 't1', sourceCode: false, authorName: 'Ada', selection })
+    const id = store.commitDraft('t1', 'body')!
+    store.addReply('t1', id, 'Ada', '   ')
+    expect(store.threadsForTab('t1')[0]?.replies).toHaveLength(0)
   })
 })

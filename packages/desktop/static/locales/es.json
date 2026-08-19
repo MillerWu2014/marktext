@@ -980,11 +980,13 @@
     "resolved": "Resolved",
     "empty": "Select text, then New Comment",
     "reply": "Reply",
+    "edit": "Edit",
     "resolve": "Resolve",
     "reopen": "Reopen",
     "delete": "Delete",
     "deleteConfirm": "Delete this comment and its replies?",
     "orphaned": "Original text is gone",
-    "newComment": "New Comment"
+    "newComment": "New Comment",
+    "closePane": "Close comments pane"
   }
 }

@@ -572,7 +572,7 @@ export const useEditorStore = defineStore('editor', {
     },
 
     LISTEN_FOR_SET_PATHNAME(): void {
-      window.electron.ipcRenderer.on('mt::set-pathname', async (_, fileInfo) => {
+      window.electron.ipcRenderer.on('mt::set-pathname', async(_, fileInfo) => {
         const { tabs } = this
         const { pathname, id } = fileInfo
         const tab = tabs.find((f) => f.id === id)
@@ -600,7 +600,12 @@ export const useEditorStore = defineStore('editor', {
           Object.assign(tab, { filename, pathname, isSaved: true })
           debouncedSendBufferedState()
           const commentsStore = useCommentsStore()
-          const persisted = await tryPersistForPath(tab.id, pathname)
+          // A comment-free, clean tab writes nothing at the new path, so it must
+          // not delete whatever sidecar the old path had (it may be the corrupt
+          // file we deliberately left alone).
+          const wroteComments =
+            commentsStore.threadsForTab(tab.id).length > 0 || commentsStore.isDirty(tab.id)
+          const persisted = await tryPersistForPath(tab.id, pathname, { force: true })
           if (!persisted) {
             tab.isSaved = false
             notice.notify({
@@ -609,14 +614,18 @@ export const useEditorStore = defineStore('editor', {
               time: 10000,
               showConfirm: false
             })
-          } else if (oldPath && oldPath !== pathname) {
-            await window.electron.ipcRenderer.invoke('mt::comments::remove', oldPath)
+          } else if (wroteComments && oldPath && oldPath !== pathname) {
+            try {
+              await window.electron.ipcRenderer.invoke('mt::comments::remove', oldPath)
+            } catch (err) {
+              console.error('Failed to remove the sidecar at the previous path', err)
+            }
           }
           debouncedSendBufferedState()
         }
       })
 
-      window.electron.ipcRenderer.on('mt::tab-saved', async (_, tabId) => {
+      window.electron.ipcRenderer.on('mt::tab-saved', async(_, tabId) => {
         const tab = this.tabs.find((f) => f.id === tabId)
         if (tab) {
           const lastEditIndex = tab.history.lastEditIndex
@@ -1355,16 +1364,14 @@ export const useEditorStore = defineStore('editor', {
       const { id, cursor } = docState
       const commentsStore = useCommentsStore()
       const loadComments = (): void => {
-        void commentsStore
-          .loadForTab(id, pathname ?? '', markdown)
-          .catch(() => {
-            notice.notify({
-              title: t('notifications.commentsUnreadable'),
-              type: 'warning',
-              time: 10000,
-              showConfirm: false
-            })
+        commentsStore.loadForTab(id, pathname ?? '', markdown).catch(() => {
+          notice.notify({
+            title: t('notifications.commentsUnreadable'),
+            type: 'warning',
+            time: 10000,
+            showConfirm: false
           })
+        })
       }
 
       if (selected) {

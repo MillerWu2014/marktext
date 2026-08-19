@@ -980,11 +980,13 @@
     "resolved": "已解决",
     "empty": "选择文本，然后点击新建评论",
     "reply": "回复",
+    "edit": "编辑",
     "resolve": "解决",
     "reopen": "重新打开",
     "delete": "删除",
     "deleteConfirm": "删除此评论及其回复？",
     "orphaned": "原始文本已不存在",
-    "newComment": "新建评论"
+    "newComment": "新建评论",
+    "closePane": "关闭评论面板"
   }
 }

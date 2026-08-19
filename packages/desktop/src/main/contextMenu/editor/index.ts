@@ -45,6 +45,9 @@ type ContextMenuEvent = {
 
 // Dynamically fetch menu items to ensure correct translation
 const getContextItems = (): MenuItemConstructorOptions[] => [
+  getInsertBefore(),
+  getInsertAfter(),
+  SEPARATOR,
   getCUT(),
   getCOPY(),
   getPASTE(),
@@ -52,10 +55,8 @@ const getContextItems = (): MenuItemConstructorOptions[] => [
   getCopyAsRich(),
   getCopyAsHtml(),
   getPasteAsPlainText(),
-  getNewComment(),
   SEPARATOR,
-  getInsertBefore(),
-  getInsertAfter()
+  getNewComment()
 ]
 
 const isInsideEditor = (params: ContextMenuParams): boolean => {
@@ -106,11 +107,11 @@ export const showEditorContextMenu = (
     }
 
     const contextItems = getContextItems()
-    const copyItems = [contextItems[0], contextItems[1], contextItems[5], contextItems[4]] // CUT, COPY, COPY_AS_HTML, COPY_AS_RICH
+    const copyItems = [contextItems[3], contextItems[4], contextItems[8], contextItems[7]] // CUT, COPY, COPY_AS_HTML, COPY_AS_RICH
     copyItems.forEach((item) => {
       if (item) item.enabled = canCopy
     })
-    const newCommentItem = contextItems[7]
+    const newCommentItem = contextItems.find((item) => item.id === 'newCommentMenuItem')
     if (newCommentItem) {
       newCommentItem.enabled = hasText
     }

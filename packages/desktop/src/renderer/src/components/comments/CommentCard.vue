@@ -19,6 +19,10 @@
         v-if="thread.createdAt"
         class="comment-time"
       >{{ formatRelativeTime(thread.createdAt) }}</span>
+      <span
+        v-if="showOrphanedBadge"
+        class="comment-orphaned"
+      >{{ t('comments.orphaned') }}</span>
     </div>
     <textarea
       v-if="isComposer || editing"
@@ -48,7 +52,9 @@
           v-if="reply.createdAt"
           class="reply-time"
         >{{ formatRelativeTime(reply.createdAt) }}</span>
-        <p class="reply-body">{{ reply.body }}</p>
+        <p class="reply-body">
+          {{ reply.body }}
+        </p>
       </li>
     </ul>
     <textarea
@@ -56,7 +62,7 @@
       v-model="replyText"
       class="reply-input"
       rows="2"
-      placeholder="Reply"
+      :placeholder="t('comments.reply')"
       @keydown.enter.exact.prevent="submitReply"
       @blur="cancelReply"
     />
@@ -69,28 +75,28 @@
         class="action-button"
         @click.stop="startEdit"
       >
-        Edit
+        {{ t('comments.edit') }}
       </button>
       <button
         type="button"
         class="action-button"
         @click.stop="startReply"
       >
-        Reply
+        {{ t('comments.reply') }}
       </button>
       <button
         type="button"
         class="action-button"
         @click.stop="toggleStatus"
       >
-        {{ thread.status === 'open' ? 'Resolve' : 'Reopen' }}
+        {{ thread.status === 'open' ? t('comments.resolve') : t('comments.reopen') }}
       </button>
       <button
         type="button"
         class="action-button"
         @click.stop="handleDelete"
       >
-        Delete
+        {{ t('comments.delete') }}
       </button>
     </div>
   </div>
@@ -99,10 +105,12 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 import { formatRelativeTime } from 'common/comments'
 import type { ICommentThread } from '@shared/types/comments'
 import bus from '@/bus'
 import { useCommentsStore } from '@/store/comments'
+import { resolveCommentAuthorName } from '@/util/commentAuthor'
 
 const props = defineProps<{
   thread: ICommentThread
@@ -110,6 +118,7 @@ const props = defineProps<{
   isComposer?: boolean
 }>()
 
+const { t } = useI18n()
 const commentsStore = useCommentsStore()
 const { selectedId, hoveredId } = storeToRefs(commentsStore)
 
@@ -122,6 +131,7 @@ const replyText = ref('')
 const isComposer = computed(() => props.isComposer ?? false)
 const isSelected = computed(() => selectedId.value === props.thread.id)
 const isHovered = computed(() => hoveredId.value === props.thread.id)
+const showOrphanedBadge = computed(() => props.thread.orphaned && !isComposer.value)
 
 watch(
   () => props.thread.body,
@@ -175,8 +185,7 @@ const handleBodyBlur = (): void => {
     return
   }
   if (editing.value) {
-    props.thread.body = bodyText.value
-    commentsStore.markDirty(props.tabId)
+    commentsStore.editThreadBody(props.tabId, props.thread.id, bodyText.value)
     editing.value = false
   }
 }
@@ -203,7 +212,15 @@ const cancelReply = (): void => {
 const submitReply = (): void => {
   const text = replyText.value.trim()
   if (!text) return
-  commentsStore.addReply(props.tabId, props.thread.id, props.thread.author.name, text)
+  const { tabId } = props
+  const threadId = props.thread.id
+  resolveCommentAuthorName()
+    .then((authorName) => {
+      commentsStore.addReply(tabId, threadId, authorName, text)
+    })
+    .catch((err) => {
+      console.error('Failed to resolve the comment author name', err)
+    })
   replyText.value = ''
   replying.value = false
 }
@@ -216,7 +233,7 @@ const toggleStatus = (): void => {
 const handleDelete = (): void => {
   const result = commentsStore.deleteThread(props.tabId, props.thread.id, false)
   if (result.needsConfirm) {
-    if (window.confirm('Delete this comment and all replies?')) {
+    if (window.confirm(t('comments.deleteConfirm'))) {
       commentsStore.deleteThread(props.tabId, props.thread.id, true)
     }
     return
@@ -270,6 +287,14 @@ const handleDelete = (): void => {
 .comment-time,
 .reply-time {
   color: var(--editorColor50);
+}
+
+.comment-orphaned {
+  padding: 0 6px;
+  border: 1px solid var(--editorColor20);
+  border-radius: 8px;
+  color: var(--editorColor50);
+  font-size: 11px;
 }
 
 .comment-body,
