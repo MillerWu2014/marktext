@@ -103,6 +103,22 @@ describe('useCommentsStore', () => {
     expect(invoke).toHaveBeenCalledWith('mt::comments::remove', '/docs/notes.md')
   })
 
+  it('sends a structured-cloneable sidecar payload over IPC', async() => {
+    invoke.mockImplementation((...args: unknown[]) => {
+      structuredClone(args)
+      return Promise.resolve(null)
+    })
+    const store = useCommentsStore()
+    store.createDraft({ tabId: 't1', sourceCode: false, authorName: 'Ada', selection })
+    store.commitDraft('t1', 'body')
+    await expect(store.persistForPath('t1', '/docs/notes.md')).resolves.toBeUndefined()
+    expect(invoke).toHaveBeenCalledWith(
+      'mt::comments::save',
+      '/docs/notes.md',
+      expect.objectContaining({ version: 1 })
+    )
+  })
+
   it('leaves a corrupt sidecar on disk when the user never created comments', async() => {
     const store = useCommentsStore()
     invoke.mockRejectedValueOnce(new Error('unreadable'))

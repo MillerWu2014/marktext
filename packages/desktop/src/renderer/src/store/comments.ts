@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { bindComments, extractQuoteContext, followComment } from 'common/comments'
 import type { CommentStatus, ICommentThread } from '@shared/types/comments'
 import bus from '../bus'
+import { deepClone } from '@/util'
 import { applyCommentsDirtyToTab } from './commentsDirty'
 
 interface DraftSelection {
@@ -283,10 +284,13 @@ export const useCommentsStore = defineStore('comments', () => {
       await window.electron.ipcRenderer.invoke('mt::comments::remove', pathname)
       clearDirty(tabId)
     } else {
-      await window.electron.ipcRenderer.invoke('mt::comments::save', pathname, {
-        version: 1,
-        comments: threads
-      })
+      // Pinia keeps threads as Vue proxies; Electron IPC structured-clone
+      // cannot copy them (DataCloneError), so send a plain snapshot.
+      await window.electron.ipcRenderer.invoke(
+        'mt::comments::save',
+        pathname,
+        deepClone({ version: 1 as const, comments: threads })
+      )
       clearDirty(tabId)
     }
   }
@@ -354,7 +358,8 @@ export const tryPersistForPath = async(
   try {
     await useCommentsStore().persistForPath(tabId, pathname, opts)
     return true
-  } catch {
+  } catch (err) {
+    console.error('Failed to persist comments sidecar', err)
     return false
   }
 }
