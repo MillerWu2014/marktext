@@ -31,6 +31,7 @@ import { pickOverlappingComment } from 'common/comments'
 import type { ICommentThread } from '@shared/types/comments'
 import { useCommentsStore } from '@/store/comments'
 import { useEditorStore } from '@/store/editor'
+import { useLayoutStore } from '@/store/layout'
 import {
   findQuoteDomRange,
   rectsForQuoteRange,
@@ -44,9 +45,11 @@ const props = defineProps<{
 
 const commentsStore = useCommentsStore()
 const editorStore = useEditorStore()
+const layoutStore = useLayoutStore()
 
 const { filter, selectedId, hoveredId, visibleThreads } = storeToRefs(commentsStore)
 const { currentFile } = storeToRefs(editorStore)
+const { showCommentsPane } = storeToRefs(layoutStore)
 
 const overlayRef = ref<HTMLDivElement | null>(null)
 const underlineRects = ref<UnderlineRect[]>([])
@@ -93,7 +96,7 @@ const recomputeUnderlines = (): void => {
 
 const recomputeLeader = (): void => {
   const overlay = overlayRef.value
-  if (!overlay) {
+  if (!overlay || !showCommentsPane.value) {
     leaderD.value = ''
     return
   }
@@ -126,6 +129,10 @@ const recomputeLeader = (): void => {
   const overlayRect = overlay.getBoundingClientRect()
   const uRect = underlineEl.getBoundingClientRect()
   const cRect = cardEl.getBoundingClientRect()
+  if (cRect.width === 0) {
+    leaderD.value = ''
+    return
+  }
 
   const from = {
     x: uRect.right - overlayRect.left,
@@ -168,11 +175,21 @@ let resizeListener: (() => void) | null = null
 let rafId: number | null = null
 
 const scheduleRecompute = (): void => {
+  tryAttachCommentsList()
   if (rafId != null) return
   rafId = requestAnimationFrame(() => {
     rafId = null
     recomputeUnderlines()
   })
+}
+
+const tryAttachCommentsList = (): void => {
+  if (commentsList) return
+  const list = document.querySelector('.comments-pane .comments-list')
+  if (!list) return
+  commentsList = list as HTMLElement
+  commentsListScrollListener = () => scheduleRecompute()
+  commentsList.addEventListener('scroll', commentsListScrollListener, { passive: true })
 }
 
 const attachListeners = (): void => {
@@ -182,9 +199,7 @@ const attachListeners = (): void => {
   scrollListener = () => scheduleRecompute()
   scrollContainer?.addEventListener('scroll', scrollListener, { passive: true })
 
-  commentsList = document.querySelector('.comments-pane .comments-list')
-  commentsListScrollListener = () => scheduleRecompute()
-  commentsList?.addEventListener('scroll', commentsListScrollListener, { passive: true })
+  tryAttachCommentsList()
 
   if (props.editor?.on) {
     jsonChangeListener = () => scheduleRecompute()
@@ -233,6 +248,11 @@ watch(
 )
 
 watch([threadsToDraw, selectedId, hoveredId, filter, visibleThreads], () => {
+  scheduleRecompute()
+})
+
+watch(showCommentsPane, () => {
+  tryAttachCommentsList()
   scheduleRecompute()
 })
 
