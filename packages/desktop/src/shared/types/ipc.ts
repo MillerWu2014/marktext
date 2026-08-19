@@ -32,6 +32,7 @@ import type {
 } from './files'
 import type { BufferedState as BufferedStateType } from './bufferedState'
 import type { MenuTemplate, MenuPopupPosition } from './menu'
+import type { ICommentsFile } from './comments'
 
 // =================================================================
 // Invoke channels (renderer → main, returns Promise<T>)
@@ -42,6 +43,10 @@ export interface IpcInvokeChannels {
   'mt::boot-info-async': { args: []; ret: BootInfo }
   'mt::clipboard::guess-file-path': { args: []; ret: string | null }
   'mt::clipboard::read-text': { args: []; ret: string }
+  'mt::comments::author-name': { args: []; ret: string }
+  'mt::comments::load': { args: [pathname: string]; ret: ICommentsFile | null }
+  'mt::comments::remove': { args: [pathname: string]; ret: void }
+  'mt::comments::save': { args: [pathname: string, file: ICommentsFile]; ret: void }
   'mt::cmd::exists': { args: [name: string]; ret: boolean }
   'mt::fonts::list': { args: []; ret: string[] }
   'mt::fs-trash-item': { args: [pathname: string]; ret: void }
