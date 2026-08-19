@@ -12,7 +12,7 @@ describe('comments commands', () => {
   })
 
   it('binds platform accelerators for new comment and toggle comments', () => {
-    expect(isEqualAccelerator(keybindingsLinux.get('edit.new-comment'), 'Ctrl+Shift+M')).toBe(true)
+    expect(isEqualAccelerator(keybindingsLinux.get('edit.new-comment'), 'Ctrl+Shift+Alt+M')).toBe(true)
     expect(isEqualAccelerator(keybindingsWindows.get('edit.new-comment'), 'Ctrl+Alt+M')).toBe(true)
     expect(isEqualAccelerator(keybindingsDarwin.get('edit.new-comment'), 'Command+Alt+M')).toBe(true)
 

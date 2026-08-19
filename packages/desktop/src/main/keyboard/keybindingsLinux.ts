@@ -48,7 +48,7 @@ const keybindings: Map<string, string> = new Map([
   ['edit.find-previous', 'Shift+F3'],
   ['edit.replace', 'Ctrl+R'],
   ['edit.find-in-folder', 'Ctrl+Shift+F'],
-  ['edit.new-comment', 'Ctrl+Shift+M'],
+  ['edit.new-comment', 'Ctrl+Shift+Alt+M'],
   ['edit.screenshot', ''], // macOS only
 
   // Paragraph menu
