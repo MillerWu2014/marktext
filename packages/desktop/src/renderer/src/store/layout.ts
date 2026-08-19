@@ -20,6 +20,11 @@ const normalizeSideBarWidth = (width: unknown): number => {
   return Number.isFinite(numericWidth) ? Math.max(numericWidth, 220) : 280
 }
 
+const normalizeCommentsPaneWidth = (width: unknown): number => {
+  const numericWidth = Number(width)
+  return Math.max(220, numericWidth || 280)
+}
+
 interface BufferedLayout {
   rightColumn: string | undefined
   showSideBar: boolean
@@ -44,12 +49,17 @@ const createBufferedLayoutState = (state: unknown): BufferedLayout | null => {
 
 const initialWidth = localStorage.getItem('side-bar-width')
 const initialSideBarWidth = normalizeSideBarWidth(initialWidth)
+const initialCommentsPaneWidth = normalizeCommentsPaneWidth(
+  localStorage.getItem('comments-pane-width')
+)
 
 export const useLayoutStore = defineStore('layout', () => {
   const rightColumn = ref<string>('files')
   const showSideBar = ref(false)
   const showTabBar = ref(false)
   const sideBarWidth = ref<number>(initialSideBarWidth)
+  const showCommentsPane = ref(false)
+  const commentsPaneWidth = ref<number>(initialCommentsPaneWidth)
 
   // Actual rendered sidebar width. `sideBarWidth` is the right-column width
   // (clamped to ≥220 by `normalizeSideBarWidth`); when `rightColumn` is empty
@@ -59,6 +69,11 @@ export const useLayoutStore = defineStore('layout', () => {
     if (!showSideBar.value) return 0
     if (!rightColumn.value) return 45
     return Number(sideBarWidth.value)
+  })
+
+  const effectiveCommentsPaneWidth = computed<number>(() => {
+    if (!showCommentsPane.value) return 0
+    return Number(commentsPaneWidth.value)
   })
 
   function SET_LAYOUT(
@@ -183,12 +198,39 @@ export const useLayoutStore = defineStore('layout', () => {
     SET_SIDE_BAR_WIDTH(width)
   }
 
+  function SET_COMMENTS_PANE_WIDTH(width: number | string): void {
+    const normalizedWidth = normalizeCommentsPaneWidth(width)
+    localStorage.setItem('comments-pane-width', String(normalizedWidth))
+    commentsPaneWidth.value = normalizedWidth
+  }
+
+  function SET_COMMENTS_PANE(open: boolean): void {
+    if (!open && showCommentsPane.value) {
+      void import('./editor').then(({ useEditorStore }) => {
+        void import('./comments').then(({ useCommentsStore }) => {
+          const tabId = useEditorStore().currentFile?.id
+          if (tabId) {
+            useCommentsStore().discardDraft(tabId)
+          }
+        })
+      })
+    }
+    showCommentsPane.value = open
+  }
+
+  function TOGGLE_COMMENTS_PANE(): void {
+    SET_COMMENTS_PANE(!showCommentsPane.value)
+  }
+
   return {
     rightColumn,
     showSideBar,
     showTabBar,
     sideBarWidth,
     effectiveSideBarWidth,
+    showCommentsPane,
+    commentsPaneWidth,
+    effectiveCommentsPaneWidth,
     SET_LAYOUT,
     CREATE_BUFFERED_STATE,
     RESTORE_BUFFERED_STATE,
@@ -196,6 +238,9 @@ export const useLayoutStore = defineStore('layout', () => {
     SET_SIDE_BAR_WIDTH,
     LISTEN_FOR_LAYOUT,
     DISPATCH_LAYOUT_MENU_ITEMS,
-    CHANGE_SIDE_BAR_WIDTH
+    CHANGE_SIDE_BAR_WIDTH,
+    SET_COMMENTS_PANE,
+    TOGGLE_COMMENTS_PANE,
+    SET_COMMENTS_PANE_WIDTH
   }
 })

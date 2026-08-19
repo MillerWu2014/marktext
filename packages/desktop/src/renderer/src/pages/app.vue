@@ -18,16 +18,19 @@
         class="editor-placeholder"
       />
       <recent v-if="!hasCurrentFile && init" />
-      <editor-with-tabs
-        v-if="hasCurrentFile && init"
-        :markdown="markdown"
-        :cursor="cursor"
-        :muya-index-cursor="muyaIndexCursor"
-        :source-code="sourceCode"
-        :show-tab-bar="showTabBar"
-        :text-direction="textDirection"
-        :platform="platform"
-      />
+      <div class="editor-body">
+        <editor-with-tabs
+          v-if="hasCurrentFile && init"
+          :markdown="markdown"
+          :cursor="cursor"
+          :muya-index-cursor="muyaIndexCursor"
+          :source-code="sourceCode"
+          :show-tab-bar="showTabBar"
+          :text-direction="textDirection"
+          :platform="platform"
+        />
+        <comments-pane />
+      </div>
       <command-palette />
       <about-dialog />
       <export-setting-dialog />
@@ -51,6 +54,7 @@ import CommandPalette from '@/components/commandPalette/index.vue'
 import ExportSettingDialog from '@/components/exportSettings/index.vue'
 import Rename from '@/components/rename/index.vue'
 import ImportModal from '@/components/import/index.vue'
+import CommentsPane from '@/components/comments/CommentsPane.vue'
 import bus from '@/bus'
 import { DEFAULT_STYLE } from '@/config'
 import { useLayoutStore } from '@/store/layout'
@@ -249,5 +253,11 @@ onMounted(async () => {
   & > .editor {
     flex: 1;
   }
+}
+.editor-body {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  min-height: 0;
 }
 </style>
