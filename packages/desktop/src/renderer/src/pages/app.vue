@@ -63,6 +63,7 @@ import { useLayoutStore } from '@/store/layout'
 import { useListenForMainStore } from '@/store/listenForMain'
 import { usePreferencesStore } from '@/store/preferences'
 import { useEditorStore } from '@/store/editor'
+import { useCommentsStore } from '@/store/comments'
 import { useCommandCenterStore } from '@/store/commandCenter'
 import { useProjectStore } from '@/store/project'
 import { useAutoUpdatesStore } from '@/store/autoUpdates'
@@ -215,15 +216,48 @@ onMounted(async () => {
     })
   }
 
-  window.electron.ipcRenderer.on('mt::editor-new-comment', () => {
+  const beginNewComment = async (): Promise<void> => {
+    const editorStore = useEditorStore()
+    const preferencesStore = usePreferencesStore()
+    const commentsStore = useCommentsStore()
+    const layoutStore = useLayoutStore()
+    if (preferencesStore.sourceCode) return
+    const tabId = editorStore.currentFile?.id
+    if (!tabId) return
+    let selection: {
+      text: string
+      markdown: string
+      startOffset: number
+      endOffset: number
+    } | null = null
+    bus.emit('comments:get-selection', (s: unknown) => {
+      selection = s as typeof selection
+    })
+    if (!selection) return
+    const authorPref = String(preferencesStore.commentAuthorName ?? '').trim()
+    const authorName =
+      authorPref || (await window.electron.ipcRenderer.invoke('mt::comments::author-name'))
+    const draftId = commentsStore.createDraft({
+      tabId,
+      sourceCode: false,
+      authorName,
+      selection
+    })
+    if (!draftId) return
     layoutStore.SET_COMMENTS_PANE(true)
+    commentsStore.select(draftId)
+    if (editorStore.currentFile) editorStore.currentFile.isSaved = false
+  }
+
+  window.electron.ipcRenderer.on('mt::editor-new-comment', () => {
+    void beginNewComment()
   })
   window.electron.ipcRenderer.on('mt::toggle-comments-pane', () => {
     layoutStore.TOGGLE_COMMENTS_PANE()
     dispatchCommentsPaneMenu()
   })
   bus.on('edit:new-comment', () => {
-    layoutStore.SET_COMMENTS_PANE(true)
+    void beginNewComment()
   })
   bus.on('view:toggle-comments', () => {
     layoutStore.TOGGLE_COMMENTS_PANE()

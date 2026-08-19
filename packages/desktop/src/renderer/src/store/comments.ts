@@ -1,7 +1,9 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { bindComments, extractQuoteContext } from 'common/comments'
+import { bindComments, extractQuoteContext, followComment } from 'common/comments'
 import type { CommentStatus, ICommentThread } from '@shared/types/comments'
+import { useEditorStore } from './editor'
+import { debouncedSendBufferedState } from './bufferedState'
 
 interface DraftSelection {
   text: string
@@ -23,6 +25,20 @@ const sortThreads = (threads: ICommentThread[]): ICommentThread[] =>
     return sa - sb
   })
 
+export const syncCommentsDirty = (
+  editorStore: ReturnType<typeof useEditorStore>,
+  tabId: string,
+  dirty: boolean
+): void => {
+  if (!dirty) return
+  const tab = editorStore.tabs.find((t) => t.id === tabId)
+  if (tab) tab.isSaved = false
+  if (editorStore.currentFile?.id === tabId) {
+    editorStore.currentFile.isSaved = false
+  }
+  debouncedSendBufferedState()
+}
+
 export const useCommentsStore = defineStore('comments', () => {
   const byTab = ref<Record<string, ICommentThread[]>>({})
   const drafts = ref<Record<string, CommentDraft>>({})
@@ -41,6 +57,7 @@ export const useCommentsStore = defineStore('comments', () => {
 
   const markDirty = (tabId: string): void => {
     dirtyTabs.value[tabId] = true
+    syncCommentsDirty(useEditorStore(), tabId, true)
   }
 
   const clearDirty = (tabId: string): void => {
@@ -252,6 +269,22 @@ export const useCommentsStore = defineStore('comments', () => {
     }
   }
 
+  const followMarkdown = (tabId: string, markdown: string): void => {
+    const threads = ensureTab(tabId)
+    let becameOrphaned = false
+    for (let i = 0; i < threads.length; i++) {
+      const before = threads[i]!
+      const after = followComment(markdown, before)
+      threads[i] = after
+      if (!before.orphaned && after.orphaned) {
+        becameOrphaned = true
+      }
+    }
+    if (becameOrphaned) {
+      markDirty(tabId)
+    }
+  }
+
   return {
     filter,
     selectedId,
@@ -275,6 +308,16 @@ export const useCommentsStore = defineStore('comments', () => {
     draftForTab,
     loadForTab,
     persistForPath,
-    unloadTab
+    unloadTab,
+    followMarkdown
   }
 })
+
+export const tryPersistForPath = async (tabId: string, pathname: string): Promise<boolean> => {
+  try {
+    await useCommentsStore().persistForPath(tabId, pathname)
+    return true
+  } catch {
+    return false
+  }
+}

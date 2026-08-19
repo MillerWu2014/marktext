@@ -1,0 +1,87 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
+
+const invoke = vi.fn()
+
+vi.hoisted(() => {
+  const w = globalThis as unknown as {
+    window?: {
+      electron?: { ipcRenderer: { invoke: (...a: unknown[]) => unknown; send: () => void; on: () => void } }
+      path?: { sep: string; dirname: (p: string) => string }
+    }
+  }
+  w.window ??= {}
+  w.window.path ??= { sep: '/', dirname: (p: string) => p }
+  w.window.electron ??= {
+    ipcRenderer: { invoke: (...a: unknown[]) => invoke(...a), send: () => {}, on: () => {} }
+  }
+})
+
+vi.mock('@/services/notification', () => ({
+  default: { notify: vi.fn(), name: 'notify' }
+}))
+
+import { useCommentsStore, syncCommentsDirty, tryPersistForPath } from '@/store/comments'
+import { useEditorStore } from '@/store/editor'
+import { getBlankFileState } from '@/store/help'
+
+const selection = { text: 'budget', markdown: 'the budget before', startOffset: 4, endOffset: 10 }
+
+describe('comments lifecycle', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    invoke.mockReset()
+    invoke.mockResolvedValue(null)
+  })
+
+  it('marks the editor tab unsaved when comments become dirty', () => {
+    const editorStore = useEditorStore()
+    const tab = getBlankFileState([], 'utf8', 'lf', 'doc')
+    tab.isSaved = true
+    editorStore.tabs.push(tab)
+    editorStore.currentFile = tab
+
+    const commentsStore = useCommentsStore()
+    commentsStore.createDraft({ tabId: tab.id, sourceCode: false, authorName: 'Ada', selection })
+    commentsStore.commitDraft(tab.id, 'please check')
+
+    expect(tab.isSaved).toBe(false)
+    expect(editorStore.currentFile?.isSaved).toBe(false)
+  })
+
+  it('does not force saved when comments are clean but markdown may still be dirty', () => {
+    const editorStore = useEditorStore()
+    const tab = getBlankFileState([], 'utf8', 'lf', 'doc')
+    tab.isSaved = false
+    editorStore.tabs.push(tab)
+    editorStore.currentFile = tab
+
+    syncCommentsDirty(editorStore, tab.id, false)
+
+    expect(tab.isSaved).toBe(false)
+  })
+
+  it('tryPersistForPath returns false when invoke rejects', async () => {
+    invoke.mockRejectedValueOnce(new Error('disk full'))
+    const store = useCommentsStore()
+    store.createDraft({ tabId: 't1', sourceCode: false, authorName: 'Ada', selection })
+    store.commitDraft('t1', 'body')
+
+    const ok = await tryPersistForPath('t1', '/docs/notes.md')
+
+    expect(ok).toBe(false)
+  })
+
+  it('marks a thread orphaned when the quote disappears', () => {
+    const store = useCommentsStore()
+    store.createDraft({
+      tabId: 't1',
+      sourceCode: false,
+      authorName: 'Ada',
+      selection: { text: 'budget', markdown: 'the budget before', startOffset: 4, endOffset: 10 }
+    })
+    store.commitDraft('t1', 'body')
+    store.followMarkdown('t1', 'the before')
+    expect(store.threadsForTab('t1')[0]?.orphaned).toBe(true)
+  })
+})

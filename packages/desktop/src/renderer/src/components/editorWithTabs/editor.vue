@@ -128,6 +128,7 @@ import { resolveTocHeadingElement } from '@/util/tocNavigation'
 import { addCommonStyle, setEditorWidth } from '@/util/theme'
 import { usePreferencesStore } from '@/store/preferences'
 import { useEditorStore } from '@/store/editor'
+import { useCommentsStore } from '@/store/comments'
 import { useProjectStore } from '@/store/project'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
@@ -203,6 +204,7 @@ const props = defineProps<{
 // Get stores
 const preferencesStore = usePreferencesStore()
 const editorStore = useEditorStore()
+const commentsStore = useCommentsStore()
 const projectStore = useProjectStore()
 
 // Use storeToRefs to extract reactive properties from the stores
@@ -265,6 +267,30 @@ const resolveEditorFont = (family: string): string =>
 const resolveCodeFont = (family: string): string => `${family}, ${DEFAULT_CODE_FONT_FAMILY}`
 const selectionChange = ref<unknown>(null)
 const editor = ref<MuyaInstance>(null)
+const getCommentSelection = (): {
+  text: string
+  markdown: string
+  startOffset: number
+  endOffset: number
+} | null => {
+  if (!editor.value) return null
+  const sel = editor.value.getSelection()
+  if (!sel || sel.isCollapsed) return null
+  const text = document.getSelection()?.toString() ?? ''
+  if (!text.trim()) return null
+  const markdown = editor.value.getMarkdown()
+  const startOffset = markdown.indexOf(text)
+  if (startOffset < 0) return null
+  return {
+    text,
+    markdown,
+    startOffset,
+    endOffset: startOffset + text.length
+  }
+}
+const handleCommentsGetSelection = (cb: (s: unknown) => void): void => {
+  cb(getCommentSelection())
+}
 const isShowClose = ref(false)
 const dialogTableVisible = ref(false)
 const imageViewerVisible = ref<boolean | null>(null)
@@ -1795,6 +1821,8 @@ onMounted(() => {
   // `file-loaded` / `setMarkdownToEditor` runs for it — seed its TOC here.
   editorStore.UPDATE_TOC(muya.getTOC())
 
+  bus.on('comments:get-selection', handleCommentsGetSelection)
+
   // Seed the save-tracking baseline for the mount-loaded document (from the
   // engine's OWN serialization, same reason as setMarkdownToEditor). Without
   // this the allocator is created lazily on the first `json-change` — i.e.
@@ -1884,6 +1912,7 @@ onMounted(() => {
       toc: editor.value.getTOC(),
       blocks: editor.value.getState()
     })
+    commentsStore.followMarkdown(id, markdown)
   })
 
   // The engine does not emit `scroll`; listen on the scroll container directly
@@ -2007,6 +2036,7 @@ onBeforeUnmount(() => {
   bus.off('open-command-spellchecker-switch-language', openSpellcheckerLanguageCommand)
   bus.off('replace-misspelling', replaceMisspelling)
   bus.off('language-changed', handleLanguageChanged)
+  bus.off('comments:get-selection', handleCommentsGetSelection)
 
   document.removeEventListener('keyup', keyup)
 

@@ -20,6 +20,7 @@ import { usePreferencesStore } from './preferences'
 import { useProjectStore } from './project'
 import { useLayoutStore } from './layout'
 import { useMainStore } from '.'
+import { useCommentsStore, tryPersistForPath } from './comments'
 import { t } from '../i18n'
 import { debouncedSendBufferedState, sendBufferedState } from './bufferedState'
 import type {
@@ -571,7 +572,7 @@ export const useEditorStore = defineStore('editor', {
     },
 
     LISTEN_FOR_SET_PATHNAME(): void {
-      window.electron.ipcRenderer.on('mt::set-pathname', (_, fileInfo) => {
+      window.electron.ipcRenderer.on('mt::set-pathname', async (_, fileInfo) => {
         const { tabs } = this
         const { pathname, id } = fileInfo
         const tab = tabs.find((f) => f.id === id)
@@ -595,12 +596,27 @@ export const useEditorStore = defineStore('editor', {
           window.DIRNAME = window.path.dirname(pathname)
         }
         if (tab) {
+          const oldPath = tab.pathname
           Object.assign(tab, { filename, pathname, isSaved: true })
+          debouncedSendBufferedState()
+          const commentsStore = useCommentsStore()
+          const persisted = await tryPersistForPath(tab.id, pathname)
+          if (!persisted) {
+            tab.isSaved = false
+            notice.notify({
+              title: t('notifications.commentsSaveFailed'),
+              type: 'error',
+              time: 10000,
+              showConfirm: false
+            })
+          } else if (oldPath && oldPath !== pathname) {
+            await window.electron.ipcRenderer.invoke('mt::comments::remove', oldPath)
+          }
           debouncedSendBufferedState()
         }
       })
 
-      window.electron.ipcRenderer.on('mt::tab-saved', (_, tabId) => {
+      window.electron.ipcRenderer.on('mt::tab-saved', async (_, tabId) => {
         const tab = this.tabs.find((f) => f.id === tabId)
         if (tab) {
           const lastEditIndex = tab.history.lastEditIndex
@@ -615,6 +631,18 @@ export const useEditorStore = defineStore('editor', {
             }
           }
           tab.isSaved = true
+          if (tab.pathname) {
+            const persisted = await tryPersistForPath(tab.id, tab.pathname)
+            if (!persisted) {
+              tab.isSaved = false
+              notice.notify({
+                title: t('notifications.commentsSaveFailed'),
+                type: 'error',
+                time: 10000,
+                showConfirm: false
+              })
+            }
+          }
           debouncedSendBufferedState()
         }
       })
@@ -849,6 +877,7 @@ export const useEditorStore = defineStore('editor', {
       }
 
       this.UPDATE_LINE_ENDING_MENU()
+      useCommentsStore().switchTab(currentFile.id)
       if (didUpdateCurrentFile) {
         debouncedSendBufferedState()
       }
@@ -1000,6 +1029,7 @@ export const useEditorStore = defineStore('editor', {
     },
 
     FORCE_CLOSE_TAB(file: IFileState): void {
+      useCommentsStore().unloadTab(file.id)
       const { tabs, currentFile } = this
       const index = tabs.findIndex((t) => t.id === file.id)
       if (index > -1) {
@@ -1323,14 +1353,29 @@ export const useEditorStore = defineStore('editor', {
         )
       )
       const { id, cursor } = docState
+      const commentsStore = useCommentsStore()
+      const loadComments = (): void => {
+        void commentsStore
+          .loadForTab(id, pathname ?? '', markdown)
+          .catch(() => {
+            notice.notify({
+              title: t('notifications.commentsUnreadable'),
+              type: 'warning',
+              time: 10000,
+              showConfirm: false
+            })
+          })
+      }
 
       if (selected) {
         this.UPDATE_CURRENT_FILE(docState)
         bus.emit('file-loaded', { id, markdown, cursor })
+        loadComments()
       } else {
         this.tabs.push(docState)
         this.updateTabIdToIndex()
         debouncedSendBufferedState()
+        loadComments()
       }
 
       if (isMixedLineEndings) {
