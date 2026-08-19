@@ -308,6 +308,11 @@
     "type": "boolean",
     "default": true
   },
+  "commentAuthorName": {
+    "description": "General--Display name used on comments. Empty uses the OS username.",
+    "type": "string",
+    "default": ""
+  },
   "darkModeTheme": {
     "description": "Theme--Theme to use when system is in dark mode.",
     "type": "string",

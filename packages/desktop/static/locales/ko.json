@@ -50,7 +50,8 @@
       "screenshot": "스크린샷",
       "lineEnding": "줄 끝",
       "lineEndingCrlf": "CRLF(Windows)",
-      "lineEndingLf": "LF(Linux/Mac)"
+      "lineEndingLf": "LF(Linux/Mac)",
+      "newComment": "New Comment"
     },
     "paragraph": {
       "title": "단락",
@@ -119,7 +120,8 @@
       "toggleTableOfContents": "목차 토글",
       "reloadImages": "이미지 새로고침",
       "showDeveloperTools": "개발자 도구 보기",
-      "reloadWindow": "창 새로고침"
+      "reloadWindow": "창 새로고침",
+      "toggleComments": "Toggle Comments"
     },
     "format": {
       "format": "서식",
@@ -208,7 +210,8 @@
       "rename": "이름 바꾸기",
       "copyPath": "경로 복사",
       "showInFolder": "폴더에서 보기"
-    }
+    },
+    "newComment": "New Comment"
   },
   "search": {
     "searchPlaceholder": "검색",
@@ -500,6 +503,11 @@
           "portuguese": "Português",
           "turkish": "Türkçe"
         }
+      },
+      "comments": {
+        "title": "Comments",
+        "authorName": "Comment display name",
+        "authorNameNotes": "Leave empty to use your system username"
       }
     },
     "editor": {
@@ -779,7 +787,8 @@
       "findPrevious": "이전 찾기",
       "replace": "바꾸기",
       "findInFolder": "폴더에서 찾기",
-      "screenshot": "스크린샷"
+      "screenshot": "스크린샷",
+      "newComment": "New Comment"
     },
     "paragraph": {
       "heading1": "제목 1",
@@ -845,7 +854,8 @@
       "reloadImages": "이미지 새로고침",
       "textDirection": "텍스트 방향",
       "actualSize": "실제 크기",
-      "devToggleDeveloperTools": "개발자 도구 전환"
+      "devToggleDeveloperTools": "개발자 도구 전환",
+      "toggleComments": "Toggle Comments"
     },
     "tabs": {
       "cycleForward": "앞으로 순환",
@@ -909,7 +919,9 @@
   },
   "notifications": {
     "defaultMessage": "기본 메시지",
-    "defaultTitle": "알림"
+    "defaultTitle": "알림",
+    "commentsUnreadable": "Could not read comments file. The sidecar was left unchanged.",
+    "commentsSaveFailed": "Markdown saved, but comments could not be written."
   },
   "store": {
     "editor": {
@@ -961,5 +973,18 @@
       "switchError": "맞춤법 검사 전환 오류",
       "title": "맞춤법 검사"
     }
+  },
+  "comments": {
+    "title": "Comments",
+    "open": "Open",
+    "resolved": "Resolved",
+    "empty": "Select text, then New Comment",
+    "reply": "Reply",
+    "resolve": "Resolve",
+    "reopen": "Reopen",
+    "delete": "Delete",
+    "deleteConfirm": "Delete this comment and its replies?",
+    "orphaned": "Original text is gone",
+    "newComment": "New Comment"
   }
 }

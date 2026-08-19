@@ -55,6 +55,12 @@ export const toggleSidebar = (win: Win): void => {
   toggleLayout(win, 'showSideBar')
 }
 
+export const toggleCommentsPane = (win: Win): void => {
+  if (win && win.webContents) {
+    win.webContents.send('mt::toggle-comments-pane')
+  }
+}
+
 export const toggleTabBar = (win: Win): void => {
   toggleLayout(win, 'showTabBar')
 }
@@ -85,6 +91,7 @@ export const loadViewCommands = (commandManager: CommandManager): void => {
   commandManager.add(COMMANDS.VIEW_FORCE_RELOAD_IMAGES, reloadImageCache)
   commandManager.add(COMMANDS.VIEW_SOURCE_CODE_MODE, toggleSourceCodeMode)
   commandManager.add(COMMANDS.VIEW_TOGGLE_SIDEBAR, toggleSidebar)
+  commandManager.add(COMMANDS.VIEW_TOGGLE_COMMENTS, toggleCommentsPane)
   commandManager.add(COMMANDS.VIEW_TOGGLE_TABBAR, toggleTabBar)
   commandManager.add(COMMANDS.VIEW_TOGGLE_TOC, showTableOfContents)
   commandManager.add(COMMANDS.VIEW_TYPEWRITER_MODE, toggleTypewriterMode)
@@ -123,6 +130,9 @@ export const viewLayoutChanged = (
         break
       case 'showTabBar':
         changeMenuByName('tabBarMenuItem', value)
+        break
+      case 'showCommentsPane':
+        changeMenuByName('commentsPaneMenuItem', value)
         break
       case 'sourceCode':
         changeMenuByName('sourceCodeModeMenuItem', !!value)

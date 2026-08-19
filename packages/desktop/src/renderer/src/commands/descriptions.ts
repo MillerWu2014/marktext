@@ -75,6 +75,7 @@ const COMMAND_KEY_MAP: Record<string, string> = {
   'edit.find-previous': 'commands.edit.findPrevious',
   'edit.replace': 'commands.edit.replace',
   'edit.find-in-folder': 'commands.edit.findInFolder',
+  'edit.new-comment': 'commands.edit.newComment',
 
   // Other editing features
   'edit.screenshot': 'commands.edit.screenshot',
@@ -161,6 +162,7 @@ const COMMAND_KEY_MAP: Record<string, string> = {
   // ============================================
   // UI toggles
   'view.toggle-sidebar': 'commands.view.toggleSidebar',
+  'view.toggle-comments': 'commands.view.toggleComments',
   'view.toggle-tabbar': 'commands.view.toggleTabbar',
   'view.toggle-toc': 'commands.view.toggleToc',
 

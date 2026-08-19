@@ -59,6 +59,16 @@ export default function(keybindings: Keybindings): MenuItemConstructorOptions {
       }
     },
     {
+      label: t('menu.view.toggleComments'),
+      id: 'commentsPaneMenuItem',
+      accelerator: keybindings.getAccelerator('view.toggle-comments') ?? undefined,
+      type: 'checkbox',
+      checked: false,
+      click(_item, focusedWindow) {
+        actions.toggleCommentsPane(focusedWindow as BrowserWindow | undefined)
+      }
+    },
+    {
       label: t('menu.view.toggleTabbar'),
       id: 'tabBarMenuItem',
       accelerator: keybindings.getAccelerator('view.toggle-tabbar') ?? undefined,

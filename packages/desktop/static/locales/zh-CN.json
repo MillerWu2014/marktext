@@ -50,7 +50,8 @@
       "screenshot": "截图",
       "lineEnding": "行结束符",
       "lineEndingCrlf": "CRLF (Windows)",
-      "lineEndingLf": "LF (Unix/macOS)"
+      "lineEndingLf": "LF (Unix/macOS)",
+      "newComment": "新建评论"
     },
     "paragraph": {
       "title": "段落",
@@ -119,7 +120,8 @@
       "toggleTableOfContents": "切换目录",
       "reloadImages": "重新加载图片",
       "showDeveloperTools": "显示开发者工具",
-      "reloadWindow": "重新加载窗口"
+      "reloadWindow": "重新加载窗口",
+      "toggleComments": "切换评论面板"
     },
     "format": {
       "format": "格式",
@@ -208,7 +210,8 @@
       "rename": "重命名",
       "copyPath": "复制路径",
       "showInFolder": "在文件夹中显示"
-    }
+    },
+    "newComment": "新建评论"
   },
   "search": {
     "searchPlaceholder": "搜索",
@@ -500,6 +503,11 @@
           "portuguese": "Português",
           "turkish": "Türkçe"
         }
+      },
+      "comments": {
+        "title": "评论",
+        "authorName": "评论显示名称",
+        "authorNameNotes": "留空则使用系统用户名"
       }
     },
     "editor": {
@@ -779,7 +787,8 @@
       "findPrevious": "查找上一个",
       "replace": "替换",
       "findInFolder": "在文件夹中查找",
-      "screenshot": "截图"
+      "screenshot": "截图",
+      "newComment": "新建评论"
     },
     "paragraph": {
       "heading1": "标题 1",
@@ -845,7 +854,8 @@
       "devToggleDeveloperTools": "切换开发者工具",
       "devReload": "开发者重载",
       "reloadImages": "重新加载图片",
-      "textDirection": "文本方向"
+      "textDirection": "文本方向",
+      "toggleComments": "切换评论面板"
     },
     "tabs": {
       "cycleForward": "向前循环",
@@ -909,7 +919,9 @@
   },
   "notifications": {
     "defaultMessage": "默认消息",
-    "defaultTitle": "通知"
+    "defaultTitle": "通知",
+    "commentsUnreadable": "无法读取评论文件。旁注文件未更改。",
+    "commentsSaveFailed": "Markdown 已保存，但评论无法写入。"
   },
   "store": {
     "editor": {
@@ -961,5 +973,18 @@
       "languageMissing": "拼写检查语言缺失",
       "switchError": "拼写检查切换错误"
     }
+  },
+  "comments": {
+    "title": "评论",
+    "open": "打开",
+    "resolved": "已解决",
+    "empty": "选择文本，然后点击新建评论",
+    "reply": "回复",
+    "resolve": "解决",
+    "reopen": "重新打开",
+    "delete": "删除",
+    "deleteConfirm": "删除此评论及其回复？",
+    "orphaned": "原始文本已不存在",
+    "newComment": "新建评论"
   }
 }

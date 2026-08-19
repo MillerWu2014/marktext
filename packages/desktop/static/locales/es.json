@@ -50,7 +50,8 @@
       "screenshot": "Captura de Pantalla",
       "lineEnding": "Final de Línea",
       "lineEndingCrlf": "CRLF(Windows)",
-      "lineEndingLf": "LF(Linux/Mac)"
+      "lineEndingLf": "LF(Linux/Mac)",
+      "newComment": "New Comment"
     },
     "paragraph": {
       "title": "Párrafo",
@@ -119,7 +120,8 @@
       "toggleTableOfContents": "Alternar Tabla de Contenidos",
       "reloadImages": "Recargar Imágenes",
       "showDeveloperTools": "Mostrar Herramientas de Desarrollador",
-      "reloadWindow": "Recargar Ventana"
+      "reloadWindow": "Recargar Ventana",
+      "toggleComments": "Toggle Comments"
     },
     "format": {
       "format": "Formato",
@@ -208,7 +210,8 @@
       "rename": "Renombrar",
       "copyPath": "Copiar ruta",
       "showInFolder": "Mostrar en carpeta"
-    }
+    },
+    "newComment": "New Comment"
   },
   "search": {
     "searchPlaceholder": "Buscar",
@@ -500,6 +503,11 @@
           "portuguese": "Português",
           "turkish": "Türkçe"
         }
+      },
+      "comments": {
+        "title": "Comments",
+        "authorName": "Comment display name",
+        "authorNameNotes": "Leave empty to use your system username"
       }
     },
     "editor": {
@@ -779,7 +787,8 @@
       "findPrevious": "Buscar Anterior",
       "replace": "Reemplazar",
       "findInFolder": "Buscar en Carpeta",
-      "screenshot": "Captura de Pantalla"
+      "screenshot": "Captura de Pantalla",
+      "newComment": "New Comment"
     },
     "paragraph": {
       "heading1": "Encabezado 1",
@@ -845,7 +854,8 @@
       "reloadImages": "Recargar Imágenes",
       "textDirection": "Dirección del Texto",
       "actualSize": "Tamaño real",
-      "devToggleDeveloperTools": "Alternar herramientas de desarrollador"
+      "devToggleDeveloperTools": "Alternar herramientas de desarrollador",
+      "toggleComments": "Toggle Comments"
     },
     "tabs": {
       "cycleForward": "Ciclar Adelante",
@@ -909,7 +919,9 @@
   },
   "notifications": {
     "defaultMessage": "Mensaje predeterminado",
-    "defaultTitle": "Notificación"
+    "defaultTitle": "Notificación",
+    "commentsUnreadable": "Could not read comments file. The sidecar was left unchanged.",
+    "commentsSaveFailed": "Markdown saved, but comments could not be written."
   },
   "store": {
     "editor": {
@@ -961,5 +973,18 @@
       "switchError": "Error del corrector ortográfico para {languageCode}, {error}",
       "title": "Corrector ortográfico"
     }
+  },
+  "comments": {
+    "title": "Comments",
+    "open": "Open",
+    "resolved": "Resolved",
+    "empty": "Select text, then New Comment",
+    "reply": "Reply",
+    "resolve": "Resolve",
+    "reopen": "Reopen",
+    "delete": "Delete",
+    "deleteConfirm": "Delete this comment and its replies?",
+    "orphaned": "Original text is gone",
+    "newComment": "New Comment"
   }
 }

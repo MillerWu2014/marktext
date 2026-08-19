@@ -208,6 +208,28 @@ onMounted(async () => {
 
   setupDragDropHandler()
 
+  const dispatchCommentsPaneMenu = (): void => {
+    const { windowId } = window.marktext?.env ?? {}
+    window.electron.ipcRenderer.send('mt::view-layout-changed', Number(windowId), {
+      showCommentsPane: layoutStore.showCommentsPane
+    })
+  }
+
+  window.electron.ipcRenderer.on('mt::editor-new-comment', () => {
+    layoutStore.SET_COMMENTS_PANE(true)
+  })
+  window.electron.ipcRenderer.on('mt::toggle-comments-pane', () => {
+    layoutStore.TOGGLE_COMMENTS_PANE()
+    dispatchCommentsPaneMenu()
+  })
+  bus.on('edit:new-comment', () => {
+    layoutStore.SET_COMMENTS_PANE(true)
+  })
+  bus.on('view:toggle-comments', () => {
+    layoutStore.TOGGLE_COMMENTS_PANE()
+    dispatchCommentsPaneMenu()
+  })
+
   nextTick(() => {
     // `initialState` from bootstrap carries nullable URL params (string|null);
     // `addStyles` requires non-null `theme` / `codeFontFamily` strings.

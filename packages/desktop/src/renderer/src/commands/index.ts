@@ -235,6 +235,12 @@ const commands: CommandDescriptor[] = [
       bus.emit('mt::editor-edit-action', 'findInFolder')
     }
   },
+  {
+    id: 'edit.new-comment',
+    execute: async() => {
+      bus.emit('edit:new-comment')
+    }
+  },
 
   // --------------------------------------------------------------------------
   // Paragraph
@@ -603,6 +609,12 @@ const commands: CommandDescriptor[] = [
     id: 'view.toggle-sidebar',
     execute: async() => {
       bus.emit('view:toggle-layout-entry', 'showSideBar')
+    }
+  },
+  {
+    id: 'view.toggle-comments',
+    execute: async() => {
+      bus.emit('view:toggle-comments')
     }
   },
   {

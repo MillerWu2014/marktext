@@ -33,6 +33,7 @@ export interface PreferencesState {
   fileSortOrder: FileSortOrder | string
   startUpAction: StartUpAction | string
   restoreLayoutState: boolean
+  commentAuthorName: string
   defaultDirectoryToOpen: string
   lastOpenedFolder: string
   treePathExcludePatterns: string[]
@@ -151,6 +152,7 @@ export const usePreferencesStore = defineStore('preferences', {
     fileSortOrder: 'asc',
     startUpAction: 'restoreAll',
     restoreLayoutState: true,
+    commentAuthorName: '',
     defaultDirectoryToOpen: '',
     lastOpenedFolder: '',
     treePathExcludePatterns: [],

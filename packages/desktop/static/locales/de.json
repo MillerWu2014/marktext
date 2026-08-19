@@ -50,7 +50,8 @@
       "screenshot": "Screenshot",
       "lineEnding": "Zeilenendezeichen",
       "lineEndingCrlf": "CRLF (Windows)",
-      "lineEndingLf": "LF (Linux/Mac)"
+      "lineEndingLf": "LF (Linux/Mac)",
+      "newComment": "New Comment"
     },
     "paragraph": {
       "title": "Absatz",
@@ -119,7 +120,8 @@
       "toggleTableOfContents": "Inhaltsverzeichnis umschalten",
       "reloadImages": "Bilder neu laden",
       "showDeveloperTools": "Entwicklertools anzeigen",
-      "reloadWindow": "Fenster neu laden"
+      "reloadWindow": "Fenster neu laden",
+      "toggleComments": "Toggle Comments"
     },
     "format": {
       "format": "Format",
@@ -208,7 +210,8 @@
       "rename": "Umbenennen",
       "copyPath": "Pfad kopieren",
       "showInFolder": "Im Ordner anzeigen"
-    }
+    },
+    "newComment": "New Comment"
   },
   "search": {
     "searchPlaceholder": "Suchen",
@@ -500,6 +503,11 @@
           "portuguese": "Português",
           "turkish": "Türkçe"
         }
+      },
+      "comments": {
+        "title": "Comments",
+        "authorName": "Comment display name",
+        "authorNameNotes": "Leave empty to use your system username"
       }
     },
     "editor": {
@@ -779,7 +787,8 @@
       "findPrevious": "Rückwärts suchen",
       "replace": "Ersetzen",
       "findInFolder": "Im Ordner suchen",
-      "screenshot": "Screenshot"
+      "screenshot": "Screenshot",
+      "newComment": "New Comment"
     },
     "paragraph": {
       "heading1": "Überschrift 1",
@@ -845,7 +854,8 @@
       "reloadImages": "Bilder neu laden",
       "textDirection": "Textrichtung",
       "actualSize": "Tatsächliche Größe",
-      "devToggleDeveloperTools": "Entwicklertools umschalten"
+      "devToggleDeveloperTools": "Entwicklertools umschalten",
+      "toggleComments": "Toggle Comments"
     },
     "tabs": {
       "cycleForward": "Vorwärts wechseln",
@@ -909,7 +919,9 @@
   },
   "notifications": {
     "defaultMessage": "Standardnachricht",
-    "defaultTitle": "Benachrichtigung"
+    "defaultTitle": "Benachrichtigung",
+    "commentsUnreadable": "Could not read comments file. The sidecar was left unchanged.",
+    "commentsSaveFailed": "Markdown saved, but comments could not be written."
   },
   "store": {
     "editor": {
@@ -961,5 +973,18 @@
       "switchError": "Rechtschreibprüfung-Wechselfehler für {languageCode}, {error}",
       "title": "Rechtschreibprüfung"
     }
+  },
+  "comments": {
+    "title": "Comments",
+    "open": "Open",
+    "resolved": "Resolved",
+    "empty": "Select text, then New Comment",
+    "reply": "Reply",
+    "resolve": "Resolve",
+    "reopen": "Reopen",
+    "delete": "Delete",
+    "deleteConfirm": "Delete this comment and its replies?",
+    "orphaned": "Original text is gone",
+    "newComment": "New Comment"
   }
 }

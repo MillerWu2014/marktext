@@ -50,7 +50,8 @@
       "screenshot": "Screenshot",
       "lineEnding": "Line Ending",
       "lineEndingCrlf": "CRLF(Windows)",
-      "lineEndingLf": "LF(Linux/Mac)"
+      "lineEndingLf": "LF(Linux/Mac)",
+      "newComment": "New Comment"
     },
     "paragraph": {
       "title": "Paragraph",
@@ -119,7 +120,8 @@
       "toggleTableOfContents": "Toggle Table of Contents",
       "reloadImages": "Reload Images",
       "showDeveloperTools": "Show Developer Tools",
-      "reloadWindow": "Reload Window"
+      "reloadWindow": "Reload Window",
+      "toggleComments": "Toggle Comments"
     },
     "format": {
       "format": "Format",
@@ -208,7 +210,8 @@
       "rename": "Rename",
       "copyPath": "Copy path",
       "showInFolder": "Show in folder"
-    }
+    },
+    "newComment": "New Comment"
   },
   "search": {
     "searchPlaceholder": "Search",
@@ -500,6 +503,11 @@
           "portuguese": "Português",
           "turkish": "Türkçe"
         }
+      },
+      "comments": {
+        "title": "Comments",
+        "authorName": "Comment display name",
+        "authorNameNotes": "Leave empty to use your system username"
       }
     },
     "editor": {
@@ -779,7 +787,8 @@
       "findPrevious": "Find Previous",
       "replace": "Replace",
       "findInFolder": "Find in Folder",
-      "screenshot": "Screenshot"
+      "screenshot": "Screenshot",
+      "newComment": "New Comment"
     },
     "paragraph": {
       "heading1": "Heading 1",
@@ -845,7 +854,8 @@
       "reloadImages": "Reload Images",
       "textDirection": "Text Direction",
       "actualSize": "Actual Size",
-      "devToggleDeveloperTools": "Toggle Developer Tools"
+      "devToggleDeveloperTools": "Toggle Developer Tools",
+      "toggleComments": "Toggle Comments"
     },
     "tabs": {
       "cycleForward": "Cycle Forward",
@@ -909,7 +919,9 @@
   },
   "notifications": {
     "defaultMessage": "Default message",
-    "defaultTitle": "Notification"
+    "defaultTitle": "Notification",
+    "commentsUnreadable": "Could not read comments file. The sidecar was left unchanged.",
+    "commentsSaveFailed": "Markdown saved, but comments could not be written."
   },
   "store": {
     "editor": {
@@ -961,5 +973,18 @@
       "switchError": "Spellcheck switch error for {languageCode}, {error}",
       "title": "Spellcheck"
     }
+  },
+  "comments": {
+    "title": "Comments",
+    "open": "Open",
+    "resolved": "Resolved",
+    "empty": "Select text, then New Comment",
+    "reply": "Reply",
+    "resolve": "Resolve",
+    "reopen": "Reopen",
+    "delete": "Delete",
+    "deleteConfirm": "Delete this comment and its replies?",
+    "orphaned": "Original text is gone",
+    "newComment": "New Comment"
   }
 }

@@ -167,6 +167,22 @@
     <compound>
       <template #head>
         <h6 class="title">
+          {{ t('preferences.general.comments.title') }}
+        </h6>
+      </template>
+      <template #children>
+        <text-box
+          :description="t('preferences.general.comments.authorName')"
+          :notes="t('preferences.general.comments.authorNameNotes')"
+          :input="commentAuthorName"
+          :on-change="(value) => onSelectChange('commentAuthorName', value)"
+        />
+      </template>
+    </compound>
+
+    <compound>
+      <template #head>
+        <h6 class="title">
           {{ t('preferences.general.misc.title') }}
         </h6>
       </template>
@@ -220,7 +236,8 @@ const {
   fileSortBy,
   fileSortOrder,
   language,
-  openedFilesInSidebar
+  openedFilesInSidebar,
+  commentAuthorName
 } = storeToRefs(preferenceStore)
 
 const startUpAction = computed<string>({

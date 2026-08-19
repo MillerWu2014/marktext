@@ -50,7 +50,8 @@
       "screenshot": "Ekran Görüntüsü",
       "lineEnding": "Satır Sonu",
       "lineEndingCrlf": "CRLF(Windows)",
-      "lineEndingLf": "LF(Linux/Mac)"
+      "lineEndingLf": "LF(Linux/Mac)",
+      "newComment": "New Comment"
     },
     "paragraph": {
       "title": "Paragraf",
@@ -119,7 +120,8 @@
       "toggleTableOfContents": "İçindekileri Aç/Kapat",
       "reloadImages": "Görselleri Yeniden Yükle",
       "showDeveloperTools": "Geliştirici Araçlarını Göster",
-      "reloadWindow": "Pencereyi Yeniden Yükle"
+      "reloadWindow": "Pencereyi Yeniden Yükle",
+      "toggleComments": "Toggle Comments"
     },
     "format": {
       "format": "Biçim",
@@ -208,7 +210,8 @@
       "rename": "Yeniden Adlandır",
       "copyPath": "Yolu kopyala",
       "showInFolder": "Klasörde göster"
-    }
+    },
+    "newComment": "New Comment"
   },
   "search": {
     "searchPlaceholder": "Ara",
@@ -500,6 +503,11 @@
           "portuguese": "Português",
           "turkish": "Türkçe"
         }
+      },
+      "comments": {
+        "title": "Comments",
+        "authorName": "Comment display name",
+        "authorNameNotes": "Leave empty to use your system username"
       }
     },
     "editor": {
@@ -779,7 +787,8 @@
       "findPrevious": "Öncekini Bul",
       "replace": "Değiştir",
       "findInFolder": "Klasörde Bul",
-      "screenshot": "Ekran Görüntüsü"
+      "screenshot": "Ekran Görüntüsü",
+      "newComment": "New Comment"
     },
     "paragraph": {
       "heading1": "Başlık 1",
@@ -845,7 +854,8 @@
       "reloadImages": "Görselleri Yeniden Yükle",
       "textDirection": "Metin Yönü",
       "actualSize": "Gerçek Boyut",
-      "devToggleDeveloperTools": "Geliştirici Araçlarını Aç/Kapat"
+      "devToggleDeveloperTools": "Geliştirici Araçlarını Aç/Kapat",
+      "toggleComments": "Toggle Comments"
     },
     "tabs": {
       "cycleForward": "İleri Geç",
@@ -909,7 +919,9 @@
   },
   "notifications": {
     "defaultMessage": "Varsayılan mesaj",
-    "defaultTitle": "Bildirim"
+    "defaultTitle": "Bildirim",
+    "commentsUnreadable": "Could not read comments file. The sidecar was left unchanged.",
+    "commentsSaveFailed": "Markdown saved, but comments could not be written."
   },
   "store": {
     "editor": {
@@ -961,5 +973,18 @@
       "switchError": "{languageCode} için yazım denetimi değiştirme hatası, {error}",
       "title": "Yazım Denetimi"
     }
+  },
+  "comments": {
+    "title": "Comments",
+    "open": "Open",
+    "resolved": "Resolved",
+    "empty": "Select text, then New Comment",
+    "reply": "Reply",
+    "resolve": "Resolve",
+    "reopen": "Reopen",
+    "delete": "Delete",
+    "deleteConfirm": "Delete this comment and its replies?",
+    "orphaned": "Original text is gone",
+    "newComment": "New Comment"
   }
 }

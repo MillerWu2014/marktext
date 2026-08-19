@@ -137,6 +137,13 @@ export default function(keybindings: Keybindings): MenuItemConstructorOptions {
         }
       },
       {
+        label: t('menu.edit.newComment'),
+        accelerator: keybindings.getAccelerator(COMMANDS.EDIT_NEW_COMMENT) ?? undefined,
+        click(_menuItem, browserWindow) {
+          actions.editorNewComment(browserWindow as BrowserWindow | undefined)
+        }
+      },
+      {
         type: 'separator'
       },
       {

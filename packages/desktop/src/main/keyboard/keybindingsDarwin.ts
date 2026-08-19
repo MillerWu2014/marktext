@@ -44,6 +44,7 @@ const keybindings: Map<string, string> = new Map([
   ['edit.find-previous', 'Cmd+Shift+G'],
   ['edit.replace', 'Command+Option+F'],
   ['edit.find-in-folder', 'Shift+Command+F'],
+  ['edit.new-comment', 'Command+Alt+M'],
   ['edit.screenshot', 'Command+Option+A'], // macOS only
 
   // Paragraph menu
@@ -95,6 +96,7 @@ const keybindings: Map<string, string> = new Map([
   ['view.typewriter-mode', 'Command+Option+T'],
   ['view.focus-mode', 'Command+Shift+J'],
   ['view.toggle-sidebar', 'Command+J'],
+  ['view.toggle-comments', 'Command+Shift+Alt+C'],
   ['view.toggle-toc', 'Command+K'],
   ['view.toggle-tabbar', 'Command+Option+B'],
   ['view.toggle-dev-tools', 'Command+Option+I'],

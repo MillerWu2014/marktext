@@ -93,6 +93,12 @@ export const editorReplace = (win: Win): void => {
   edit(win, 'replace')
 }
 
+export const editorNewComment = (win: Win): void => {
+  if (win && win.webContents) {
+    win.webContents.send('mt::editor-new-comment')
+  }
+}
+
 export const findInFolder = (win: Win): void => {
   edit(win, 'findInFolder')
 }
@@ -145,6 +151,7 @@ export const loadEditCommands = (commandManager: CommandManager): void => {
   commandManager.add(COMMANDS.EDIT_FIND_IN_FOLDER, findInFolder)
   commandManager.add(COMMANDS.EDIT_FIND_NEXT, editorFindNext)
   commandManager.add(COMMANDS.EDIT_FIND_PREVIOUS, editorFindPrevious)
+  commandManager.add(COMMANDS.EDIT_NEW_COMMENT, editorNewComment)
   commandManager.add(COMMANDS.EDIT_PASTE, nativePaste)
   commandManager.add(COMMANDS.EDIT_PASTE_AS_PLAINTEXT, editorPasteAsPlainText)
   commandManager.add(COMMANDS.EDIT_REDO, editorRedo)

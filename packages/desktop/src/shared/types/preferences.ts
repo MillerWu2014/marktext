@@ -17,6 +17,7 @@ export interface IUserPreferences {
   fileSortBy?: string
   fileSortOrder?: string
   startUpAction?: string
+  commentAuthorName?: string
   defaultDirectoryToOpen?: string
   language?: string
   editorFontFamily?: string
