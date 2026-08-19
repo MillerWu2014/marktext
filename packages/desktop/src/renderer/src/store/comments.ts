@@ -2,8 +2,8 @@ import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { bindComments, extractQuoteContext, followComment } from 'common/comments'
 import type { CommentStatus, ICommentThread } from '@shared/types/comments'
-import { useEditorStore } from './editor'
-import { debouncedSendBufferedState } from './bufferedState'
+import bus from '../bus'
+import { applyCommentsDirtyToTab } from './commentsDirty'
 
 interface DraftSelection {
   text: string
@@ -25,18 +25,22 @@ const sortThreads = (threads: ICommentThread[]): ICommentThread[] =>
     return sa - sb
   })
 
+interface CommentsDirtyEditorStore {
+  tabs: Array<{ id: string; isSaved?: boolean }>
+  currentFile?: { id: string; isSaved?: boolean } | null
+}
+
 export const syncCommentsDirty = (
-  editorStore: ReturnType<typeof useEditorStore>,
+  editorStore: CommentsDirtyEditorStore,
   tabId: string,
   dirty: boolean
 ): void => {
   if (!dirty) return
   const tab = editorStore.tabs.find((t) => t.id === tabId)
-  if (tab) tab.isSaved = false
+  applyCommentsDirtyToTab(tab, dirty)
   if (editorStore.currentFile?.id === tabId) {
-    editorStore.currentFile.isSaved = false
+    applyCommentsDirtyToTab(editorStore.currentFile, dirty)
   }
-  debouncedSendBufferedState()
 }
 
 export const useCommentsStore = defineStore('comments', () => {
@@ -57,7 +61,7 @@ export const useCommentsStore = defineStore('comments', () => {
 
   const markDirty = (tabId: string): void => {
     dirtyTabs.value[tabId] = true
-    syncCommentsDirty(useEditorStore(), tabId, true)
+    bus.emit('comments:dirty', tabId)
   }
 
   const clearDirty = (tabId: string): void => {

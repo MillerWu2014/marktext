@@ -20,7 +20,7 @@ import { usePreferencesStore } from './preferences'
 import { useProjectStore } from './project'
 import { useLayoutStore } from './layout'
 import { useMainStore } from '.'
-import { useCommentsStore, tryPersistForPath } from './comments'
+import { useCommentsStore, tryPersistForPath, syncCommentsDirty } from './comments'
 import { t } from '../i18n'
 import { debouncedSendBufferedState, sendBufferedState } from './bufferedState'
 import type {
@@ -2145,3 +2145,8 @@ const createBufferedEditorState = (state: unknown): BufferedEditorState | null =
       : []
   }
 }
+
+bus.on('comments:dirty', (tabId: unknown) => {
+  syncCommentsDirty(useEditorStore(), String(tabId), true)
+  debouncedSendBufferedState()
+})

@@ -246,7 +246,7 @@ onMounted(async () => {
     if (!draftId) return
     layoutStore.SET_COMMENTS_PANE(true)
     commentsStore.select(draftId)
-    if (editorStore.currentFile) editorStore.currentFile.isSaved = false
+    commentsStore.markDirty(tabId)
   }
 
   window.electron.ipcRenderer.on('mt::editor-new-comment', () => {
