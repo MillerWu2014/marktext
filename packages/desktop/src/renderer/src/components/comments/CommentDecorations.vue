@@ -161,6 +161,8 @@ const handleUnderlineClick = (event: MouseEvent): void => {
 
 let scrollContainer: HTMLElement | null = null
 let scrollListener: (() => void) | null = null
+let commentsList: HTMLElement | null = null
+let commentsListScrollListener: (() => void) | null = null
 let jsonChangeListener: (() => void) | null = null
 let resizeListener: (() => void) | null = null
 let rafId: number | null = null
@@ -180,6 +182,10 @@ const attachListeners = (): void => {
   scrollListener = () => scheduleRecompute()
   scrollContainer?.addEventListener('scroll', scrollListener, { passive: true })
 
+  commentsList = document.querySelector('.comments-pane .comments-list')
+  commentsListScrollListener = () => scheduleRecompute()
+  commentsList?.addEventListener('scroll', commentsListScrollListener, { passive: true })
+
   if (props.editor?.on) {
     jsonChangeListener = () => scheduleRecompute()
     props.editor.on('json-change', jsonChangeListener)
@@ -195,6 +201,12 @@ const detachListeners = (): void => {
   }
   scrollContainer = null
   scrollListener = null
+
+  if (commentsList && commentsListScrollListener) {
+    commentsList.removeEventListener('scroll', commentsListScrollListener)
+  }
+  commentsList = null
+  commentsListScrollListener = null
 
   if (props.editor?.off && jsonChangeListener) {
     props.editor.off('json-change', jsonChangeListener)

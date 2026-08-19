@@ -300,6 +300,7 @@ const handleCommentsGetSelection = (cb: (s: unknown) => void): void => {
 }
 
 interface CommentsScrollToPayload {
+  id?: string
   startOffset: number
   endOffset: number
   quote: string
@@ -307,22 +308,43 @@ interface CommentsScrollToPayload {
 
 const handleCommentsScrollTo = (payload: unknown): void => {
   if (sourceCode.value) return
-  const { startOffset, quote } = payload as CommentsScrollToPayload
-  const id = commentsStore.selectedId
-  if (id) {
-    const rect = document.querySelector(`.comment-decorations [data-comment-id="${id}"]`)
-    rect?.scrollIntoView({ block: 'center' })
+  const { id, startOffset, quote } = payload as CommentsScrollToPayload
+
+  const tryScroll = (): boolean => {
+    const scrollId = id ?? commentsStore.selectedId
+    const el = scrollId
+      ? document.querySelector(`.comment-decorations [data-comment-id="${scrollId}"]`)
+      : null
+    if (el instanceof HTMLElement) {
+      el.scrollIntoView({ block: 'center' })
+      return true
+    }
+    return false
   }
 
-  const root =
-    (editor.value?.domNode as HTMLElement | undefined)?.querySelector('.mu-editor') ??
-    (editor.value?.domNode as Element | undefined)
-  if (!root) return
+  const applyDomSelection = (): void => {
+    const root =
+      (editor.value?.domNode as HTMLElement | undefined)?.querySelector('.mu-editor') ??
+      (editor.value?.domNode as Element | undefined)
+    if (!root) return
 
-  const match = findQuoteDomRange(root, quote, startOffset)
-  if (match) {
-    setDomSelectionForRange(match)
+    const match = findQuoteDomRange(root, quote, startOffset)
+    if (match) {
+      setDomSelectionForRange(match)
+    }
   }
+
+  if (tryScroll()) {
+    applyDomSelection()
+    return
+  }
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      tryScroll()
+      applyDomSelection()
+    })
+  })
 }
 
 const handleEditorChromeClick = (event: MouseEvent): void => {

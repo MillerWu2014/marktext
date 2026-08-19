@@ -149,6 +149,7 @@ const handleCardClick = (): void => {
   commentsStore.select(props.thread.id)
   if (!isComposer.value) {
     bus.emit('comments:scroll-to', {
+      id: props.thread.id,
       startOffset: props.thread.startOffset,
       endOffset: props.thread.endOffset,
       quote: props.thread.quote
