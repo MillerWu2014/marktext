@@ -3,6 +3,8 @@ import { defineStore } from 'pinia'
 import bus from '../bus'
 import { usePreferencesStore } from './preferences'
 import { debouncedSendBufferedState } from './bufferedState'
+import { useCommentsStore } from './comments'
+import { useEditorStore } from './editor'
 
 interface LayoutPartial {
   rightColumn?: string
@@ -206,14 +208,10 @@ export const useLayoutStore = defineStore('layout', () => {
 
   function SET_COMMENTS_PANE(open: boolean): void {
     if (!open && showCommentsPane.value) {
-      void import('./editor').then(({ useEditorStore }) => {
-        void import('./comments').then(({ useCommentsStore }) => {
-          const tabId = useEditorStore().currentFile?.id
-          if (tabId) {
-            useCommentsStore().discardDraft(tabId)
-          }
-        })
-      })
+      const tabId = useEditorStore().currentFile?.id
+      if (tabId) {
+        useCommentsStore().discardDraft(tabId)
+      }
     }
     showCommentsPane.value = open
   }

@@ -39,7 +39,10 @@
         Resolved
       </button>
     </div>
-    <div class="comments-list">
+    <div
+      class="comments-list"
+      @click="clearSelectionOnListBackground"
+    >
       <comment-card
         v-if="draftThread && tabId"
         :thread="draftThread"
@@ -120,6 +123,12 @@ const { setFilter } = commentsStore
 
 const clearSelection = (): void => {
   commentsStore.select(null)
+}
+
+const clearSelectionOnListBackground = (event: MouseEvent): void => {
+  if (event.target === event.currentTarget) {
+    commentsStore.select(null)
+  }
 }
 
 const closePane = (): void => {

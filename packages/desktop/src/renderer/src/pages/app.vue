@@ -18,9 +18,11 @@
         class="editor-placeholder"
       />
       <recent v-if="!hasCurrentFile && init" />
-      <div class="editor-body">
+      <div
+        v-if="hasCurrentFile && init"
+        class="editor-body"
+      >
         <editor-with-tabs
-          v-if="hasCurrentFile && init"
           :markdown="markdown"
           :cursor="cursor"
           :muya-index-cursor="muyaIndexCursor"
