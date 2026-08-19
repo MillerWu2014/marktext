@@ -1,3 +1,5 @@
+import { closestHitOffset, indexesOf } from 'common/comments/bind'
+
 export interface QuoteDomRange {
   startNode: Text
   startOffset: number
@@ -40,19 +42,6 @@ const offsetToPoint = (segments: TextSegment[], offset: number): { node: Text; o
   return { node: last.node, offset: last.node.data.length }
 }
 
-const indexesOf = (haystack: string, needle: string): number[] => {
-  if (!needle) return []
-  const out: number[] = []
-  let from = 0
-  while (from <= haystack.length) {
-    const i = haystack.indexOf(needle, from)
-    if (i === -1) break
-    out.push(i)
-    from = i + Math.max(needle.length, 1)
-  }
-  return out
-}
-
 export const findQuoteDomRange = (
   root: Element,
   quote: string,
@@ -66,19 +55,8 @@ export const findQuoteDomRange = (
   const hits = indexesOf(fullText, quote)
   if (!hits.length) return null
 
-  let best = hits[0]
-  if (best === undefined) return null
-  let bestDist = Math.abs(best - hintOffset)
-  for (const hit of hits) {
-    const dist = Math.abs(hit - hintOffset)
-    if (dist <= bestDist) {
-      best = hit
-      bestDist = dist
-    }
-  }
-
-  const matchStart = best
-  const matchEnd = best + quote.length
+  const matchStart = closestHitOffset(hits, hintOffset)
+  const matchEnd = matchStart + quote.length
   const start = offsetToPoint(segments, matchStart)
   const end = offsetToPoint(segments, matchEnd)
 

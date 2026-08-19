@@ -1,0 +1,109 @@
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import {
+  findQuoteDomRange,
+  rectsForQuoteRange
+} from '@/util/commentQuoteDom'
+
+describe('findQuoteDomRange', () => {
+  it('returns null for an empty quote', () => {
+    const root = document.createElement('div')
+    root.textContent = 'hello world'
+    expect(findQuoteDomRange(root, '', 0)).toBeNull()
+  })
+
+  it('returns null when the quote is missing from the DOM', () => {
+    const root = document.createElement('div')
+    root.textContent = 'hello world'
+    expect(findQuoteDomRange(root, 'nope', 0)).toBeNull()
+  })
+
+  it('locates a unique quote inside a single text node', () => {
+    const root = document.createElement('div')
+    root.textContent = 'hello world'
+    const match = findQuoteDomRange(root, 'world', 0)
+    expect(match).not.toBeNull()
+    expect(match!.plainTextStart).toBe('hello world'.indexOf('world'))
+    expect(match!.startNode).toBe(root.firstChild)
+    expect(match!.startOffset).toBe('hello '.length)
+    expect(match!.endOffset).toBe('hello world'.length)
+  })
+
+  it('picks the duplicate quote closest to the hint offset', () => {
+    // 'ab' at 0 and 7; hint 8 is nearer the second occurrence.
+    const root = document.createElement('div')
+    root.textContent = 'ab_____ab'
+    const match = findQuoteDomRange(root, 'ab', 8)
+    expect(match!.plainTextStart).toBe(7)
+  })
+
+  it('prefers the later duplicate on a tied distance', () => {
+    // 'ab' at 0 and 4; hint 2 is equidistant from both.
+    const root = document.createElement('div')
+    root.textContent = 'abxxab'
+    const match = findQuoteDomRange(root, 'ab', 2)
+    expect(match!.plainTextStart).toBe(4)
+  })
+
+  it('spans a match across two adjacent text nodes', () => {
+    const root = document.createElement('div')
+    const first = document.createTextNode('hello ')
+    const second = document.createTextNode('world')
+    root.appendChild(first)
+    root.appendChild(second)
+
+    const match = findQuoteDomRange(root, 'lo wor', 0)
+    expect(match).not.toBeNull()
+    expect(match!.startNode).toBe(first)
+    expect(match!.startOffset).toBe(3)
+    expect(match!.endNode).toBe(second)
+    expect(match!.endOffset).toBe(3)
+  })
+})
+
+describe('rectsForQuoteRange', () => {
+  // jsdom doesn't implement layout, so Range.prototype has no getClientRects
+  // at all; stub it directly rather than spying on a non-existent method.
+  const originalGetClientRects = Range.prototype.getClientRects
+
+  afterEach(() => {
+    Range.prototype.getClientRects = originalGetClientRects
+  })
+
+  it('maps client rects into overlay-relative left/top/width/height', () => {
+    const root = document.createElement('div')
+    root.textContent = 'hello world'
+    const match = findQuoteDomRange(root, 'world', 0)!
+
+    const fakeRect = { left: 100, top: 50, width: 30, height: 16 } as DOMRect
+    Range.prototype.getClientRects = vi.fn(() => [fakeRect] as unknown as DOMRectList)
+
+    const overlay = document.createElement('div')
+    overlay.getBoundingClientRect = () => ({ left: 10, top: 20, width: 0, height: 0 }) as DOMRect
+
+    const rects = rectsForQuoteRange(match, 'c1', 6, 11, overlay)
+    expect(rects).toHaveLength(1)
+    expect(rects[0]).toMatchObject({
+      key: 'c1-0',
+      commentId: 'c1',
+      startOffset: 6,
+      endOffset: 11,
+      style: { left: '90px', top: '30px', width: '30px', height: '16px' }
+    })
+  })
+
+  it('returns one rect per client rect when a quote wraps onto multiple lines', () => {
+    const root = document.createElement('div')
+    root.textContent = 'hello world'
+    const match = findQuoteDomRange(root, 'world', 0)!
+
+    const rectA = { left: 0, top: 0, width: 10, height: 16 } as DOMRect
+    const rectB = { left: 0, top: 16, width: 20, height: 16 } as DOMRect
+    Range.prototype.getClientRects = vi.fn(() => [rectA, rectB] as unknown as DOMRectList)
+
+    const overlay = document.createElement('div')
+    overlay.getBoundingClientRect = () => ({ left: 0, top: 0, width: 0, height: 0 }) as DOMRect
+
+    const rects = rectsForQuoteRange(match, 'c1', 6, 11, overlay)
+    expect(rects.map((r) => r.key)).toEqual(['c1-0', 'c1-1'])
+  })
+})

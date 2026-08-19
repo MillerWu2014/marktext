@@ -3,7 +3,7 @@ import {
   type ICommentThread
 } from '@shared/types/comments'
 
-const indexesOf = (haystack: string, needle: string): number[] => {
+export const indexesOf = (haystack: string, needle: string): number[] => {
   if (!needle) return []
   const out: number[] = []
   let from = 0
@@ -14,6 +14,22 @@ const indexesOf = (haystack: string, needle: string): number[] => {
     from = i + Math.max(needle.length, 1)
   }
   return out
+}
+
+// Prefers the later hit on a tied distance, so re-binding after an edit favors
+// the occurrence closest to (and no earlier than necessary from) where the
+// comment last pointed.
+export const closestHitOffset = (hits: number[], hintOffset: number): number => {
+  let best = hits[0]!
+  let bestDist = Math.abs(best - hintOffset)
+  for (const hit of hits) {
+    const dist = Math.abs(hit - hintOffset)
+    if (dist <= bestDist) {
+      best = hit
+      bestDist = dist
+    }
+  }
+  return best
 }
 
 export const extractQuoteContext = (
@@ -49,20 +65,8 @@ export const bindComment = (markdown: string, comment: ICommentThread): IComment
   }
 
   const quoteHits = indexesOf(markdown, comment.quote)
-  if (quoteHits.length === 1) {
-    const start = quoteHits[0]!
-    return applyOffsets(comment, markdown, start, start + comment.quote.length)
-  }
-  if (quoteHits.length > 1) {
-    let best = quoteHits[0]!
-    let bestDist = Math.abs(best - comment.startOffset)
-    for (const hit of quoteHits) {
-      const dist = Math.abs(hit - comment.startOffset)
-      if (dist <= bestDist) {
-        best = hit
-        bestDist = dist
-      }
-    }
+  if (quoteHits.length) {
+    const best = closestHitOffset(quoteHits, comment.startOffset)
     return applyOffsets(comment, markdown, best, best + comment.quote.length)
   }
 
