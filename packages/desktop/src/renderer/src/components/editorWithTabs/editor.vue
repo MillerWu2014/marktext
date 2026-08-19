@@ -3,6 +3,7 @@
     class="editor-wrapper"
     :class="[{ typewriter: typewriter, focus: focus, source: sourceCode }]"
     :dir="textDirection"
+    @click="handleEditorChromeClick"
   >
     <div
       ref="editorRef"
@@ -73,6 +74,10 @@
       </template>
     </el-dialog>
     <editor-search v-if="!sourceCode" />
+    <comment-decorations
+      v-if="!sourceCode"
+      :editor="editor"
+    />
   </div>
 </template>
 
@@ -114,6 +119,7 @@ import {
 import { exportStyledHTML, type HeaderFooterPart } from '@/util/exportHtml'
 import { applyCursor, isIndexCursor } from '@/util/cursor'
 import EditorSearch from '../search/index.vue'
+import CommentDecorations from '../comments/CommentDecorations.vue'
 import bus from '@/bus'
 import { DEFAULT_EDITOR_FONT_FAMILY, DEFAULT_CODE_FONT_FAMILY } from '@/config'
 import notice from '@/services/notification'
@@ -129,6 +135,7 @@ import { addCommonStyle, setEditorWidth } from '@/util/theme'
 import { usePreferencesStore } from '@/store/preferences'
 import { useEditorStore } from '@/store/editor'
 import { useCommentsStore } from '@/store/comments'
+import { findQuoteDomRange, setDomSelectionForRange } from '@/util/commentQuoteDom'
 import { useProjectStore } from '@/store/project'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
@@ -290,6 +297,45 @@ const getCommentSelection = (): {
 }
 const handleCommentsGetSelection = (cb: (s: unknown) => void): void => {
   cb(getCommentSelection())
+}
+
+interface CommentsScrollToPayload {
+  startOffset: number
+  endOffset: number
+  quote: string
+}
+
+const handleCommentsScrollTo = (payload: unknown): void => {
+  if (sourceCode.value) return
+  const { startOffset, quote } = payload as CommentsScrollToPayload
+  const id = commentsStore.selectedId
+  if (id) {
+    const rect = document.querySelector(`.comment-decorations [data-comment-id="${id}"]`)
+    rect?.scrollIntoView({ block: 'center' })
+  }
+
+  const root =
+    (editor.value?.domNode as HTMLElement | undefined)?.querySelector('.mu-editor') ??
+    (editor.value?.domNode as Element | undefined)
+  if (!root) return
+
+  const match = findQuoteDomRange(root, quote, startOffset)
+  if (match) {
+    setDomSelectionForRange(match)
+  }
+}
+
+const handleEditorChromeClick = (event: MouseEvent): void => {
+  const target = event.target as Element
+  if (target.closest('.mt-comment-underline')) return
+  if (
+    target.classList.contains('editor-wrapper') ||
+    target.classList.contains('editor-component') ||
+    target.classList.contains('mu-container') ||
+    target.classList.contains('mu-editor')
+  ) {
+    commentsStore.select(null)
+  }
 }
 const isShowClose = ref(false)
 const dialogTableVisible = ref(false)
@@ -1822,6 +1868,7 @@ onMounted(() => {
   editorStore.UPDATE_TOC(muya.getTOC())
 
   bus.on('comments:get-selection', handleCommentsGetSelection)
+  bus.on('comments:scroll-to', handleCommentsScrollTo)
 
   // Seed the save-tracking baseline for the mount-loaded document (from the
   // engine's OWN serialization, same reason as setMarkdownToEditor). Without
@@ -2037,6 +2084,7 @@ onBeforeUnmount(() => {
   bus.off('replace-misspelling', replaceMisspelling)
   bus.off('language-changed', handleLanguageChanged)
   bus.off('comments:get-selection', handleCommentsGetSelection)
+  bus.off('comments:scroll-to', handleCommentsScrollTo)
 
   document.removeEventListener('keyup', keyup)
 

@@ -82,7 +82,7 @@ const dragBar = ref<HTMLDivElement | null>(null)
 const paneViewWidth = ref(280)
 
 const { showCommentsPane, commentsPaneWidth } = storeToRefs(layoutStore)
-const { filter, visibleThreads } = storeToRefs(commentsStore)
+const { filter, visibleThreads, selectedId } = storeToRefs(commentsStore)
 const { currentFile } = storeToRefs(editorStore)
 
 const tabId = computed(() => currentFile.value?.id)
@@ -114,6 +114,14 @@ watch(
   },
   { immediate: true }
 )
+
+watch(selectedId, (id) => {
+  if (!id) return
+  nextTick(() => {
+    const card = document.querySelector(`.comment-card[data-comment-id="${id}"]`)
+    card?.scrollIntoView({ block: 'nearest' })
+  })
+})
 
 watch(commentsPaneWidth, (width) => {
   paneViewWidth.value = width

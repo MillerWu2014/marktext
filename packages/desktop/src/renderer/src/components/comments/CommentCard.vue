@@ -1,6 +1,7 @@
 <template>
   <div
     class="comment-card"
+    :data-comment-id="thread.id"
     :class="{
       selected: isSelected,
       hovered: isHovered
@@ -100,6 +101,7 @@ import { computed, nextTick, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { formatRelativeTime } from 'common/comments'
 import type { ICommentThread } from '@shared/types/comments'
+import bus from '@/bus'
 import { useCommentsStore } from '@/store/comments'
 
 const props = defineProps<{
@@ -145,6 +147,13 @@ watch(
 
 const handleCardClick = (): void => {
   commentsStore.select(props.thread.id)
+  if (!isComposer.value) {
+    bus.emit('comments:scroll-to', {
+      startOffset: props.thread.startOffset,
+      endOffset: props.thread.endOffset,
+      quote: props.thread.quote
+    })
+  }
 }
 
 const handleMouseEnter = (): void => {
