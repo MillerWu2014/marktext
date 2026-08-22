@@ -58,17 +58,29 @@
         </p>
       </li>
     </ul>
-    <textarea
+    <div
       v-if="replying"
-      ref="replyInput"
-      v-model="replyText"
-      class="reply-input"
-      rows="2"
-      :placeholder="t('comments.reply')"
-      @click.stop
-      @keydown.enter.exact.prevent="submitReply"
-      @blur="cancelReply"
-    />
+      class="reply-composer"
+    >
+      <textarea
+        ref="replyInput"
+        v-model="replyText"
+        class="reply-input"
+        rows="2"
+        :placeholder="t('comments.reply')"
+        @click.stop
+        @keydown="onReplyKeydown"
+        @blur="handleReplyBlur"
+      />
+      <button
+        type="button"
+        class="action-button"
+        @mousedown="preventReplyBlurOnSubmit"
+        @click.stop="submitReply"
+      >
+        {{ t('comments.reply') }}
+      </button>
+    </div>
     <div
       v-if="!isComposer"
       class="comment-actions"
@@ -81,6 +93,7 @@
         {{ t('comments.edit') }}
       </button>
       <button
+        v-if="!replying"
         type="button"
         class="action-button"
         @click.stop="startReply"
@@ -115,6 +128,7 @@ import bus from '@/bus'
 import { useCommentsStore } from '@/store/comments'
 import { resolveCommentAuthorName } from '@/util/commentAuthor'
 import { isCommentCardControlTarget } from '@/util/commentCardClick'
+import { decideReplyComposerAction } from '@/util/commentReplyComposer'
 
 const props = defineProps<{
   thread: ICommentThread
@@ -205,6 +219,12 @@ const startEdit = (): void => {
 }
 
 const startReply = (): void => {
+  if (replying.value) {
+    nextTick(() => {
+      replyInput.value?.focus()
+    })
+    return
+  }
   replying.value = true
   replyText.value = ''
   nextTick(() => {
@@ -213,16 +233,20 @@ const startReply = (): void => {
 }
 
 const cancelReply = (): void => {
-  if (!replyText.value.trim()) {
-    replying.value = false
-  }
+  replyText.value = ''
+  replying.value = false
 }
 
 const submitReply = (): void => {
   const text = replyText.value.trim()
-  if (!text) return
+  if (!text) {
+    cancelReply()
+    return
+  }
   const { tabId } = props
   const threadId = props.thread.id
+  replyText.value = ''
+  replying.value = false
   resolveCommentAuthorName()
     .then((authorName) => {
       commentsStore.addReply(tabId, threadId, authorName, text)
@@ -230,8 +254,39 @@ const submitReply = (): void => {
     .catch((err) => {
       console.error('Failed to resolve the comment author name', err)
     })
-  replyText.value = ''
-  replying.value = false
+}
+
+const applyReplyComposerDecision = (
+  event: 'blur' | 'enter' | 'escape',
+  isComposing = false
+): void => {
+  const action = decideReplyComposerAction(replyText.value, event, isComposing)
+  if (action === 'submit') {
+    submitReply()
+  } else if (action === 'cancel') {
+    cancelReply()
+  }
+}
+
+const handleReplyBlur = (): void => {
+  applyReplyComposerDecision('blur')
+}
+
+const preventReplyBlurOnSubmit = (event: MouseEvent): void => {
+  // Keep the textarea focused so submit runs from the click, not a prior blur
+  // that unmounts this button.
+  event.preventDefault()
+}
+
+const onReplyKeydown = (event: KeyboardEvent): void => {
+  if (event.key === 'Escape') {
+    event.preventDefault()
+    applyReplyComposerDecision('escape')
+    return
+  }
+  if (event.key !== 'Enter' || event.shiftKey || event.isComposing) return
+  event.preventDefault()
+  applyReplyComposerDecision('enter')
 }
 
 const toggleStatus = (): void => {
@@ -326,6 +381,18 @@ const handleDelete = (): void => {
   color: var(--editorColor);
   font-size: 13px;
   resize: vertical;
+}
+
+.reply-composer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.reply-composer .reply-input {
+  margin-bottom: 0;
 }
 
 .comment-body-input:focus,
