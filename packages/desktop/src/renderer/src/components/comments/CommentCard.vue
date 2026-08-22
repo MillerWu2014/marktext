@@ -30,6 +30,7 @@
       v-model="bodyText"
       class="comment-body-input"
       rows="3"
+      @click.stop
       @blur="handleBodyBlur"
     />
     <p
@@ -59,10 +60,12 @@
     </ul>
     <textarea
       v-if="replying"
+      ref="replyInput"
       v-model="replyText"
       class="reply-input"
       rows="2"
       :placeholder="t('comments.reply')"
+      @click.stop
       @keydown.enter.exact.prevent="submitReply"
       @blur="cancelReply"
     />
@@ -111,6 +114,7 @@ import type { ICommentThread } from '@shared/types/comments'
 import bus from '@/bus'
 import { useCommentsStore } from '@/store/comments'
 import { resolveCommentAuthorName } from '@/util/commentAuthor'
+import { isCommentCardControlTarget } from '@/util/commentCardClick'
 
 const props = defineProps<{
   thread: ICommentThread
@@ -123,6 +127,7 @@ const commentsStore = useCommentsStore()
 const { selectedId, hoveredId } = storeToRefs(commentsStore)
 
 const bodyInput = ref<HTMLTextAreaElement | null>(null)
+const replyInput = ref<HTMLTextAreaElement | null>(null)
 const bodyText = ref(props.thread.body)
 const editing = ref(false)
 const replying = ref(false)
@@ -155,7 +160,8 @@ watch(
   { immediate: true }
 )
 
-const handleCardClick = (): void => {
+const handleCardClick = (event: MouseEvent): void => {
+  if (isCommentCardControlTarget(event.target)) return
   commentsStore.select(props.thread.id)
   if (!isComposer.value) {
     bus.emit('comments:scroll-to', {
@@ -201,6 +207,9 @@ const startEdit = (): void => {
 const startReply = (): void => {
   replying.value = true
   replyText.value = ''
+  nextTick(() => {
+    replyInput.value?.focus()
+  })
 }
 
 const cancelReply = (): void => {
