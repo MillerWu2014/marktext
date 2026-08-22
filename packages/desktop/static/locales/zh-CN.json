@@ -985,6 +985,7 @@
     "reopen": "重新打开",
     "delete": "删除",
     "deleteConfirm": "删除此评论及其回复？",
+    "deleteReplyConfirm": "删除此回复及其回复？",
     "orphaned": "原始文本已不存在",
     "newComment": "新建评论",
     "closePane": "关闭评论面板"

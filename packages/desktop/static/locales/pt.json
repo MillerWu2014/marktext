@@ -985,6 +985,7 @@
     "reopen": "Reopen",
     "delete": "Delete",
     "deleteConfirm": "Delete this comment and its replies?",
+    "deleteReplyConfirm": "Delete this reply and its nested replies?",
     "orphaned": "Original text is gone",
     "newComment": "New Comment",
     "closePane": "Close comments pane"
