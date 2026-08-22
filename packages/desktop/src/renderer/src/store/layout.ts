@@ -214,6 +214,10 @@ export const useLayoutStore = defineStore('layout', () => {
       }
     }
     showCommentsPane.value = open
+    const { windowId } = window.marktext?.env ?? {}
+    window.electron.ipcRenderer.send('mt::view-layout-changed', Number(windowId), {
+      showCommentsPane: showCommentsPane.value
+    })
   }
 
   function TOGGLE_COMMENTS_PANE(): void {

@@ -151,6 +151,34 @@ describe('useCommentsStore', () => {
     expect(store.threadsForTab('t1')).toEqual([])
   })
 
+  it('loadForTab binds sidecar comments onto the tab', async() => {
+    const store = useCommentsStore()
+    invoke.mockResolvedValue({
+      version: 1,
+      comments: [
+        {
+          id: 'c1',
+          status: 'open',
+          orphaned: false,
+          quote: 'budget',
+          prefix: 'the ',
+          suffix: ' before',
+          startOffset: 4,
+          endOffset: 10,
+          createdAt: '2026-08-19T00:00:00.000Z',
+          updatedAt: '2026-08-19T00:00:00.000Z',
+          author: { name: 'Ada' },
+          body: 'please check',
+          replies: []
+        }
+      ]
+    })
+    await store.loadForTab('t1', '/docs/notes.md', 'the budget before')
+    expect(store.threadsForTab('t1')).toHaveLength(1)
+    expect(store.threadsForTab('t1')[0]?.body).toBe('please check')
+    expect(store.isDirty('t1')).toBe(false)
+  })
+
   it('force-saves a clean tab that still has comments', async() => {
     const store = useCommentsStore()
     store.createDraft({ tabId: 't1', sourceCode: false, authorName: 'Ada', selection })

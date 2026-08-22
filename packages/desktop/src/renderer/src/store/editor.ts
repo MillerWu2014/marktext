@@ -147,6 +147,29 @@ export interface EditorState {
 
 const autoSaveTimers = new Map<string, ReturnType<typeof setTimeout>>()
 
+const notifyCommentsUnreadable = (): void => {
+  notice.notify({
+    title: t('notifications.commentsUnreadable'),
+    type: 'warning',
+    time: 10000,
+    showConfirm: false
+  })
+}
+
+const loadCommentsForTab = (tabId: string, pathname: string, markdown: string): void => {
+  const commentsStore = useCommentsStore()
+  commentsStore
+    .loadForTab(tabId, pathname, markdown)
+    .then(() => {
+      if (commentsStore.threadsForTab(tabId).length === 0) return
+      if (useEditorStore().currentFile?.id !== tabId) return
+      useLayoutStore().SET_COMMENTS_PANE(true)
+    })
+    .catch(() => {
+      notifyCommentsUnreadable()
+    })
+}
+
 export const useEditorStore = defineStore('editor', {
   state: (): EditorState => ({
     currentFile: null,
@@ -205,6 +228,11 @@ export const useEditorStore = defineStore('editor', {
       this.updateTabIdToIndex()
       window.DIRNAME = currentFile?.pathname ? window.path.dirname(currentFile.pathname) : ''
       this.UPDATE_LINE_ENDING_MENU()
+
+      for (const tab of this.tabs) {
+        if (!tab.pathname) continue
+        loadCommentsForTab(tab.id, tab.pathname, tab.markdown)
+      }
 
       for (const warning of bufferedEditorState.restoreWarnings) {
         const restoredTabId = warning.tabId ? oldIdToNewId[warning.tabId] : null
@@ -1362,16 +1390,8 @@ export const useEditorStore = defineStore('editor', {
         )
       )
       const { id, cursor } = docState
-      const commentsStore = useCommentsStore()
       const loadComments = (): void => {
-        commentsStore.loadForTab(id, pathname ?? '', markdown).catch(() => {
-          notice.notify({
-            title: t('notifications.commentsUnreadable'),
-            type: 'warning',
-            time: 10000,
-            showConfirm: false
-          })
-        })
+        loadCommentsForTab(id, pathname ?? '', markdown)
       }
 
       if (selected) {
