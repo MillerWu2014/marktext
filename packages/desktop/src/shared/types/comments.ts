@@ -11,6 +11,7 @@ export interface ICommentReply {
   createdAt: string
   updatedAt: string
   body: string
+  parentId?: string
   [key: string]: unknown
 }
 
