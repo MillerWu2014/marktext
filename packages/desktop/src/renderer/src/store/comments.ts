@@ -1,7 +1,13 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { bindComments, extractQuoteContext, followComment } from 'common/comments'
-import type { CommentStatus, ICommentThread } from '@shared/types/comments'
+import {
+  bindComments,
+  clampReplyParentId,
+  extractQuoteContext,
+  followComment,
+  replyDescendantIds
+} from 'common/comments'
+import type { CommentStatus, ICommentReply, ICommentThread } from '@shared/types/comments'
 import bus from '../bus'
 import { deepClone } from '@/util'
 import { applyCommentsDirtyToTab } from './commentsDirty'
@@ -164,20 +170,26 @@ export const useCommentsStore = defineStore('comments', () => {
     tabId: string,
     threadId: string,
     authorName: string,
-    body: string
+    body: string,
+    parentId?: string
   ): void => {
     const trimmed = body.trim()
     if (!trimmed) return
     const thread = findThread(tabId, threadId)
     if (!thread) return
     const now = new Date().toISOString()
-    thread.replies.push({
+    const reply: ICommentReply = {
       id: crypto.randomUUID(),
       author: { name: authorName },
       createdAt: now,
       updatedAt: now,
       body: trimmed
-    })
+    }
+    const clamped = clampReplyParentId(thread.replies, parentId)
+    if (clamped) {
+      reply.parentId = clamped
+    }
+    thread.replies.push(reply)
     thread.updatedAt = now
     markDirty(tabId)
   }
@@ -215,14 +227,26 @@ export const useCommentsStore = defineStore('comments', () => {
     return { needsConfirm: false }
   }
 
-  const deleteReply = (tabId: string, threadId: string, replyId: string): void => {
+  const deleteReply = (
+    tabId: string,
+    threadId: string,
+    replyId: string,
+    confirmed: boolean
+  ): { needsConfirm: boolean } => {
     const thread = findThread(tabId, threadId)
-    if (!thread) return
-    const index = thread.replies.findIndex((r) => r.id === replyId)
-    if (index === -1) return
-    thread.replies.splice(index, 1)
+    if (!thread) return { needsConfirm: false }
+    if (!thread.replies.some((item) => item.id === replyId)) {
+      return { needsConfirm: false }
+    }
+    const ids = replyDescendantIds(thread.replies, replyId)
+    if (ids.length > 1 && !confirmed) {
+      return { needsConfirm: true }
+    }
+    const idSet = new Set(ids)
+    thread.replies = thread.replies.filter((item) => !idSet.has(item.id))
     thread.updatedAt = new Date().toISOString()
     markDirty(tabId)
+    return { needsConfirm: false }
   }
 
   const switchTab = (tabId: string | null): void => {

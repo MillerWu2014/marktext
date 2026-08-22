@@ -210,4 +210,34 @@ describe('useCommentsStore', () => {
     store.addReply('t1', id, 'Ada', '   ')
     expect(store.threadsForTab('t1')[0]?.replies).toHaveLength(0)
   })
+
+  it('addReply omits parentId for a root reply and sets it for a nested reply', () => {
+    const store = useCommentsStore()
+    store.createDraft({ tabId: 't1', sourceCode: false, authorName: 'Ada', selection })
+    const id = store.commitDraft('t1', 'body')!
+    store.addReply('t1', id, 'Ada', 'first')
+    const firstId = store.threadsForTab('t1')[0]!.replies[0]!.id
+    expect(store.threadsForTab('t1')[0]!.replies[0]!.parentId).toBeUndefined()
+    store.addReply('t1', id, 'Ada', 'nested', firstId)
+    expect(store.threadsForTab('t1')[0]!.replies[1]!.parentId).toBe(firstId)
+    store.addReply('t1', id, 'Ada', 'clamped', store.threadsForTab('t1')[0]!.replies[1]!.id)
+    expect(store.threadsForTab('t1')[0]!.replies[2]!.parentId).toBe(firstId)
+  })
+
+  it('deleteReply leaf needs no confirm; nested requires confirm then cascades', () => {
+    const store = useCommentsStore()
+    store.createDraft({ tabId: 't1', sourceCode: false, authorName: 'Ada', selection })
+    const id = store.commitDraft('t1', 'body')!
+    store.addReply('t1', id, 'Ada', 'first')
+    const firstId = store.threadsForTab('t1')[0]!.replies[0]!.id
+    store.addReply('t1', id, 'Ada', 'child', firstId)
+    expect(store.deleteReply('t1', id, firstId, false)).toEqual({ needsConfirm: true })
+    expect(store.threadsForTab('t1')[0]!.replies).toHaveLength(2)
+    expect(store.deleteReply('t1', id, firstId, true)).toEqual({ needsConfirm: false })
+    expect(store.threadsForTab('t1')[0]!.replies).toHaveLength(0)
+    store.addReply('t1', id, 'Ada', 'leaf')
+    const leafId = store.threadsForTab('t1')[0]!.replies[0]!.id
+    expect(store.deleteReply('t1', id, leafId, false)).toEqual({ needsConfirm: false })
+    expect(store.threadsForTab('t1')[0]!.replies).toHaveLength(0)
+  })
 })
