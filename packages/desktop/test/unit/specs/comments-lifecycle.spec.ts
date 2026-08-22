@@ -9,6 +9,7 @@ vi.hoisted(() => {
       electron?: { ipcRenderer: { invoke: (...a: unknown[]) => unknown; send: () => void; on: () => void } }
       path?: { sep: string; dirname: (p: string) => string }
       marktext?: { env?: { windowId?: number } }
+      fileUtils?: { isSamePathSync: (a: string, b: string) => boolean }
     }
   }
   w.window ??= {}
@@ -17,6 +18,7 @@ vi.hoisted(() => {
     ipcRenderer: { invoke: (...a: unknown[]) => invoke(...a), send: () => {}, on: () => {} }
   }
   w.window.marktext ??= { env: { windowId: 1 } }
+  w.window.fileUtils ??= { isSamePathSync: (a, b) => a === b }
 })
 
 vi.mock('@/services/notification', () => ({
@@ -29,6 +31,36 @@ import { useLayoutStore } from '@/store/layout'
 import { getBlankFileState } from '@/store/help'
 
 const selection = { text: 'budget', markdown: 'the budget before', startOffset: 4, endOffset: 10 }
+
+const sidecarFile = {
+  version: 1 as const,
+  comments: [
+    {
+      id: 'c1',
+      status: 'open' as const,
+      orphaned: false,
+      quote: 'budget',
+      prefix: 'the ',
+      suffix: ' before',
+      startOffset: 4,
+      endOffset: 10,
+      createdAt: '2026-08-19T00:00:00.000Z',
+      updatedAt: '2026-08-19T00:00:00.000Z',
+      author: { name: 'Ada' },
+      body: 'please check',
+      replies: []
+    }
+  ]
+}
+
+const mockSidecarLoad = (): void => {
+  invoke.mockImplementation((channel: string) => {
+    if (channel === 'mt::comments::load') {
+      return Promise.resolve(sidecarFile)
+    }
+    return Promise.resolve(null)
+  })
+}
 
 describe('comments lifecycle', () => {
   beforeEach(() => {
@@ -89,31 +121,7 @@ describe('comments lifecycle', () => {
   })
 
   it('restores sidecar comments when session tabs are restored', async() => {
-    invoke.mockImplementation((channel: string) => {
-      if (channel === 'mt::comments::load') {
-        return Promise.resolve({
-          version: 1,
-          comments: [
-            {
-              id: 'c1',
-              status: 'open',
-              orphaned: false,
-              quote: 'budget',
-              prefix: 'the ',
-              suffix: ' before',
-              startOffset: 4,
-              endOffset: 10,
-              createdAt: '2026-08-19T00:00:00.000Z',
-              updatedAt: '2026-08-19T00:00:00.000Z',
-              author: { name: 'Ada' },
-              body: 'please check',
-              replies: []
-            }
-          ]
-        })
-      }
-      return Promise.resolve(null)
-    })
+    mockSidecarLoad()
 
     const editorStore = useEditorStore()
     const commentsStore = useCommentsStore()
@@ -138,5 +146,63 @@ describe('comments lifecycle', () => {
       expect(commentsStore.threadsForTab(tabId as string)).toHaveLength(1)
     })
     expect(layoutStore.showCommentsPane).toBe(true)
+  })
+
+  it('loads sidecar comments when reopening an already-open markdown file', async() => {
+    mockSidecarLoad()
+
+    const editorStore = useEditorStore()
+    const commentsStore = useCommentsStore()
+    const layoutStore = useLayoutStore()
+    const tab = getBlankFileState([], 'utf8', 'lf', 'the budget before')
+    tab.pathname = '/docs/notes.md'
+    tab.filename = 'notes.md'
+    editorStore.tabs.push(tab)
+    editorStore.currentFile = tab
+
+    editorStore.NEW_TAB_WITH_CONTENT({
+      markdownDocument: {
+        markdown: 'the budget before',
+        filename: 'notes.md',
+        pathname: '/docs/notes.md'
+      }
+    })
+
+    await vi.waitFor(() => {
+      expect(commentsStore.threadsForTab(tab.id)).toHaveLength(1)
+    })
+    expect(layoutStore.showCommentsPane).toBe(true)
+    expect(invoke).toHaveBeenCalledWith('mt::comments::load', '/docs/notes.md')
+  })
+
+  it('does not reload sidecar comments over unsaved comment edits', async() => {
+    const editorStore = useEditorStore()
+    const commentsStore = useCommentsStore()
+    const tab = getBlankFileState([], 'utf8', 'lf', 'the budget before')
+    tab.pathname = '/docs/notes.md'
+    tab.filename = 'notes.md'
+    editorStore.tabs.push(tab)
+    editorStore.currentFile = tab
+
+    commentsStore.createDraft({
+      tabId: tab.id,
+      sourceCode: false,
+      authorName: 'Ada',
+      selection
+    })
+    commentsStore.commitDraft(tab.id, 'local draft')
+    invoke.mockClear()
+    mockSidecarLoad()
+
+    editorStore.NEW_TAB_WITH_CONTENT({
+      markdownDocument: {
+        markdown: 'the budget before',
+        filename: 'notes.md',
+        pathname: '/docs/notes.md'
+      }
+    })
+
+    expect(invoke).not.toHaveBeenCalledWith('mt::comments::load', '/docs/notes.md')
+    expect(commentsStore.threadsForTab(tab.id)[0]?.body).toBe('local draft')
   })
 })

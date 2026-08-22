@@ -158,6 +158,8 @@ const notifyCommentsUnreadable = (): void => {
 
 const loadCommentsForTab = (tabId: string, pathname: string, markdown: string): void => {
   const commentsStore = useCommentsStore()
+  // Unsaved comment edits stay in memory; reopening the markdown file must not replace them.
+  if (commentsStore.isDirty(tabId)) return
   commentsStore
     .loadForTab(tabId, pathname, markdown)
     .then(() => {
@@ -1365,6 +1367,7 @@ export const useEditorStore = defineStore('editor', {
       )
       if (existingTab) {
         this.UPDATE_CURRENT_FILE(existingTab)
+        loadCommentsForTab(existingTab.id, pathname ?? '', existingTab.markdown)
         return
       }
 
