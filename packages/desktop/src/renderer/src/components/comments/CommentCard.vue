@@ -40,26 +40,129 @@
       {{ thread.body }}
     </p>
     <ul
-      v-if="thread.replies.length"
+      v-if="replyTree.length"
       class="comment-replies"
     >
       <li
-        v-for="reply in thread.replies"
-        :key="reply.id"
-        class="comment-reply"
+        v-for="node in replyTree"
+        :key="node.reply.id"
+        class="comment-reply comment-reply-l1"
       >
-        <span class="reply-author">{{ reply.author.name }}</span>
+        <span class="reply-author">{{ node.reply.author.name }}</span>
         <span
-          v-if="reply.createdAt"
+          v-if="node.reply.createdAt"
           class="reply-time"
-        >{{ formatRelativeTime(reply.createdAt) }}</span>
+        >{{ formatRelativeTime(node.reply.createdAt) }}</span>
         <p class="reply-body">
-          {{ reply.body }}
+          {{ node.reply.body }}
         </p>
+        <div
+          v-if="!isComposer"
+          class="reply-actions"
+        >
+          <button
+            type="button"
+            class="action-button"
+            @click.stop="startReply(node.reply.id)"
+          >
+            {{ t('comments.reply') }}
+          </button>
+          <button
+            type="button"
+            class="action-button"
+            @click.stop="handleDeleteReply(node.reply.id)"
+          >
+            {{ t('comments.delete') }}
+          </button>
+        </div>
+        <div
+          v-if="isReplyingTo(node.reply.id)"
+          class="reply-composer"
+        >
+          <textarea
+            ref="replyInput"
+            v-model="replyText"
+            class="reply-input"
+            rows="2"
+            :placeholder="t('comments.reply')"
+            @click.stop
+            @keydown="onReplyKeydown"
+            @blur="handleReplyBlur"
+          />
+          <button
+            type="button"
+            class="action-button"
+            @mousedown="preventReplyBlurOnSubmit"
+            @click.stop="submitReply"
+          >
+            {{ t('comments.reply') }}
+          </button>
+        </div>
+        <ul
+          v-if="node.children.length"
+          class="comment-replies comment-replies-nested"
+        >
+          <li
+            v-for="child in node.children"
+            :key="child.id"
+            class="comment-reply comment-reply-l2"
+          >
+            <span class="reply-author">{{ child.author.name }}</span>
+            <span
+              v-if="child.createdAt"
+              class="reply-time"
+            >{{ formatRelativeTime(child.createdAt) }}</span>
+            <p class="reply-body">
+              {{ child.body }}
+            </p>
+            <div
+              v-if="!isComposer"
+              class="reply-actions"
+            >
+              <button
+                type="button"
+                class="action-button"
+                @click.stop="startReply(child.id)"
+              >
+                {{ t('comments.reply') }}
+              </button>
+              <button
+                type="button"
+                class="action-button"
+                @click.stop="handleDeleteReply(child.id)"
+              >
+                {{ t('comments.delete') }}
+              </button>
+            </div>
+            <div
+              v-if="isReplyingTo(child.id)"
+              class="reply-composer"
+            >
+              <textarea
+                ref="replyInput"
+                v-model="replyText"
+                class="reply-input"
+                rows="2"
+                :placeholder="t('comments.reply')"
+                @click.stop
+                @keydown="onReplyKeydown"
+                @blur="handleReplyBlur"
+              />
+              <button
+                type="button"
+                class="action-button"
+                @mousedown="preventReplyBlurOnSubmit"
+                @click.stop="submitReply"
+              >
+                {{ t('comments.reply') }}
+              </button>
+            </div>
+          </li>
+        </ul>
       </li>
     </ul>
     <div
-      v-if="replying"
+      v-if="isReplyingTo(undefined)"
       class="reply-composer"
     >
       <textarea
@@ -96,7 +199,7 @@
         v-if="!replying"
         type="button"
         class="action-button"
-        @click.stop="startReply"
+        @click.stop="startReply()"
       >
         {{ t('comments.reply') }}
       </button>
@@ -122,7 +225,7 @@
 import { computed, nextTick, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { formatRelativeTime } from 'common/comments'
+import { buildReplyTree, formatRelativeTime } from 'common/comments'
 import type { ICommentThread } from '@shared/types/comments'
 import bus from '@/bus'
 import { useCommentsStore } from '@/store/comments'
@@ -146,11 +249,16 @@ const bodyText = ref(props.thread.body)
 const editing = ref(false)
 const replying = ref(false)
 const replyText = ref('')
+const replyParentId = ref<string | undefined>(undefined)
 
 const isComposer = computed(() => props.isComposer ?? false)
 const isSelected = computed(() => selectedId.value === props.thread.id)
 const isHovered = computed(() => hoveredId.value === props.thread.id)
 const showOrphanedBadge = computed(() => props.thread.orphaned && !isComposer.value)
+const replyTree = computed(() => buildReplyTree(props.thread.replies))
+
+const isReplyingTo = (id?: string): boolean =>
+  replying.value && replyParentId.value === id
 
 watch(
   () => props.thread.body,
@@ -218,13 +326,21 @@ const startEdit = (): void => {
   })
 }
 
-const startReply = (): void => {
-  if (replying.value) {
+const startReply = (clickedId?: string): void => {
+  if (replying.value && replyParentId.value === clickedId) {
     nextTick(() => {
       replyInput.value?.focus()
     })
     return
   }
+  if (replying.value) {
+    if (replyText.value.trim()) {
+      submitReply()
+    } else {
+      cancelReply()
+    }
+  }
+  replyParentId.value = clickedId
   replying.value = true
   replyText.value = ''
   nextTick(() => {
@@ -235,6 +351,7 @@ const startReply = (): void => {
 const cancelReply = (): void => {
   replyText.value = ''
   replying.value = false
+  replyParentId.value = undefined
 }
 
 const submitReply = (): void => {
@@ -245,11 +362,13 @@ const submitReply = (): void => {
   }
   const { tabId } = props
   const threadId = props.thread.id
+  const parentId = replyParentId.value
   replyText.value = ''
   replying.value = false
+  replyParentId.value = undefined
   resolveCommentAuthorName()
     .then((authorName) => {
-      commentsStore.addReply(tabId, threadId, authorName, text)
+      commentsStore.addReply(tabId, threadId, authorName, text, parentId)
     })
     .catch((err) => {
       console.error('Failed to resolve the comment author name', err)
@@ -304,6 +423,15 @@ const handleDelete = (): void => {
   }
   if (selectedId.value === props.thread.id) {
     commentsStore.select(null)
+  }
+}
+
+const handleDeleteReply = (replyId: string): void => {
+  const result = commentsStore.deleteReply(props.tabId, props.thread.id, replyId, false)
+  if (result.needsConfirm) {
+    if (window.confirm(t('comments.deleteReplyConfirm'))) {
+      commentsStore.deleteReply(props.tabId, props.thread.id, replyId, true)
+    }
   }
 }
 </script>
@@ -407,10 +535,27 @@ const handleDelete = (): void => {
   padding: 0;
 }
 
+.comment-replies-nested {
+  margin: 4px 0 0;
+}
+
 .comment-reply {
   padding: 6px 0;
   border-top: 1px solid var(--editorColor10);
   font-size: 12px;
+}
+
+.comment-reply-l1,
+.comment-reply-l2 {
+  padding-left: 12px;
+  border-left: 2px solid var(--editorColor20);
+}
+
+.reply-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
 }
 
 .reply-author {

@@ -80,14 +80,14 @@ export const replyDescendantIds = (replies: ICommentReply[], rootId: string): st
   const stack = [rootId]
   const seen = new Set<string>()
   while (stack.length) {
-    const id = stack.pop()!
-    if (seen.has(id)) continue
+    const id = stack.pop()
+    if (id === undefined || seen.has(id)) continue
     seen.add(id)
     out.push(id)
     const childIds = childrenByParent.get(id)
     if (!childIds) continue
-    for (let i = childIds.length - 1; i >= 0; i--) {
-      stack.push(childIds[i]!)
+    for (const childId of childIds) {
+      stack.push(childId)
     }
   }
   return out
