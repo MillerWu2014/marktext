@@ -277,6 +277,12 @@ export class InlineFormatToolbar extends BaseFloat {
             { offset: focus.offset, block: focusBlock, path: focusPath },
         );
 
+        if (item.type === 'comment') {
+            this.muya.eventCenter.emit('muya-new-comment');
+            this.hide();
+            return;
+        }
+
         this._block!.format(item.type);
 
         // Hide toolbar for link and image, re-render for other formats

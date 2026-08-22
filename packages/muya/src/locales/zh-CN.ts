@@ -55,6 +55,7 @@ export const zhCN = {
         'Link': '超链接',
         'Image': '图片',
         'Eliminate': '清除样式',
+        'New Comment': '新建评论',
         // Code block
         'Copy content': '复制内容',
         'Input Language Identifier...': '输入程序语言标识...',

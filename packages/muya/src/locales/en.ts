@@ -55,6 +55,7 @@ export const en = {
         'Link': 'Link',
         'Image': 'Image',
         'Eliminate': 'Eliminate',
+        'New Comment': 'New Comment',
         // Code block
         'Copy content': 'Copy content',
         'Input Language Identifier...': 'Input Language Identifier...',

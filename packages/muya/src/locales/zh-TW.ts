@@ -55,6 +55,7 @@ export const zhTW = {
         'Link': '超連結',
         'Image': '圖片',
         'Eliminate': '清除樣式',
+        'New Comment': '新增評論',
         // Code block
         'Copy content': '複製內容',
         'Input Language Identifier...': '輸入程式語言識別碼...',

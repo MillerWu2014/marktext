@@ -392,4 +392,38 @@ describe('format picker collapses after link creation', () => {
 
         toolbar.destroy();
     });
+
+    it('selecting comment emits muya-new-comment, hides, and does not format', () => {
+        const muya = bootMuya('abc\n');
+        const content = muya.editor.scrollPage!.firstContentInDescendant() as unknown as Format;
+        muya.editor.activeContentBlock = content as never;
+        content.setCursor(0, 0, true);
+        const original = content.text;
+
+        const toolbar = new InlineFormatToolbar(muya);
+        const internals = toolbar as unknown as IFormatToolbarInternals;
+        internals._block = content;
+        internals.status = true;
+        const hideSpy = vi.spyOn(internals, 'hide');
+        const emitSpy = vi.spyOn(muya.eventCenter, 'emit');
+
+        (content as unknown as { getCursor: () => unknown }).getCursor = () => ({
+            start: { offset: 0 },
+            end: { offset: 3 },
+            anchor: { offset: 0 },
+            focus: { offset: 3 },
+            isCollapsed: false,
+            isSelectionInSameBlock: true,
+            direction: 'forward',
+            type: 'Range',
+        });
+
+        internals._selectItem(makeFakeEvent(), { type: 'comment', icon: '' });
+
+        expect(content.text).toBe(original);
+        expect(emitSpy).toHaveBeenCalledWith('muya-new-comment');
+        expect(hideSpy).toHaveBeenCalledTimes(1);
+
+        toolbar.destroy();
+    });
 });

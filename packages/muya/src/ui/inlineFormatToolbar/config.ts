@@ -1,4 +1,5 @@
 import codeIcon from '../../assets/icons/code/2.png';
+import commentIcon from '../../assets/icons/format_comment/2.png';
 import clearIcon from '../../assets/icons/format_clear/2.png';
 import emphasisIcon from '../../assets/icons/format_emphasis/2.png';
 import imageIcon from '../../assets/icons/format_image/2.png';
@@ -8,9 +9,17 @@ import strikeIcon from '../../assets/icons/format_strike/2.png';
 import strongIcon from '../../assets/icons/format_strong/2.png';
 import underlineIcon from '../../assets/icons/format_underline/2.png';
 import highlightIcon from '../../assets/icons/highlight/2.png';
-import { isOsx } from '../../config';
+import { isOsx, isWin } from '../../config';
 
 const COMMAND_KEY = isOsx ? '⌘' : 'Ctrl';
+
+const commentShortcut = (): string => {
+    if (isOsx)
+        return '⌘+Alt+M';
+    if (isWin)
+        return 'Ctrl+Alt+M';
+    return 'Ctrl+Shift+Alt+M';
+};
 
 const icons = [
     {
@@ -74,6 +83,12 @@ const icons = [
         tooltip: 'Eliminate',
         shortcut: `⇧+${COMMAND_KEY}+R`,
         icon: clearIcon,
+    },
+    {
+        type: 'comment',
+        tooltip: 'New Comment',
+        shortcut: commentShortcut(),
+        icon: commentIcon,
     },
 ];
 

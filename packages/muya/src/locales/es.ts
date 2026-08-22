@@ -55,6 +55,7 @@ export const es = {
         'Link': 'Enlace',
         'Image': 'Imagen',
         'Eliminate': 'Quitar formato',
+        'New Comment': 'Nuevo comentario',
         // Code block
         'Copy content': 'Copiar contenido',
         'Input Language Identifier...': 'Introducir identificador de lenguaje...',

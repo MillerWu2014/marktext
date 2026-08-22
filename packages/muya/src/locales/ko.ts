@@ -55,6 +55,7 @@ export const ko = {
         'Link': '링크',
         'Image': '이미지',
         'Eliminate': '서식 지우기',
+        'New Comment': '새 댓글',
         // Code block
         'Copy content': '내용 복사',
         'Input Language Identifier...': '언어 식별자 입력...',

@@ -55,6 +55,7 @@ export const ja = {
         'Link': 'ハイパーリンク',
         'Image': '画像',
         'Eliminate': '書式をクリアする',
+        'New Comment': '新規コメント',
         // Code block
         'Copy content': '内容をコピーする',
         'Input Language Identifier...': 'プログラム言語IDを入力する...',

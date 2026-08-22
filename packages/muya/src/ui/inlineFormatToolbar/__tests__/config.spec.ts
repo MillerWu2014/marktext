@@ -64,3 +64,12 @@ describe('inlineFormatToolbar config — shortcut labels match default keybindin
         expect(entry.shortcut).not.toMatch(/\+E$/i);
     });
 });
+
+describe('inlineFormatToolbar config — New Comment action', () => {
+    it('places comment after eliminate as the last toolbar item', () => {
+        expect(icons.at(-2)?.type).toBe('clear');
+        expect(icons.at(-1)?.type).toBe('comment');
+        expect(icons.at(-1)?.icon).toBeTruthy();
+        expect(icons.at(-1)?.tooltip).toBe('New Comment');
+    });
+});

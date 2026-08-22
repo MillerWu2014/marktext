@@ -55,6 +55,7 @@ export const tr = {
         'Link': 'Bağlantı',
         'Image': 'Görsel',
         'Eliminate': 'Temizle',
+        'New Comment': 'Yeni yorum',
         // Code block
         'Copy content': 'İçeriği kopyala',
         'Input Language Identifier...': 'Dil Tanımlayıcısını girin...',

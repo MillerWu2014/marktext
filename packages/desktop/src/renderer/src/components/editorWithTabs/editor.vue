@@ -306,6 +306,10 @@ const handleCommentsGetSelection = (event: unknown): void => {
   ;(event as (selection: unknown) => void)(getCommentSelection())
 }
 
+const handleMuyaNewComment = (): void => {
+  bus.emit('edit:new-comment')
+}
+
 interface CommentsScrollToPayload {
   id?: string
   startOffset: number
@@ -1898,6 +1902,7 @@ onMounted(() => {
 
   bus.on('comments:get-selection', handleCommentsGetSelection)
   bus.on('comments:scroll-to', handleCommentsScrollTo)
+  muya.on('muya-new-comment', handleMuyaNewComment)
 
   // Seed the save-tracking baseline for the mount-loaded document (from the
   // engine's OWN serialization, same reason as setMarkdownToEditor). Without
@@ -2114,6 +2119,7 @@ onBeforeUnmount(() => {
   bus.off('language-changed', handleLanguageChanged)
   bus.off('comments:get-selection', handleCommentsGetSelection)
   bus.off('comments:scroll-to', handleCommentsScrollTo)
+  editor.value?.off('muya-new-comment', handleMuyaNewComment)
 
   document.removeEventListener('keyup', keyup)
 

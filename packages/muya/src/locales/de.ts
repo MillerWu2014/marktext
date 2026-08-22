@@ -55,6 +55,7 @@ export const de = {
         'Link': 'Link',
         'Image': 'Bild',
         'Eliminate': 'Formatierung entfernen',
+        'New Comment': 'Neuer Kommentar',
         // Code block
         'Copy content': 'Inhalt kopieren',
         'Input Language Identifier...': 'Sprachkennung eingeben...',
