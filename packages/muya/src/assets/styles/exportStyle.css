@@ -105,6 +105,13 @@
     white-space: pre-wrap;
 }
 
+.markdown-body p,
+.markdown-body li,
+.markdown-body blockquote {
+    text-align: justify;
+    text-align-last: start;
+}
+
 /* Keep `display: table` so printToPDF lays out a real table (GitHub CSS
    uses `display: block` + overflow for on-screen scrolling). Cap width and
    wrap cells so extra columns stay on the page instead of painting past it. */

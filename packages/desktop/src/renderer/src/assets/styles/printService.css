@@ -59,6 +59,12 @@ body article.print-container {
     margin: 0 auto;
     padding: 0;
   }
+  body article.markdown-body p,
+  body article.markdown-body li,
+  body article.markdown-body blockquote {
+    text-align: justify;
+    text-align-last: start;
+  }
   /* Same wrap as exportStyle.css: keep a real table, stay on the paper. */
   body article.markdown-body table {
     display: table;

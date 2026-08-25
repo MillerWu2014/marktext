@@ -34,6 +34,14 @@
     padding: 0;
 }
 
+/* Body copy only. Headings, code, and tables keep their own alignment. */
+.mu-container p,
+.mu-container li,
+.mu-container blockquote {
+    text-align: justify;
+    text-align-last: start;
+}
+
 .mu-container h1,
 .mu-container h2,
 .mu-container h3,
