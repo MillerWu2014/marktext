@@ -10,7 +10,8 @@ MarkText is a WYSIWYG markdown editor built on Electron + Vue 3. It supports Com
 
 - **Version**: see `package.json`
 - **License**: MIT
-- **Repository**: https://github.com/marktext/marktext
+- **Upstream**: https://github.com/marktext/marktext
+- **This fork**: https://github.com/MillerWu2014/marktext — comments sidecar, walrus branding, table wrap, justified prose. When merging upstream `develop`, follow `docs/FORK-DELTA.md`.
 
 ## Tech Stack
 
@@ -266,6 +267,10 @@ Most IPC channels between main and renderer use the `mt::` prefix (e.g. `mt::ope
 See `packages/website/content/docs/dev/IPC.md` for conventions and examples.
 
 ## Further Reading
+
+Fork vs upstream (this repository only):
+
+- `docs/FORK-DELTA.md` — locked decisions, integration seams, and the playbook for merging upstream `develop`
 
 `packages/website/content/docs/dev/` contains the deeper developer documentation referenced by this guide. Same files are published as the developer docs section on https://marktext.me/docs/dev/overview:
 
