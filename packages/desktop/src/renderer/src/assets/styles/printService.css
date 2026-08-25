@@ -59,8 +59,20 @@ body article.print-container {
     margin: 0 auto;
     padding: 0;
   }
+  /* Same wrap as exportStyle.css: keep a real table, stay on the paper. */
   body article.markdown-body table {
     display: table;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  body article.markdown-body table th,
+  body article.markdown-body table td {
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
   body article.markdown-body input[type='checkbox'] ~ p {
     margin-top: 0;

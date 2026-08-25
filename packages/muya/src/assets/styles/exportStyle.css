@@ -105,8 +105,23 @@
     white-space: pre-wrap;
 }
 
+/* Keep `display: table` so printToPDF lays out a real table (GitHub CSS
+   uses `display: block` + overflow for on-screen scrolling). Cap width and
+   wrap cells so extra columns stay on the page instead of painting past it. */
 .markdown-body table {
     display: table;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.markdown-body table th,
+.markdown-body table td {
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .markdown-body img[data-align='center'] {
