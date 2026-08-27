@@ -20,7 +20,10 @@ describe('table page-width containment', () => {
     const inner = block(css, '.mu-table-inner')
     const cells = block(css, '.mu-table-cell-content')
 
-    expect(inner).toMatch(/table-layout:\s*fixed/)
+    // `table-layout:fixed` equalizes columns and clips KaTeX (nowrap + overflow
+    // glyphs). Auto layout still wraps text via overflow-wrap, but math can size
+    // its column.
+    expect(inner).not.toMatch(/table-layout:\s*fixed/)
     expect(inner).toMatch(/max-width:\s*100%/)
     expect(inner).toMatch(/overflow-wrap:\s*anywhere/)
     expect(cells).not.toMatch(/min-width:\s*10em/)
@@ -31,7 +34,7 @@ describe('table page-width containment', () => {
     const tables = block(css, '.markdown-body table')
 
     expect(tables).toMatch(/display:\s*table/)
-    expect(tables).toMatch(/table-layout:\s*fixed/)
+    expect(tables).not.toMatch(/table-layout:\s*fixed/)
     expect(tables).toMatch(/max-width:\s*100%/)
     expect(tables).toMatch(/overflow-wrap:\s*anywhere/)
     expect(css).not.toMatch(/page-container[^{]*\{[^}]*table-layout:\s*fixed/)
@@ -42,7 +45,7 @@ describe('table page-width containment', () => {
     const tables = block(css, 'body article.markdown-body table')
 
     expect(tables).toMatch(/display:\s*table/)
-    expect(tables).toMatch(/table-layout:\s*fixed/)
+    expect(tables).not.toMatch(/table-layout:\s*fixed/)
     expect(tables).toMatch(/max-width:\s*100%/)
     expect(tables).toMatch(/overflow-wrap:\s*anywhere/)
   })

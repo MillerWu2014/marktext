@@ -599,9 +599,9 @@ li.mu-task-list-item > span.mu-checkbox-checked::before {
     max-width: 100%;
     padding: 0;
 
-    /* Intrinsic table width ignores max-width; fixed layout + wrap keeps
-       columns inside --editor-area-width instead of painting past it. */
-    table-layout: fixed;
+    /* Wrap cell text so the table stays in --editor-area-width. Leave
+       table-layout at auto: fixed equalizes columns and clips KaTeX, which
+       sizes from nowrap overflow boxes rather than wrap-friendly min-width. */
     overflow-wrap: anywhere;
     word-break: break-word;
 
@@ -636,6 +636,12 @@ li.mu-task-list-item > span.mu-checkbox-checked::before {
     word-break: break-word;
 
     text-align: left;
+}
+
+/* KaTeX nowrap + overflow-painted glyphs. Table wrap must not inherit. */
+.mu-table-inner .katex {
+    overflow-wrap: normal;
+    word-break: normal;
 }
 
 .mu-table-inner tr:first-child td {
@@ -973,6 +979,11 @@ pre.mu-active.mu-fenced-code::after {
     overflow-wrap: break-word;
 
     outline: none;
+}
+
+.mu-content .katex {
+    overflow-wrap: normal;
+    word-break: normal;
 }
 
 .mu-content:empty::after {

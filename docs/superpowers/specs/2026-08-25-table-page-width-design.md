@@ -7,8 +7,8 @@ Tables currently size to their content (`min-width: 10em` per cell, `word-break:
 | Topic | Choice |
 |---|---|
 | Behavior | **A** — wrap. Tables stay inside the editor column and the PDF page. |
-| Editor | `table-layout: fixed`, `width/max-width: 100%`, wrap long cell text. Drop the `10em` cell min-width so columns can shrink. |
-| PDF / print | Same wrap on `.markdown-body table` only (not the header/footer `table.page-container`). Keep `display: table` so Chromium printToPDF still lays out a real table. |
+| Editor | `width/max-width: 100%`, wrap long cell text, drop the `10em` cell min-width. **Not** `table-layout: fixed` — that equalizes columns and clips KaTeX (nowrap overflow boxes). |
+| PDF / print | Same wrap on `.markdown-body table` only (not the header/footer `table.page-container`). Keep `display: table` so Chromium printToPDF still lays out a real table. Reset `.katex { word-break: normal }`. |
 | Markdown | Unchanged. This is CSS only. |
 
 ## Out of scope

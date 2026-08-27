@@ -71,7 +71,6 @@ body article.print-container {
     box-sizing: border-box;
     width: 100%;
     max-width: 100%;
-    table-layout: fixed;
     overflow-wrap: anywhere;
     word-break: break-word;
   }
@@ -79,6 +78,10 @@ body article.print-container {
   body article.markdown-body table td {
     overflow-wrap: anywhere;
     word-break: break-word;
+  }
+  body article.markdown-body .katex {
+    overflow-wrap: normal;
+    word-break: normal;
   }
   body article.markdown-body input[type='checkbox'] ~ p {
     margin-top: 0;

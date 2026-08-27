@@ -64,7 +64,7 @@
 |---|---|
 | 行为 | **换行**，表格留在编辑栏宽和 PDF 页内，不做横向滚动 |
 | Markdown | 不变，只改 CSS |
-| 副作用 | 窄表会被拉满整栏（`width: 100%` + `table-layout: fixed`） |
+| 副作用 | 窄表仍可能被拉满整栏（`width: 100%`）；含公式的列按公式固有宽度，不再裁切 KaTeX |
 
 ### 2.4 正文两端对齐
 
@@ -288,7 +288,7 @@ macOS 安装包必须在 Mac 上打：`pnpm run build:mac:arm64` 或 `:x64`，�
 
 ### 5.4 表格栏宽（CSS）
 
-编辑器：`.mu-table` / `.mu-table-inner` → `width/max-width: 100%`、`table-layout: fixed`、`overflow-wrap: anywhere`；单元格 `min-width: 0`（去掉 `10em`）。
+编辑器：`.mu-table` / `.mu-table-inner` → `width/max-width: 100%`、`overflow-wrap: anywhere`；单元格 `min-width: 0`（去掉 `10em`）。**不要** `table-layout: fixed`（会裁切行内公式）。`.katex` 重置 `word-break` / `overflow-wrap`。已提交的行内公式 `.mu-hide .mu-math-render` 必须 `overflow: visible`，不要改 KaTeX 的 `.vlist-s` 宽度。
 
 导出/打印：只对 `.markdown-body table`（及 `th/td`）做同样限制，并保留 `display: table`。页眉页脚的 `table.page-container` 不要套这些规则。
 
