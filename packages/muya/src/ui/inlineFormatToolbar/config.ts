@@ -12,15 +12,15 @@ import { isOsx, isWin } from '../../config';
 
 const COMMAND_KEY = isOsx ? '⌘' : 'Ctrl';
 
-const commentShortcut = (): string => {
+function commentShortcut(): string {
     if (isOsx)
         return '⌘+Alt+M';
     if (isWin)
         return 'Ctrl+Alt+M';
     return 'Ctrl+Shift+Alt+M';
-};
+}
 
-export interface FormatToolIcon {
+export interface IFormatToolIcon {
     type: string;
     tooltip: string;
     shortcut: string;
@@ -28,7 +28,7 @@ export interface FormatToolIcon {
     glyph?: string;
 }
 
-const icons: FormatToolIcon[] = [
+const icons: IFormatToolIcon[] = [
     {
         type: 'strong',
         tooltip: 'Emphasize',

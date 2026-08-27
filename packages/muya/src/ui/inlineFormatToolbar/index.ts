@@ -3,7 +3,7 @@ import type { Muya } from '../../index';
 import type { Token } from '../../inlineRenderer/types';
 import type { IBaseOptions } from '../types';
 
-import type { FormatToolIcon } from './config';
+import type { IFormatToolIcon } from './config';
 import Format from '../../block/base/format';
 import { isKeyboardEvent } from '../../utils';
 import { h, patch } from '../../utils/snabbdom';
@@ -73,7 +73,7 @@ export class InlineFormatToolbar extends BaseFloat {
     public override options: IBaseOptions;
 
     /** Format tool icons configuration */
-    private _icons: FormatToolIcon[] = icons;
+    private _icons: IFormatToolIcon[] = icons;
 
     /** Container element for the format toolbar */
     private _formatContainer: HTMLDivElement = document.createElement('div');
@@ -219,23 +219,23 @@ export class InlineFormatToolbar extends BaseFloat {
      * @param formats - Currently applied formats
      * @param i18n - Internationalization instance
      */
-    private _createIconItem(icon: FormatToolIcon, formats: Token[], i18n: typeof this.muya.i18n) {
+    private _createIconItem(icon: IFormatToolIcon, formats: Token[], i18n: typeof this.muya.i18n) {
         // Glyphs skip the PNG silhouette mask, which would hide a color emoji.
         const iconElement = icon.glyph
             ? h('span.icon-emoji', icon.glyph)
             : h(
-                'i.icon',
-                h(
-                    'i.icon-inner',
-                    {
-                        style: {
-                            'background': `url(${icon.icon ?? ''}) no-repeat`,
-                            'background-size': '100%',
+                    'i.icon',
+                    h(
+                        'i.icon-inner',
+                        {
+                            style: {
+                                'background': `url(${icon.icon ?? ''}) no-repeat`,
+                                'background-size': '100%',
+                            },
                         },
-                    },
-                    '',
-                ),
-            );
+                        '',
+                    ),
+                );
 
         const iconWrapper = h('div.icon-wrapper', iconElement);
 
@@ -264,7 +264,7 @@ export class InlineFormatToolbar extends BaseFloat {
      * @param event - Click event
      * @param item - Selected format tool icon
      */
-    private _selectItem(event: Event, item: FormatToolIcon) {
+    private _selectItem(event: Event, item: IFormatToolIcon) {
         event.preventDefault();
         event.stopPropagation();
 
