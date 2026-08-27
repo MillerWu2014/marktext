@@ -23,7 +23,7 @@
 | PR | 主题 |
 |---|---|
 | #1–#7 | 批注：sidecar、侧栏、工具栏按钮、嵌套回复、打开即加载 |
-| #8 | 海象应用图标 / `.md` 关联图标 / favicon；批注工具栏黄气泡 |
+| #8 | 初版海象应用图标 / `.md` 关联图标 / favicon；批注工具栏黄气泡 PNG（工具栏未显示） |
 | #9 | 表格限制在编辑栏宽和 PDF 页宽内（换行，不横向滚动） |
 | #10 | 正文默认两端对齐（编辑器 + 导出） |
 
@@ -54,9 +54,8 @@
 
 | 主题 | 锁定选择 |
 |---|---|
-| 应用图标、`.md` 文件关联、网站 favicon | 思考海象吉祥物，**透明底** |
-| 格式工具栏「新建批注」 | 黄椭圆气泡、海军蓝描边、三点、尾在左下；**40×40 黑底** PNG |
-| 网站页头 `/assets/logo.png` | **未改**（仍是蓝色 M） |
+| 应用图标、`.md` 文件关联、About logo、网站 favicon / 页头 logo | 用户提供的蓝色思考海象 PNG，抠去棋盘格后的**透明底** |
+| 格式工具栏「新建批注」 | 系统/应用内置 **💬** 字形（不要用 PNG：工具栏是剪影 mask，彩色图不会显示） |
 
 ### 2.3 表格栏宽
 
@@ -84,7 +83,6 @@
 - 回复正文的「编辑」
 - 两端对齐的偏好开关
 - 表格横向滚动方案
-- 像素级还原用户原稿海象图（当前是矢量重建）
 
 ---
 
@@ -141,10 +139,10 @@ git diff e52106fd..HEAD
 | `packages/muya/src/assets/styles/exportStyle.css` | 同上，选择器是 `.markdown-body` |
 | `packages/desktop/src/renderer/src/assets/styles/printService.css` | 同上；**不要**作用到 `table.page-container`（页眉页脚） |
 | `packages/desktop/static/locales/*.json` | 批注文案（10 个语言文件） |
-| `packages/muya/src/ui/inlineFormatToolbar/config.ts` | 末项 `type: 'comment'` |
+| `packages/muya/src/ui/inlineFormatToolbar/config.ts` | 末项 `type: 'comment'`，`glyph: '💬'`（不要 PNG） |
 | `packages/muya/src/ui/inlineFormatToolbar/index.ts` | `comment` 发 `muya-new-comment` 后隐藏工具栏，**不要** `format('comment')` |
 | `packages/muya/src/ui/inlineFormatToolbar/index.css` | `.mu-format-picker` 宽度 `265px` → `300px`（多一个按钮） |
-| `packages/muya/src/ui/inlineFormatToolbar/__tests__/config.spec.ts` | 断言 comment 在 Eliminate 之后、且是最后一项 |
+| `packages/muya/src/ui/inlineFormatToolbar/__tests__/config.spec.ts` | 断言 comment 在 Eliminate 之后、且是最后一项，图标是 💬 |
 | `packages/muya/src/block/base/__tests__/formatToggle.spec.ts` | 点 comment 只发事件、不改文本 |
 
 ### 4.2 中冲突（加一两行/一项菜单）
@@ -269,22 +267,22 @@ pnpm -C packages/desktop exec vitest run test/unit/specs/comments-
 
 Muya 工具栏最后一项 `type: 'comment'`。点击：恢复选区 → `eventCenter.emit('muya-new-comment')` → `hide()`。桌面 `editor.vue` 转成 `bus.emit('edit:new-comment')`，与菜单/快捷键同一条 `beginNewComment`。
 
-图标：`packages/muya/src/assets/icons/format_comment/2.png`。工具栏容器宽度在 `index.css` 里从 `265px` 调到 `300px`。改 PNG 或该 CSS 后必须**完全重启** `pnpm run dev`（Ctrl+R 往往不重载 Muya 静态图）。
+图标：`config.ts` 里 `glyph: '💬'`，渲染为 `span.icon-emoji`。**不要**再加 `format_comment` PNG——工具栏 `i.icon-inner` 用 `drop-shadow` 剪影上色，彩色 PNG 不会按原样显示。工具栏容器宽度在 `index.css` 里从 `265px` 调到 `300px`。改 Muya 工具栏代码后必须**完全重启** `pnpm run dev`（Ctrl+R 往往不重载 Muya）。
 
 ### 5.3 品牌资源
 
-源稿：`packages/desktop/build/icons/icon.svg`（复制为 `md.svg`）。
+源稿：用户提供的蓝色海象 PNG，抠去棋盘格后的透明底。`icon.svg` / `md.svg` 是该 PNG 的嵌入包装，不是手绘矢量。
 
 覆盖这些路径（上游若更新图标，合完再覆盖回来）：
 
+- `packages/desktop/src/renderer/src/assets/images/logo.png`（About 对话框）
 - `packages/desktop/static/icon.{png,ico,icns}`、`logo-96px.png`、`logo-small.png`
 - `packages/desktop/build/icons/icon.{png,ico,icns,svg}` 与 `md.*`
-- `packages/desktop/build/icons/{16,24,32,48,64,128,256,512}x*/md.png`
-- `packages/website/public/favicon.png`（512×512）
+- `packages/desktop/build/icons/{16,24,32,48,64,128,256,512}x*/{md,marktext}.png`
+- `packages/website/public/favicon.png`、`packages/website/public/assets/logo.png`
+- `docs/assets/logo-small.png`（README）
 
-**不要改** `packages/website` 页头用的蓝色 M logo（若路径仍是 `/assets/logo.png`）。
-
-macOS 安装包必须在 Mac 上打：`pnpm run build:mac:arm64` 或 `:x64`，产物在仓库根 `dist/`。
+macOS 安装包必须在 Mac 上打：`pnpm run build:mac:arm64` 或 `:x64`，产物在仓库根 `dist/`。Dock / `.app` 图标不会随 `pnpm run dev` 热更新。
 
 ### 5.4 表格栏宽（CSS）
 
@@ -327,7 +325,6 @@ packages/desktop/src/renderer/src/util/commentAuthor.ts
 packages/desktop/src/renderer/src/util/commentQuoteDom.ts
 packages/desktop/src/renderer/src/util/commentCardClick.ts
 packages/desktop/src/renderer/src/util/commentReplyComposer.ts
-packages/muya/src/assets/icons/format_comment/2.png
 ```
 
 测试：
@@ -351,7 +348,9 @@ packages/desktop/test/unit/specs/justify-prose.spec.ts
 ### 6.2 新增（品牌）
 
 ```
-packages/desktop/build/icons/icon.svg   # md.svg 是在已有文件上改的
+packages/desktop/build/icons/icon.svg
+packages/desktop/build/icons/md.svg
+packages/desktop/build/icons/md.png
 ```
 
 ### 6.3 新增（设计与计划，合入时保留）
@@ -397,7 +396,7 @@ pnpm run test:unit
 手测（改过 Muya CSS/PNG 必须**完全重启** `pnpm run dev`）：
 
 1. 同目录放 `notes.md` 与 `notes.md.comments.json`，打开 md → 侧栏出现线程。
-2. 选中文字 → 格式工具栏最右黄气泡 → 侧栏草稿；保存后 sidecar 出现。
+2. 选中文字 → 格式工具栏最右 **💬** → 侧栏草稿；保存后 sidecar 出现。
 3. 宽表 / 长 URL 单元格：编辑栏内换行；导出 PDF 不画出纸边。
 4. 长段落两端对齐，标题/代码/表仍是各自对齐。
 5. 应用图标仍是透明底海象，不是上游 M 标。

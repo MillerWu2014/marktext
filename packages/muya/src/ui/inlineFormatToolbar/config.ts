@@ -1,5 +1,4 @@
 import codeIcon from '../../assets/icons/code/2.png';
-import commentIcon from '../../assets/icons/format_comment/2.png';
 import clearIcon from '../../assets/icons/format_clear/2.png';
 import emphasisIcon from '../../assets/icons/format_emphasis/2.png';
 import imageIcon from '../../assets/icons/format_image/2.png';
@@ -21,7 +20,15 @@ const commentShortcut = (): string => {
     return 'Ctrl+Shift+Alt+M';
 };
 
-const icons = [
+export interface FormatToolIcon {
+    type: string;
+    tooltip: string;
+    shortcut: string;
+    icon?: string;
+    glyph?: string;
+}
+
+const icons: FormatToolIcon[] = [
     {
         type: 'strong',
         tooltip: 'Emphasize',
@@ -88,10 +95,10 @@ const icons = [
         type: 'comment',
         tooltip: 'New Comment',
         shortcut: commentShortcut(),
-        icon: commentIcon,
+        // Silhouette mask (`i.icon-inner` + drop-shadow) tints PNGs with
+        // currentcolor, so a full-color bubble never shows. Use the emoji glyph.
+        glyph: '💬',
     },
 ];
-
-export type FormatToolIcon = typeof icons[number];
 
 export default icons;

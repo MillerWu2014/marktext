@@ -220,19 +220,22 @@ export class InlineFormatToolbar extends BaseFloat {
      * @param i18n - Internationalization instance
      */
     private _createIconItem(icon: FormatToolIcon, formats: Token[], i18n: typeof this.muya.i18n) {
-        const iconElement = h(
-            'i.icon',
-            h(
-                'i.icon-inner',
-                {
-                    style: {
-                        'background': `url(${icon.icon}) no-repeat`,
-                        'background-size': '100%',
+        // Glyphs skip the PNG silhouette mask, which would hide a color emoji.
+        const iconElement = icon.glyph
+            ? h('span.icon-emoji', icon.glyph)
+            : h(
+                'i.icon',
+                h(
+                    'i.icon-inner',
+                    {
+                        style: {
+                            'background': `url(${icon.icon ?? ''}) no-repeat`,
+                            'background-size': '100%',
+                        },
                     },
-                },
-                '',
-            ),
-        );
+                    '',
+                ),
+            );
 
         const iconWrapper = h('div.icon-wrapper', iconElement);
 

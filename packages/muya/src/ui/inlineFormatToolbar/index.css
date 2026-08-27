@@ -56,6 +56,8 @@
 
 .mu-format-picker li.item .icon-wrapper {
     display: flex;
+    align-items: center;
+    justify-content: center;
     width: 16px;
     height: 16px;
 }
@@ -71,6 +73,21 @@
     color: var(--icon-color);
 
     transition: all 0.25s ease-in-out;
+}
+
+.mu-format-picker li.item .icon-wrapper .icon-emoji {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+
+    font-size: 14px;
+    line-height: 1;
+    user-select: none;
+
+    /* Emoji is already a glyph; the PNG mask + drop-shadow would hide it. */
+    filter: none;
 }
 
 .mu-format-picker li.item .icon-wrapper i.icon > i[class^='icon-'] {

@@ -69,7 +69,8 @@ describe('inlineFormatToolbar config — New Comment action', () => {
     it('places comment after eliminate as the last toolbar item', () => {
         expect(icons.at(-2)?.type).toBe('clear');
         expect(icons.at(-1)?.type).toBe('comment');
-        expect(icons.at(-1)?.icon).toBeTruthy();
+        expect(icons.at(-1)?.glyph).toBe('💬');
+        expect(icons.at(-1)?.icon).toBeUndefined();
         expect(icons.at(-1)?.tooltip).toBe('New Comment');
     });
 });
