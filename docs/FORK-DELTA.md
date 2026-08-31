@@ -131,7 +131,7 @@ git diff e52106fd..HEAD
 | 文件 | 本仓库加了什么 |
 |---|---|
 | `packages/desktop/src/renderer/src/store/editor.ts` | `loadCommentsForTab`：会话恢复、打开已有 tab、打开新文件；`mt::tab-saved` / `mt::set-pathname` 里 `tryPersistForPath`；`comments:dirty` 把 tab 标脏 |
-| `packages/desktop/src/renderer/src/components/editorWithTabs/editor.vue` | 取选区、`muya-new-comment`、`comments:scroll-to`、正文变化时 `followMarkdown` |
+| `packages/desktop/src/renderer/src/components/editorWithTabs/editor.vue` | 取选区（`getCursorOffset` → markdown 偏移，**不要** `indexOf`）、`muya-new-comment`、`comments:scroll-to`、正文变化时 `followMarkdown` |
 | `packages/desktop/src/renderer/src/pages/app.vue` | 挂载 `<comments-pane />`；`beginNewComment`；监听 `mt::editor-new-comment` / `mt::toggle-comments-pane` |
 | `packages/desktop/src/renderer/src/store/layout.ts` | `showCommentsPane`、`commentsPaneWidth`（独立于左侧栏，默认关，宽度进 localStorage） |
 | `packages/desktop/src/shared/types/ipc.ts` | 4 条 invoke + 2 条 main→renderer 事件（见下） |
@@ -232,7 +232,7 @@ JSON `version: 1` 要点：
 
 1. `prefix + quote + suffix` 唯一命中
 2. `quote` 唯一命中
-3. `quote` 多命中：取离 `startOffset` 最近的（距离相同取更靠后的）
+3. `quote` 多命中：取离 `startOffset` 最近的（距离相同取更靠后的）。划线定位要把 markdown 偏移按**出现次序**对齐到 `.mu-content` 文本，不能把 markdown 偏移当 DOM 偏移（表格管道符会把提示撑到最后一个命中）
 4. 否则 `orphaned: true`
 
 编辑中用 `followComment`：先 bind；失败则用 prefix/suffix 夹住中间文本。范围没了就标记 Orphaned。
@@ -261,7 +261,7 @@ JSON `version: 1` 要点：
 pnpm -C packages/desktop exec vitest run test/unit/specs/comments-
 ```
 
-约 11 个文件。合入后这条必须绿。
+约 12 个文件。合入后这条必须绿。
 
 ### 5.2 格式工具栏「新建批注」
 
@@ -323,6 +323,7 @@ packages/desktop/src/renderer/src/components/comments/CommentCard.vue
 packages/desktop/src/renderer/src/components/comments/CommentDecorations.vue
 packages/desktop/src/renderer/src/util/commentAuthor.ts
 packages/desktop/src/renderer/src/util/commentQuoteDom.ts
+packages/desktop/src/renderer/src/util/commentSelection.ts
 packages/desktop/src/renderer/src/util/commentCardClick.ts
 packages/desktop/src/renderer/src/util/commentReplyComposer.ts
 ```
@@ -338,6 +339,7 @@ packages/desktop/test/unit/specs/comments-layout.spec.ts
 packages/desktop/test/unit/specs/comments-commands.spec.ts
 packages/desktop/test/unit/specs/comments-decorations.spec.ts
 packages/desktop/test/unit/specs/comments-quote-dom.spec.ts
+packages/desktop/test/unit/specs/comments-selection.spec.ts
 packages/desktop/test/unit/specs/comments-card-click.spec.ts
 packages/desktop/test/unit/specs/comments-reply-tree.spec.ts
 packages/desktop/test/unit/specs/comments-reply-composer.spec.ts

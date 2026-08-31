@@ -32,6 +32,35 @@ export const closestHitOffset = (hits: number[], hintOffset: number): number => 
   return best
 }
 
+// Markdown offsets and concatenated `.mu-content` offsets are different
+// coordinate spaces (GFM pipes, markers, blank lines). When both haystacks
+// contain the same number of quote hits, map by occurrence index so a comment
+// on the first "foo" does not snap to the last one.
+export const alignedQuoteHit = (
+  haystack: string,
+  quote: string,
+  hintOffset: number,
+  sourceHaystack?: string
+): number | null => {
+  const hits = indexesOf(haystack, quote)
+  if (!hits.length) return null
+  if (!sourceHaystack) return closestHitOffset(hits, hintOffset)
+
+  const sourceHits = indexesOf(sourceHaystack, quote)
+  if (!sourceHits.length) return closestHitOffset(hits, hintOffset)
+
+  const sourceIndex = sourceHits.indexOf(closestHitOffset(sourceHits, hintOffset))
+  const mapped = sourceIndex >= 0 ? hits[sourceIndex] : undefined
+  if (sourceHits.length === hits.length && mapped != null) {
+    return mapped
+  }
+
+  const scaled = sourceHaystack.length
+    ? Math.round(hintOffset * (haystack.length / sourceHaystack.length))
+    : hintOffset
+  return closestHitOffset(hits, scaled)
+}
+
 export const extractQuoteContext = (
   markdown: string,
   startOffset: number,

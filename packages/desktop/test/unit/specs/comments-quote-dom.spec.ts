@@ -45,6 +45,40 @@ describe('findQuoteDomRange', () => {
     expect(match!.plainTextStart).toBe(4)
   })
 
+  it('maps a markdown offset onto the matching DOM occurrence when table syntax inflates the hint', () => {
+    // GFM pipes/alignment make markdown offsets much larger than concatenated
+    // cell text. Treating the markdown hint as a DOM offset picks the last
+    // 'foo' even when the comment was created on the first cell.
+    const markdown = '| header | col |\n| --- | --- |\n| foo | x |\n| y | foo |'
+    const first = markdown.indexOf('foo')
+    const second = markdown.lastIndexOf('foo')
+    const root = document.createElement('div')
+    root.textContent = 'headercolfooxyfoo'
+    const index = prepareQuoteSearch(root)
+
+    expect(findQuoteDomRange(index, 'foo', first, markdown)!.plainTextStart).toBe(
+      'headercol'.length
+    )
+    expect(findQuoteDomRange(index, 'foo', second, markdown)!.plainTextStart).toBe(
+      'headercolfooxy'.length
+    )
+  })
+
+  it('ignores chrome text outside .mu-content when locating a quote', () => {
+    const root = document.createElement('div')
+    const chrome = document.createElement('div')
+    chrome.className = 'mu-front-button'
+    chrome.textContent = 'foo'
+    const content = document.createElement('span')
+    content.className = 'mu-content'
+    content.textContent = 'bar foo'
+    root.append(chrome, content)
+
+    const match = findQuoteDomRange(prepareQuoteSearch(root), 'foo', 0)
+    expect(match!.startNode).toBe(content.firstChild)
+    expect(match!.plainTextStart).toBe('bar '.length)
+  })
+
   it('reuses one prepared index for several quotes', () => {
     const root = document.createElement('div')
     root.textContent = 'alpha beta gamma'

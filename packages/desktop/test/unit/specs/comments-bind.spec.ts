@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  alignedQuoteHit,
   bindComment,
   bindComments,
   extractQuoteContext,
@@ -82,6 +83,16 @@ describe('bindComment', () => {
     const second = mdDup.lastIndexOf('budget')
     const bound = bindComment(mdDup, thread({ prefix: '', suffix: '', startOffset: second }))
     expect(bound.startOffset).toBe(second)
+  })
+
+  it('maps a markdown hint onto the matching occurrence in a shorter haystack', () => {
+    const markdown = '| header | col |\n| --- | --- |\n| foo | x |\n| y | foo |'
+    const first = markdown.indexOf('foo')
+    const cells = 'headercolfooxyfoo'
+    expect(alignedQuoteHit(cells, 'foo', first, markdown)).toBe(cells.indexOf('foo'))
+    expect(alignedQuoteHit(cells, 'foo', markdown.lastIndexOf('foo'), markdown)).toBe(
+      cells.lastIndexOf('foo')
+    )
   })
 
   it('marks missing quotes orphaned', () => {

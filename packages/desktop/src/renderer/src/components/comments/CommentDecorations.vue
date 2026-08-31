@@ -88,9 +88,10 @@ const recomputeUnderlines = (): void => {
   }
 
   const searchIndex = prepareQuoteSearch(root)
+  const markdown = currentFile.value?.markdown ?? ''
   const rects: UnderlineRect[] = []
   for (const thread of threadsToDraw.value) {
-    const match = findQuoteDomRange(searchIndex, thread.quote, thread.startOffset)
+    const match = findQuoteDomRange(searchIndex, thread.quote, thread.startOffset, markdown)
     if (!match) continue
     rects.push(
       ...rectsForQuoteRange(match, thread.id, thread.startOffset, thread.endOffset, overlay)
@@ -169,7 +170,12 @@ const handleUnderlineClick = (event: MouseEvent): void => {
 
   const root = getEditorRoot()
   if (!root) return
-  const match = findQuoteDomRange(prepareQuoteSearch(root), hit.quote, hit.startOffset)
+  const match = findQuoteDomRange(
+    prepareQuoteSearch(root),
+    hit.quote,
+    hit.startOffset,
+    currentFile.value?.markdown ?? ''
+  )
   if (match) {
     setDomSelectionForRange(match)
   }

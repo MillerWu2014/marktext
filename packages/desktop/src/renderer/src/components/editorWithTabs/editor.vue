@@ -140,6 +140,7 @@ import {
   prepareQuoteSearch,
   setDomSelectionForRange
 } from '@/util/commentQuoteDom'
+import { commentSelectionFromEditor } from '@/util/commentSelection'
 import { useProjectStore } from '@/store/project'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
@@ -285,19 +286,7 @@ const getCommentSelection = (): {
   endOffset: number
 } | null => {
   if (!editor.value) return null
-  const sel = editor.value.getSelection()
-  if (!sel || sel.isCollapsed) return null
-  const text = document.getSelection()?.toString() ?? ''
-  if (!text.trim()) return null
-  const markdown = editor.value.getMarkdown()
-  const startOffset = markdown.indexOf(text)
-  if (startOffset < 0) return null
-  return {
-    text,
-    markdown,
-    startOffset,
-    endOffset: startOffset + text.length
-  }
+  return commentSelectionFromEditor(editor.value)
 }
 // The bus is typed as mitt's `Handler<unknown>`; the caller passes a callback
 // it wants filled in with the current selection.
@@ -339,7 +328,12 @@ const handleCommentsScrollTo = (payload: unknown): void => {
       (editor.value?.domNode as Element | undefined)
     if (!root) return
 
-    const match = findQuoteDomRange(prepareQuoteSearch(root), quote, startOffset)
+    const match = findQuoteDomRange(
+      prepareQuoteSearch(root),
+      quote,
+      startOffset,
+      editor.value.getMarkdown?.()
+    )
     if (match) {
       setDomSelectionForRange(match)
     }

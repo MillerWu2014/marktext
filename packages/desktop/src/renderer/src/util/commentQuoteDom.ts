@@ -1,4 +1,4 @@
-import { closestHitOffset, indexesOf } from 'common/comments/bind'
+import { alignedQuoteHit } from 'common/comments/bind'
 
 export interface QuoteDomRange {
   startNode: Text
@@ -21,18 +21,46 @@ export interface QuoteSearchIndex {
   fullText: string
 }
 
-const collectTextSegments = (root: Element): TextSegment[] => {
-  const segments: TextSegment[] = []
-  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
-  let pos = 0
+// KaTeX / ruby previews live inside `.mu-content` but are not source text;
+// including them inflates the concatenated string and shifts later matches.
+const SKIP_PREVIEW_CLASSES = ['mu-math-render', 'mu-ruby-render'] as const
+
+const isInsideClass = (node: Node, className: string, root: Element): boolean => {
+  let el: Node | null = node instanceof Element ? node : node.parentNode
+  while (el && el !== root) {
+    if (el instanceof Element && el.classList.contains(className)) return true
+    el = el.parentNode
+  }
+  return false
+}
+
+const appendTextSegments = (scope: Element, segments: TextSegment[], startPos: number): number => {
+  const walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT)
+  let pos = startPos
   let node: Node | null
   while ((node = walker.nextNode())) {
+    if (SKIP_PREVIEW_CLASSES.some((cls) => isInsideClass(node, cls, scope))) continue
     const textNode = node as Text
     const len = textNode.data.length
     if (len === 0) continue
     segments.push({ node: textNode, start: pos, end: pos + len })
     pos += len
   }
+  return pos
+}
+
+const collectTextSegments = (root: Element): TextSegment[] => {
+  const segments: TextSegment[] = []
+  const contents = root.querySelectorAll('.mu-content')
+  if (contents.length) {
+    let pos = 0
+    contents.forEach((el) => {
+      if (el.parentElement?.closest('.mu-content')) return
+      pos = appendTextSegments(el, segments, pos)
+    })
+    return segments
+  }
+  appendTextSegments(root, segments, 0)
   return segments
 }
 
@@ -57,16 +85,15 @@ export const prepareQuoteSearch = (root: Element): QuoteSearchIndex => {
 export const findQuoteDomRange = (
   index: QuoteSearchIndex,
   quote: string,
-  hintOffset: number
+  hintOffset: number,
+  markdown?: string
 ): QuoteDomRange | null => {
   if (!quote) return null
   const { segments, fullText } = index
   if (!segments.length) return null
 
-  const hits = indexesOf(fullText, quote)
-  if (!hits.length) return null
-
-  const matchStart = closestHitOffset(hits, hintOffset)
+  const matchStart = alignedQuoteHit(fullText, quote, hintOffset, markdown)
+  if (matchStart == null) return null
   const matchEnd = matchStart + quote.length
   const start = offsetToPoint(segments, matchStart)
   const end = offsetToPoint(segments, matchEnd)
