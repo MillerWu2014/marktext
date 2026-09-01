@@ -1,6 +1,6 @@
-# MarkText Contributing Guide
+# MDComment Contributing Guide
 
-We are really excited that you are interested in contributing to MarkText :tada:. Before submitting your contribution, please make sure to take a moment and read through the following guidelines.
+We are really excited that you are interested in contributing to MDComment :tada:. Before submitting your contribution, please make sure to take a moment and read through the following guidelines.
 
 - [Code of Conduct](../packages/website/content/docs/dev/CODE_OF_CONDUCT.md)
 - [Philosophy](#philosophy)
@@ -16,7 +16,7 @@ We are really excited that you are interested in contributing to MarkText :tada:
 ## Philosophy
 
 🔑 Our philosophy is to keep things clean, simple and minimal. 
-MarkText is constantly changing and we want these improvements to align with our philosophy. For example, look at the side bar and tabs; these two panels provide awesome functionality *and* aren't distracting to the user. We'll continue adding more features (like plugins) that can be activated via 'settings' to improve MarkText. This will allow everyone to customize MarkText for their needs and provide a minimal default interface.
+MDComment is constantly changing and we want these improvements to align with our philosophy. For example, look at the side bar and tabs; these two panels provide awesome functionality *and* aren't distracting to the user. We'll continue adding more features (like plugins) that can be activated via 'settings' to improve MDComment. This will allow everyone to customize MDComment for their needs and provide a minimal default interface.
 
 ## Issue Reporting Guidelines
 
@@ -48,7 +48,7 @@ If you fix a bug:
 
 ### Where should I start?
 
-A good way to start is to find an [issue](https://github.com/marktext/marktext/issues) labeled as `bug`, `help wanted` or `feature request`. The `good first issue` issues are good for newcomers. Please discuss the solution for larger issues first and after the final solution is approved by the MarkText members, you can submit/work on the PR. For small changes you can directly open a PR.
+A good way to start is to find an [issue](https://github.com/MillerWu2014/marktext/issues) labeled as `bug`, `help wanted` or `feature request`. The `good first issue` issues are good for newcomers. Please discuss the solution for larger issues first and after the final solution is approved by the MDComment members, you can submit/work on the PR. For small changes you can directly open a PR.
 
 Other ways to help:
 
@@ -56,8 +56,8 @@ Other ways to help:
 - Translation (currently unavailable)
 - Design icons and logos
 - Improve the UI
-- Write tests for MarkText
-- Share your thoughts! We want to hear about features you think are missing, any bugs you find, and why you :heart: MarkText.
+- Write tests for MDComment
+- Share your thoughts! We want to hear about features you think are missing, any bugs you find, and why you :heart: MDComment.
 
 ## Quick start
 

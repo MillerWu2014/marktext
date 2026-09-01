@@ -13,10 +13,13 @@ import Accessor from './app/accessor'
 import App from './app'
 import { t } from './i18n'
 import { registerSandboxIpcHandlers } from './ipc'
+import { APP_DISPLAY_NAME, APP_ID, APP_SLUG } from '@shared/appIdentity'
 
 // Set version strings into global and process.versions
 process.env.MARKTEXT_VERSION = MARKTEXT_VERSION
 process.env.MARKTEXT_VERSION_STRING = MARKTEXT_VERSION_STRING
+
+app.setName(APP_DISPLAY_NAME)
 
 // -----------------------------------------------
 // Exception handling and logging setup
@@ -53,7 +56,7 @@ initializeLogger(appEnvironment)
 // Handles native level crashes
 crashReporter.start({
   companyName: '',
-  productName: 'marktext',
+  productName: APP_SLUG,
   uploadToServer: false, // collect locally
   compress: true
 })
@@ -83,7 +86,7 @@ if (!process.mas && process.env.NODE_ENV !== 'development') {
 registerSandboxIpcHandlers()
 
 // Windows-specific AppUserModelID
-electronApp.setAppUserModelId('com.electron.marktext')
+electronApp.setAppUserModelId(APP_ID)
 
 // Dev shortcuts and reload suppression
 app.on('browser-window-created', (_, window) => {

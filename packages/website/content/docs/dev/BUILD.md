@@ -5,7 +5,7 @@
 Clone the repository:
 
 ```
-git clone https://github.com/marktext/marktext.git
+git clone https://github.com/MillerWu2014/marktext.git
 ```
 
 ## Container Setup
@@ -71,8 +71,8 @@ On Arch Linux: `sudo pacman -S libx11 libxkbfile libsecret fontconfig`
 
 1. Go to `marktext` folder
 2. Install dependencies: `pnpm install`
-3. Build MarkText binaries and packages: `pnpm run build`
-4. MarkText binary is located under `dist` folder (electron-builder output)
+3. Build MDComment binaries and packages: `pnpm run build`
+4. MDComment binary is located under `dist` folder (electron-builder output)
 
 Copy the build app to applications folder, or if on Windows run the executable installer.
 
@@ -84,8 +84,8 @@ $ pnpm run <script>
 
 | Script  | Description                                      |
 | ------- | ------------------------------------------------ |
-| `build` | Build MarkText binaries and packages for your OS |
-| `dev`   | Build and run MarkText in developer mode         |
+| `build` | Build MDComment binaries and packages for your OS |
+| `dev`   | Build and run MDComment in developer mode         |
 | `lint`  | Lint code style                                  |
 | `test`  | Run unit tests                                   |
 

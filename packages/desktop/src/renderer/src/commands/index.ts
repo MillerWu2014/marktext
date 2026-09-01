@@ -644,7 +644,7 @@ const commands: CommandDescriptor[] = [
   },
 
   // --------------------------------------------------------------------------
-  // MarkText
+  // MDComment
 
   {
     id: 'file.preferences',

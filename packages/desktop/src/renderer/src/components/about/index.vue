@@ -9,7 +9,7 @@
     >
       <img
         class="logo"
-        :src="MarkTextLogo"
+        :src="MDCommentLogo"
       >
       <el-row>
         <el-col :span="24">
@@ -44,12 +44,13 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useMainStore } from '@/store'
 import bus from '../../bus'
-import MarkTextLogo from '../../assets/images/logo.png'
+import MDCommentLogo from '../../assets/images/logo.png'
 import { useI18n } from 'vue-i18n'
+import { APP_DISPLAY_NAME } from '@shared/appIdentity'
 
 const { t } = useI18n()
 
-const name = 'MarkText'
+const name = APP_DISPLAY_NAME
 const copyright = t('about.copyright', { year: new Date().getFullYear() })
 const copyrightContributors = t('about.copyrightContributors')
 const showAboutDialog = ref(false)

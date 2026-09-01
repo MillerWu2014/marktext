@@ -1,9 +1,9 @@
-<p align="center"><img src="../assets/logo-small.png" alt="MarkText" width="100" height="100"></p>
+<p align="center"><img src="../assets/logo-small.png" alt="MDComment" width="100" height="100"></p>
 
-<h1 align="center">MarkText</h1>
+<h1 align="center">MDComment</h1>
 
 <div align="center">
-  <a href="https://twitter.com/intent/tweet?via=marktextme&url=https://github.com/marktext/marktext/&text=What%20do%20you%20want%20to%20say%20to%20app?&hashtags=happyMarkText">
+  <a href="https://twitter.com/intent/tweet?via=marktextme&url=https://github.com/marktext/marktext/&text=What%20do%20you%20want%20to%20say%20to%20app?&hashtags=happyMDComment">
     <img src="https://img.shields.io/twitter/url/https/github.com/marktext/marktext.svg?style=for-the-badge" alt="twitter">
   </a>
 </div>
@@ -106,9 +106,9 @@
 
 <br />
 
-<h2 align="center">MarkText 지원</h2>
+<h2 align="center">MDComment 지원</h2>
 
-MarkText는 커뮤니티의 지원으로 운영되는 오픈소스 Markdown 편집기입니다. MarkText가 작업 흐름을 개선한다면 [프로젝트 후원](https://github.com/sponsors/marktext)을 고려해 주세요. 모든 후원자 여러분께 감사드립니다 ❤️
+MDComment는 커뮤니티의 지원으로 운영되는 오픈소스 Markdown 편집기입니다. MDComment가 작업 흐름을 개선한다면 [프로젝트 후원](https://github.com/sponsors/marktext)을 고려해 주세요. 모든 후원자 여러분께 감사드립니다 ❤️
 
 **특별 후원사**
 
@@ -143,7 +143,7 @@ MarkText는 커뮤니티의 지원으로 운영되는 오픈소스 Markdown 편�
 
 #### macOS
 
-[릴리스 페이지](https://github.com/marktext/marktext/releases/latest)에서 최신 `marktext-%version%.dmg`를 다운로드하거나 [**homebrew cask**](https://github.com/caskroom/homebrew-cask)를 사용하여 MarkText를 설치할 수 있습니다. Homebrew-Cask를 사용하려면 [Homebrew](https://brew.sh/)가 설치되어 있어야 합니다.
+[릴리스 페이지](https://github.com/marktext/marktext/releases/latest)에서 최신 `marktext-%version%.dmg`를 다운로드하거나 [**homebrew cask**](https://github.com/caskroom/homebrew-cask)를 사용하여 MDComment를 설치할 수 있습니다. Homebrew-Cask를 사용하려면 [Homebrew](https://brew.sh/)가 설치되어 있어야 합니다.
 
 ```bash
 brew install --cask mark-text
@@ -151,7 +151,7 @@ brew install --cask mark-text
 
 #### Windows
 
-설치 마법사(`marktext-setup-%version%.exe`)를 통해 MarkText를 다운로드하고 설치하여 사용자별 또는 시스템 전체 설치를 선택합니다. 또는 [Chocolatey](https://chocolatey.org/) 또는 [Winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/)과 같은 패키지 관리자를 사용하여 MarkText를 설치할 수 있습니다.
+설치 마법사(`marktext-setup-%version%.exe`)를 통해 MDComment를 다운로드하고 설치하여 사용자별 또는 시스템 전체 설치를 선택합니다. 또는 [Chocolatey](https://chocolatey.org/) 또는 [Winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/)과 같은 패키지 관리자를 사용하여 MDComment를 설치할 수 있습니다.
 
 Chocolatey를 사용하려면 [Chocolatey](https://chocolatey.org/install)가 설치되어 있어야 합니다:
 
@@ -175,21 +175,21 @@ Linux, macOS 및 Windows용 모든 바이너리는 [릴리스 페이지](https:/
 
 ## 개발
 
-MarkText를 직접 빌드하려면 [빌드 지침](../dev/BUILD.md)을 확인하세요.
+MDComment를 직접 빌드하려면 [빌드 지침](../dev/BUILD.md)을 확인하세요.
 
 - [사용자 문서](../README.md)
 - [개발자 문서](../dev/README.md)
 
-MarkText에 관한 질문이 있으면 issue를 작성하세요. 그럴 때는 issue를 열 때 나오는 기본 형식을 사용해 주세요. 물론, PR을 직접 제출하시면 매우 감사하겠습니다.
+MDComment에 관한 질문이 있으면 issue를 작성하세요. 그럴 때는 issue를 열 때 나오는 기본 형식을 사용해 주세요. 물론, PR을 직접 제출하시면 매우 감사하겠습니다.
 
 ## 기여
 
-MarkText는 개발 중입니다. pull request를 하기 전에 반드시 [기여 가이드](../../.github/CONTRIBUTING.md)를 읽어 주세요. MarkText에 기능을 추가하고 싶으신가요? [로드맵](https://github.com/marktext/marktext/projects)과 열린 issue를 참조하세요.
+MDComment는 개발 중입니다. pull request를 하기 전에 반드시 [기여 가이드](../../.github/CONTRIBUTING.md)를 읽어 주세요. MDComment에 기능을 추가하고 싶으신가요? [로드맵](https://github.com/marktext/marktext/projects)과 열린 issue를 참조하세요.
 
 
 ## 기여자
 
-이미 MarkText에 기여해 주신 모든 분들께 감사드립니다[[기여자](https://github.com/marktext/marktext/graphs/contributors)].
+이미 MDComment에 기여해 주신 모든 분들께 감사드립니다[[기여자](https://github.com/marktext/marktext/graphs/contributors)].
 
 <a href="https://github.com/marktext/marktext/graphs/contributors"><img src="https://opencollective.com/marktext/contributors.svg?width=890" /></a>
 

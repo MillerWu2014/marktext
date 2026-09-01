@@ -10,6 +10,7 @@
 
 | 项 | 值 |
 |---|---|
+| 产品名 | **MDComment**（由 MarkText 改名；界面、安装包、CLI 均使用此名） |
 | 本仓库 | https://github.com/MillerWu2014/marktext |
 | 上游 | https://github.com/marktext/marktext |
 | 工作分支 | `develop`（PR 也合进 `develop`，不要合 `main`） |
@@ -54,6 +55,9 @@
 
 | 主题 | 锁定选择 |
 |---|---|
+| 产品显示名 | **MDComment**（不要改回 MarkText） |
+| 包名 / 可执行文件 / WM Class | `mdcomment` |
+| appId | `com.mdcomment.app` |
 | 应用图标、`.md` 文件关联、About logo、网站 favicon / 页头 logo | 用户提供的蓝色思考海象 PNG，抠去棋盘格后的**透明底** |
 | 格式工具栏「新建批注」 | 系统/应用内置 **💬** 字形（不要用 PNG：工具栏是剪影 mask，彩色图不会显示） |
 

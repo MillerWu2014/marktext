@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-  <id>com.github.marktext.marktext</id>
+  <id>com.mdcomment.app</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT</project_license>
-  <name>MarkText</name>
+  <name>MDComment</name>
   <summary>Next generation markdown editor</summary>
   <description>
     <p>
-      MarkText is a free and open-source realtime preview markdown editor which support both CommonMark Spec and GitHub Flavored Markdown Spec. It is a concise text editor, dedicated to improving your writing efficiency.
+      MDComment is a free and open-source realtime preview markdown editor which support both CommonMark Spec and GitHub Flavored Markdown Spec. It is a concise text editor, dedicated to improving your writing efficiency.
     </p>
     <p>Features:</p>
     <ul>
@@ -19,8 +19,8 @@
       <li>Various edit modes and themes: source code mode, typewriter mode, focus mode</li>
     </ul>
   </description>
-  <url type="homepage">https://github.com/marktext/marktext/</url>
-  <url type="bugtracker">https://github.com/marktext/marktext/issues</url>
+  <url type="homepage">https://github.com/MillerWu2014/marktext/</url>
+  <url type="bugtracker">https://github.com/MillerWu2014/marktext/issues</url>
   <screenshots>
     <screenshot type="default">
       <caption>Light theme</caption>

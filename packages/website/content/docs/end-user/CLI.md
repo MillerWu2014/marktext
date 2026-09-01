@@ -1,7 +1,7 @@
 # Command Line Interface
 
 ```
-Usage: marktext [commands] [path ...]
+Usage: mdcomment [commands] [path ...]
 
   Available commands:
 
@@ -16,8 +16,8 @@ Usage: marktext [commands] [path ...]
     -h, --help                    Print this help message
 ```
 
-`marktext` should point to your installation of MarkText. The exact location will vary from platform to platform. On macOS, you can create a convenient alias like:
+`mdcomment` should point to your installation of MDComment. The exact location will vary from platform to platform. On macOS, you can create a convenient alias like:
 
 ```sh
-alias marktext="/Applications/Mark\ Text.app/Contents/MacOS/Mark\ Text"
+alias mdcomment="/Applications/MDComment.app/Contents/MacOS/MDComment"
 ```

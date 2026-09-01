@@ -1,6 +1,6 @@
 # Themes
 
-MarkText includes 33 built-in themes organized into Light and Dark categories. Each theme provides a complete color scheme for the editor interface and syntax highlighting.
+MDComment includes 33 built-in themes organized into Light and Dark categories. Each theme provides a complete color scheme for the editor interface and syntax highlighting.
 
 The names below match the labels shown in the **Theme** menu. The underlying id stored in `preferences.json` under the `theme` field can differ — e.g. *Cadmium Light* → `light`, *Cadmium Dark* → `dark`, *Graphite Light* → `graphite`, *Ulysses Light* → `ulysses`. The full label↔id mapping lives in `src/main/menu/templates/theme.ts`.
 

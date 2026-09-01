@@ -1,9 +1,9 @@
-<p align="center"><img src="../assets/logo-small.png" alt="MarkText" width="100" height="100"></p>
+<p align="center"><img src="../assets/logo-small.png" alt="MDComment" width="100" height="100"></p>
 
-<h1 align="center">MarkText</h1>
+<h1 align="center">MDComment</h1>
 
 <div align="center">
-  <a href="https://twitter.com/intent/tweet?via=marktextme&url=https://github.com/marktext/marktext/&text=What%20do%20you%20want%20to%20say%20to%20app?&hashtags=happyMarkText">
+  <a href="https://twitter.com/intent/tweet?via=marktextme&url=https://github.com/marktext/marktext/&text=What%20do%20you%20want%20to%20say%20to%20app?&hashtags=happyMDComment">
     <img src="https://img.shields.io/twitter/url/https/github.com/marktext/marktext.svg?style=for-the-badge" alt="twitter">
   </a>
 </div>
@@ -106,9 +106,9 @@
 
 <br />
 
-<h2 align="center">MarkText'e Destek Olun</h2>
+<h2 align="center">MDComment'e Destek Olun</h2>
 
-MarkText, topluluğunun desteğiyle hayata geçirilmiş açık kaynaklı bir Markdown editörüdür. MarkText iş akışınızı iyileştiriyorsa, lütfen [projeye destek olmayı](https://github.com/sponsors/marktext) düşünün. Tüm destekçilere teşekkürler ❤️
+MDComment, topluluğunun desteğiyle hayata geçirilmiş açık kaynaklı bir Markdown editörüdür. MDComment iş akışınızı iyileştiriyorsa, lütfen [projeye destek olmayı](https://github.com/sponsors/marktext) düşünün. Tüm destekçilere teşekkürler ❤️
 
 **Özel Destekçi**
 
@@ -143,7 +143,7 @@ En son sürümün yeni özelliklerini görmek ister misiniz? Lütfen [CHANGELOG]
 
 #### macOS
 
-[Sürümler sayfasından](https://github.com/marktext/marktext/releases/latest) en son `marktext-%version%.dmg`'yi indirebilir veya [**homebrew cask**](https://github.com/caskroom/homebrew-cask) kullanarak MarkText'i kurabilirsiniz. Homebrew-Cask kullanmak için [Homebrew](https://brew.sh/)'ün yüklü olması gerekir.
+[Sürümler sayfasından](https://github.com/marktext/marktext/releases/latest) en son `marktext-%version%.dmg`'yi indirebilir veya [**homebrew cask**](https://github.com/caskroom/homebrew-cask) kullanarak MDComment'i kurabilirsiniz. Homebrew-Cask kullanmak için [Homebrew](https://brew.sh/)'ün yüklü olması gerekir.
 
 ```bash
 brew install --cask mark-text
@@ -151,7 +151,7 @@ brew install --cask mark-text
 
 #### Windows
 
-MarkText'i kurulum sihirbazı (`marktext-setup-%version%.exe`) aracılığıyla indirip kurun ve kullanıcı başına mı yoksa sistem genelinde mi kurulacağını seçin. Alternatif olarak [Chocolatey](https://chocolatey.org/) veya [Winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/) gibi bir paket yöneticisi kullanabilirsiniz.
+MDComment'i kurulum sihirbazı (`marktext-setup-%version%.exe`) aracılığıyla indirip kurun ve kullanıcı başına mı yoksa sistem genelinde mi kurulacağını seçin. Alternatif olarak [Chocolatey](https://chocolatey.org/) veya [Winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/) gibi bir paket yöneticisi kullanabilirsiniz.
 
 Chocolatey kullanmak için [Chocolatey](https://chocolatey.org/install)'nin yüklü olması gerekir:
 
@@ -175,21 +175,21 @@ Linux, macOS ve Windows için tüm ikili dosyalar [sürümler sayfasından](http
 
 ## Geliştirme
 
-MarkText'i kendiniz derlemek istiyorsanız lütfen [derleme talimatlarımıza](../dev/BUILD.md) bakın.
+MDComment'i kendiniz derlemek istiyorsanız lütfen [derleme talimatlarımıza](../dev/BUILD.md) bakın.
 
 - [Kullanıcı belgeleri](../README.md)
 - [Geliştirici belgeleri](../dev/README.md)
 
-MarkText hakkında sorularınız varsa bir issue yazabilirsiniz. Bunu yaparken issue açarken görünen varsayılan formatı kullanın. Elbette doğrudan bir PR gönderirseniz çok memnun oluruz.
+MDComment hakkında sorularınız varsa bir issue yazabilirsiniz. Bunu yaparken issue açarken görünen varsayılan formatı kullanın. Elbette doğrudan bir PR gönderirseniz çok memnun oluruz.
 
 ## Katkı
 
-MarkText geliştirme aşamasındadır. Bir pull request oluşturmadan önce [Katkı Kılavuzunu](../../.github/CONTRIBUTING.md) okuduğunuzdan emin olun. MarkText'e özellik eklemek ister misiniz? [Yol haritamıza](https://github.com/marktext/marktext/projects) ve açık issue'lara bakın.
+MDComment geliştirme aşamasındadır. Bir pull request oluşturmadan önce [Katkı Kılavuzunu](../../.github/CONTRIBUTING.md) okuduğunuzdan emin olun. MDComment'e özellik eklemek ister misiniz? [Yol haritamıza](https://github.com/marktext/marktext/projects) ve açık issue'lara bakın.
 
 
 ## Katkıda Bulunanlar
 
-MarkText'e zaten katkıda bulunan herkese teşekkür ederiz[[katkıda bulunanlar](https://github.com/marktext/marktext/graphs/contributors)].
+MDComment'e zaten katkıda bulunan herkese teşekkür ederiz[[katkıda bulunanlar](https://github.com/marktext/marktext/graphs/contributors)].
 
 <a href="https://github.com/marktext/marktext/graphs/contributors"><img src="https://opencollective.com/marktext/contributors.svg?width=890" /></a>
 

@@ -235,18 +235,18 @@ Note that placement of achors is arbitrary, you can put them anywhere you want, 
 Images have a similar syntax to links but include a preceding exclamation point.
 
 ```markdown
-![MarkText](https://raw.githubusercontent.com/marktext/marktext/develop/resources/icons/256x256/marktext.png)
+![MDComment](https://raw.githubusercontent.com/marktext/marktext/develop/resources/icons/256x256/marktext.png)
 ```
 
-![MarkText](https://raw.githubusercontent.com/marktext/marktext/develop/resources/icons/256x256/marktext.png)
+![MDComment](https://raw.githubusercontent.com/marktext/marktext/develop/resources/icons/256x256/marktext.png)
 
 or
 
 ```markdown
-![Alt text](hhttps://raw.githubusercontent.com/marktext/marktext/develop/resources/icons/256x256/marktext.png "MarkText logo")
+![Alt text](hhttps://raw.githubusercontent.com/marktext/marktext/develop/resources/icons/256x256/marktext.png "MDComment logo")
 ```
 
-![Alt text](https://raw.githubusercontent.com/marktext/marktext/develop/resources/icons/256x256/marktext.png "MarkText logo")
+![Alt text](https://raw.githubusercontent.com/marktext/marktext/develop/resources/icons/256x256/marktext.png "MDComment logo")
 
 Like links, Images also have a footnote style syntax
 
@@ -258,10 +258,10 @@ Like links, Images also have a footnote style syntax
 
 With a reference later in the document defining the URL location:
 
-[id]: https://raw.githubusercontent.com/marktext/marktext/develop/resources/icons/256x256/marktext.png  "MarkText logo"
+[id]: https://raw.githubusercontent.com/marktext/marktext/develop/resources/icons/256x256/marktext.png  "MDComment logo"
 
 ```markdown
-[id]: https://raw.githubusercontent.com/marktext/marktext/develop/resources/icons/256x256/marktext.png  "MarkText logo"
+[id]: https://raw.githubusercontent.com/marktext/marktext/develop/resources/icons/256x256/marktext.png  "MDComment logo"
 ```
 
 <br>
@@ -639,7 +639,7 @@ Which renders to:
 
 :heart: :zap: :cow: :dollar: :star: :tada:
 
-**NOTE:** MarkText provides an emoji picker with search functionality.
+**NOTE:** MDComment provides an emoji picker with search functionality.
 
 <br>
 
@@ -728,7 +728,7 @@ $$
 
 ## Diagrams
 
-MarkText support class, flow chart, gantt and sequence diagrams powered by flowchart.js, mermaid and Vega-Lite. [Code](#code) blocks with special language identifiers are used for diagrams.
+MDComment support class, flow chart, gantt and sequence diagrams powered by flowchart.js, mermaid and Vega-Lite. [Code](#code) blocks with special language identifiers are used for diagrams.
 
 For example, this:
 

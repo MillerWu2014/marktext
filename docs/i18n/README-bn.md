@@ -1,9 +1,9 @@
-<p align="center"><img src="../assets/logo-small.png" alt="MarkText" width="100" height="100"></p>
+<p align="center"><img src="../assets/logo-small.png" alt="MDComment" width="100" height="100"></p>
 
-<h1 align="center">MarkText</h1>
+<h1 align="center">MDComment</h1>
 
 <div align="center">
-  <a href="https://twitter.com/intent/tweet?via=marktextme&url=https://github.com/marktext/marktext/&text=What%20do%20you%20want%20to%20say%20to%20app?&hashtags=happyMarkText">
+  <a href="https://twitter.com/intent/tweet?via=marktextme&url=https://github.com/marktext/marktext/&text=What%20do%20you%20want%20to%20say%20to%20app?&hashtags=happyMDComment">
     <img src="https://img.shields.io/twitter/url/https/github.com/marktext/marktext.svg?style=for-the-badge" alt="twitter">
   </a>
 </div>
@@ -109,7 +109,7 @@
 
 <h2 align="center">স্পনসর</h2>
 
-MarkText একটি ওপেন-সোর্স Markdown এডিটর, যা এর কমিউনিটির সহায়তায় এগিয়ে চলছে। MarkText যদি আপনার কাজের ধারা উন্নত করে থাকে, তাহলে অনুগ্রহ করে [প্রজেক্টটিকে স্পনসর করার](https://github.com/sponsors/marktext) কথা বিবেচনা করুন। সব স্পনসরকে ধন্যবাদ ❤️
+MDComment একটি ওপেন-সোর্স Markdown এডিটর, যা এর কমিউনিটির সহায়তায় এগিয়ে চলছে। MDComment যদি আপনার কাজের ধারা উন্নত করে থাকে, তাহলে অনুগ্রহ করে [প্রজেক্টটিকে স্পনসর করার](https://github.com/sponsors/marktext) কথা বিবেচনা করুন। সব স্পনসরকে ধন্যবাদ ❤️
 
 **বিশেষ স্পনসর**
 
@@ -145,7 +145,7 @@ MarkText একটি ওপেন-সোর্স Markdown এডিটর, য
 
 macOS 11 (Big Sur) বা পরবর্তী সংস্করণ প্রয়োজন। Universal build প্রকাশ করা হয় না, তাই আপনার মেশিনের সঙ্গে মিল থাকা `arm64` বা `x64` installer বেছে নিন।
 
-আপনি [release page](https://github.com/marktext/marktext/releases/latest) থেকে সর্বশেষ `marktext-mac-(arm64|x64)-%version%.dmg` ডাউনলোড করতে পারেন, অথবা [**homebrew cask**](https://github.com/caskroom/homebrew-cask) ব্যবহার করে MarkText ইনস্টল করতে পারেন। Homebrew-Cask ব্যবহার করতে হলে আগে [Homebrew](https://brew.sh/) ইনস্টল করা থাকতে হবে।
+আপনি [release page](https://github.com/marktext/marktext/releases/latest) থেকে সর্বশেষ `marktext-mac-(arm64|x64)-%version%.dmg` ডাউনলোড করতে পারেন, অথবা [**homebrew cask**](https://github.com/caskroom/homebrew-cask) ব্যবহার করে MDComment ইনস্টল করতে পারেন। Homebrew-Cask ব্যবহার করতে হলে আগে [Homebrew](https://brew.sh/) ইনস্টল করা থাকতে হবে।
 
 ```bash
 brew install --cask mark-text
@@ -155,7 +155,7 @@ brew install --cask mark-text
 
 Windows 10 অথবা 11 প্রয়োজন। x64 এবং arm64 - উভয় installer প্রকাশ করা হয়, তাই আপনার মেশিনের architecture অনুযায়ীটি বেছে নিন।
 
-শুধু setup wizard (`marktext-win-(x64|arm64)-%version%-setup.exe`) ডাউনলোড করে ইনস্টল করুন এবং user-only নাকি machine-wide ইনস্টল করবেন তা বেছে নিন। বিকল্পভাবে, [Chocolatey](https://chocolatey.org/) বা [Winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/) এর মতো package manager ব্যবহার করেও MarkText ইনস্টল করতে পারেন।
+শুধু setup wizard (`marktext-win-(x64|arm64)-%version%-setup.exe`) ডাউনলোড করে ইনস্টল করুন এবং user-only নাকি machine-wide ইনস্টল করবেন তা বেছে নিন। বিকল্পভাবে, [Chocolatey](https://chocolatey.org/) বা [Winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/) এর মতো package manager ব্যবহার করেও MDComment ইনস্টল করতে পারেন।
 
 Chocolatey ব্যবহার করতে চাইলে আগে [Chocolatey](https://chocolatey.org/install) ইনস্টল করা থাকতে হবে:
 
@@ -179,20 +179,20 @@ Linux, macOS এবং Windows-এর সব binary [release page](https://githu
 
 ## ডেভেলপমেন্ট
 
-আপনি যদি নিজে MarkText build করতে চান, তাহলে আমাদের [build instructions](https://marktext.me/docs/dev/build) দেখুন।
+আপনি যদি নিজে MDComment build করতে চান, তাহলে আমাদের [build instructions](https://marktext.me/docs/dev/build) দেখুন।
 
 - [ব্যবহারকারী ডকুমেন্টেশন](https://marktext.me/docs/introduction)
 - [ডেভেলপার ডকুমেন্টেশন](https://marktext.me/docs/dev/overview)
 
-MarkText সম্পর্কে আপনার কোনো প্রশ্ন থাকলে issue খুলতে পারেন। Issue খোলার সময় অনুগ্রহ করে ডিফল্ট ফরম্যাটটি ব্যবহার করুন। অবশ্যই, সরাসরি PR পাঠালে সেটিও অত্যন্ত প্রশংসিত হবে।
+MDComment সম্পর্কে আপনার কোনো প্রশ্ন থাকলে issue খুলতে পারেন। Issue খোলার সময় অনুগ্রহ করে ডিফল্ট ফরম্যাটটি ব্যবহার করুন। অবশ্যই, সরাসরি PR পাঠালে সেটিও অত্যন্ত প্রশংসিত হবে।
 
 ## অবদান
 
-MarkText এখনো উন্নয়নাধীন, তাই pull request করার আগে [Contributing Guide](../../.github/CONTRIBUTING.md) পড়ে নিন। MarkText-এ নতুন ফিচার যোগ করতে চান? আমাদের [roadmap](https://github.com/marktext/marktext/projects) এবং open issue দেখুন।
+MDComment এখনো উন্নয়নাধীন, তাই pull request করার আগে [Contributing Guide](../../.github/CONTRIBUTING.md) পড়ে নিন। MDComment-এ নতুন ফিচার যোগ করতে চান? আমাদের [roadmap](https://github.com/marktext/marktext/projects) এবং open issue দেখুন।
 
 ## অবদানকারীরা
 
-যারা ইতিমধ্যেই MarkText-এ অবদান রেখেছেন, তাদের সবাইকে ধন্যবাদ [[contributors](https://github.com/marktext/marktext/graphs/contributors)]।
+যারা ইতিমধ্যেই MDComment-এ অবদান রেখেছেন, তাদের সবাইকে ধন্যবাদ [[contributors](https://github.com/marktext/marktext/graphs/contributors)]।
 
 <a href="https://github.com/marktext/marktext/graphs/contributors"><img src="https://opencollective.com/marktext/contributors.svg?width=890" /></a>
 

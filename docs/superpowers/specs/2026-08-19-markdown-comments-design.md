@@ -1,6 +1,6 @@
 # Word-like Markdown Comments
 
-Approved design for a right-hand comments pane in MarkText. Markdown files stay clean; comments live in a sidecar file.
+Approved design for a right-hand comments pane in MDComment. Markdown files stay clean; comments live in a sidecar file.
 
 ## Goal
 
@@ -26,7 +26,7 @@ In WYSIWYG mode, select a span of body text, create a comment, and see it in a d
 - Multi-user accounts, presence, or sidecar merge
 - Export / print / PDF including comments
 - Commenting on a selection that contains no text (image-only)
-- Two-window conflict resolution beyond whatever MarkText already does for the markdown file
+- Two-window conflict resolution beyond whatever MDComment already does for the markdown file
 
 ## Current layout (unchanged except the new column)
 
@@ -272,4 +272,4 @@ Open a markdown file → select text → New Comment → type body → Save → 
 - Do not reuse the left sidebar `rightColumn` for this pane.
 - New IPC channels use the `mt::` prefix and the typed contract in `ipc.ts`.
 - Comments that dirty a tab must participate in the existing unsaved-close dialog.
-- Visual style follows MarkText’s current CSS variables (`--editorBgColor`, `--sideBarBgColor`, accent) so light/dark themes both work. Underline uses the theme accent, not a hard-coded Word yellow.
+- Visual style follows MDComment’s current CSS variables (`--editorBgColor`, `--sideBarBgColor`, accent) so light/dark themes both work. Underline uses the theme accent, not a hard-coded Word yellow.

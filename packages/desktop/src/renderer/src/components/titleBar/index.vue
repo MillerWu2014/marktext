@@ -19,7 +19,7 @@
         class="title"
         @dblclick.stop="toggleMaxmizeOnMacOS"
       >
-        <span v-if="!filename">MarkText</span>
+        <span v-if="!filename">{{ appName }}</span>
         <span v-else>
           <span
             v-for="(path, index) of paths"
@@ -149,6 +149,7 @@ import { useEditorStore } from '@/store/editor'
 import { useI18n } from 'vue-i18n'
 import { ArrowRight } from '@element-plus/icons-vue'
 import type { FileWordCount } from '@shared/types/files'
+import { APP_DISPLAY_NAME } from '@shared/appIdentity'
 
 interface ProjectInfo {
   name?: string
@@ -169,6 +170,7 @@ const preferencesStore = usePreferencesStore()
 const layoutStore = useLayoutStore()
 const editorStore = useEditorStore()
 const { t } = useI18n()
+const appName = APP_DISPLAY_NAME
 
 const isOsx = isOsxPlatform
 const HASH = {
@@ -234,9 +236,9 @@ watch(
     const projectName = props.project?.name ?? ''
     let title = ''
     if (value) {
-      title = hasOpenFolder ? `${value} - ${projectName}` : `${value}`
+      title = hasOpenFolder ? `${value} - ${projectName}` : `${value} - ${APP_DISPLAY_NAME}`
     } else {
-      title = hasOpenFolder ? projectName : ''
+      title = hasOpenFolder ? projectName : APP_DISPLAY_NAME
     }
 
     document.title = title

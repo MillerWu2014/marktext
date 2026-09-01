@@ -93,21 +93,21 @@
       "reportBug": "Hata Bildir",
       "viewSource": "Kaynağı Görüntüle",
       "followUs": "Bizi Takip Edin",
-      "support": "MarkText'e Destek Ol",
+      "support": "MDComment'e Destek Ol",
       "license": "Lisans",
       "about": "Hakkında",
       "checkUpdates": "Güncellemeleri Denetle"
     },
     "marktext": {
-      "title": "MarkText",
-      "about": "MarkText Hakkında",
+      "title": "MDComment",
+      "about": "MDComment Hakkında",
       "checkUpdates": "Güncellemeleri Denetle...",
       "preferences": "Tercihler",
       "services": "Hizmetler",
-      "hide": "MarkText'i Gizle",
+      "hide": "MDComment'i Gizle",
       "hideOthers": "Diğerlerini Gizle",
       "showAll": "Tümünü Göster",
-      "quit": "MarkText'ten Çık"
+      "quit": "MDComment'ten Çık"
     },
     "view": {
       "view": "Görünüm",
@@ -346,7 +346,7 @@
   },
   "import": {
     "title": "İçe Aktar veya Aç",
-    "description": "İçeriklerinizi MarkText'e almak için buraya bırakın"
+    "description": "İçeriklerinizi MDComment'e almak için buraya bırakın"
   },
   "preferences": {
     "title": "Tercihler",
@@ -374,10 +374,10 @@
         "hideScrollbar": "Kaydırma çubuklarının gizlenip gizlenmeyeceği",
         "wordWrapInToc": "İçindekilerde sözcük kaydırmanın etkinleştirilip etkinleştirilmeyeceği",
         "fileSortBy": "Açık klasördeki dosyaları oluşturulma zamanı, değiştirilme zamanı ve başlığa göre sırala",
-        "startUpAction": "MarkText başladıktan sonraki eylem: son düzenlenen içeriği aç, belirtilen klasörü aç veya boş sayfa",
+        "startUpAction": "MDComment başladıktan sonraki eylem: son düzenlenen içeriği aç, belirtilen klasörü aç veya boş sayfa",
         "restoreLayoutState": "Başlangıçta önceki düzenleyici durumunu geri yükle",
         "defaultDirectoryToOpen": "startUp=folder olduğunda başlangıçta açılması gereken varsayılan klasör",
-        "language": "MarkText'in kullandığı dil",
+        "language": "MDComment'in kullandığı dil",
         "editorFontFamily": "Düzenleyici yazı tipi ailesi",
         "fontSize": "Piksel cinsinden yazı tipi boyutu",
         "lineHeight": "Satır Yüksekliği",
@@ -401,7 +401,7 @@
         "preferLooseListItem": "Tercih edilen liste türü",
         "bulletListMarker": "Sırasız listede kullanılan işaret",
         "orderListDelimiter": "Sıralı listede kullanılan ayraç",
-        "preferHeadingStyle": "MarkText'te tercih edilen başlık stili",
+        "preferHeadingStyle": "MDComment'te tercih edilen başlık stili",
         "tabSize": "Sekmeyi x boşlukla değiştir",
         "listIndentation": "Liste girintisini seçin",
         "frontmatterType": "Ön bilgi türü",
@@ -410,7 +410,7 @@
         "isHtmlEnabled": "HTML işlemeyi etkinleştir",
         "isGitlabCompatibilityEnabled": "GitLab uyumluluk modunu etkinleştir",
         "sequenceTheme": "Dizi diyagramı teması",
-        "theme": "MarkText'te kullanılan temayı seçin",
+        "theme": "MDComment'te kullanılan temayı seçin",
         "followSystemTheme": "Sistem Temasını Takip Et",
         "lightModeTheme": "Sistem açık moddayken kullanılacak tema",
         "darkModeTheme": "Sistem koyu moddayken kullanılacak tema",
@@ -624,7 +624,7 @@
         "pleaseInstall": "Lütfen yükleyin",
         "scriptPath": "Betik yolu"
       },
-      "defaultBehavior": "Görseli MarkText'e yapıştırdıktan veya sürükledikten sonraki varsayılan davranış"
+      "defaultBehavior": "Görseli MDComment'e yapıştırdıktan veya sürükledikten sonraki varsayılan davranış"
     },
     "markdown": {
       "title": "Markdown",
@@ -741,7 +741,7 @@
   },
   "commands": {
     "mt": {
-      "hide": "MarkText'i Gizle",
+      "hide": "MDComment'i Gizle",
       "hideOthers": "Diğerlerini Gizle"
     },
     "file": {
@@ -909,7 +909,7 @@
     "configSchemaViolation": "Yapılandırma şeması ihlali",
     "copyError": "Kopyalama hatası",
     "initializationFailed": "Başlatma başarısız {hint}",
-    "otherInstanceDetected": "Başka bir MarkText penceresi zaten açık",
+    "otherInstanceDetected": "Başka bir MDComment penceresi zaten açık",
     "report": "Bildir",
     "startupError": "Başlangıç hatası",
     "terminatedDueToError": "Hata nedeniyle sonlandırıldı",

@@ -1,17 +1,17 @@
 # Key Bindings for macOS
 
-MarkText key bindings for macOS. Please see [general key bindings](KEYBINDINGS.md) for information how to use custom key bindings.
+MDComment key bindings for macOS. Please see [general key bindings](KEYBINDINGS.md) for information how to use custom key bindings.
 
 ## Available menu key bindings
 
-#### MarkText menu
+#### MDComment menu
 
 | Id                 | Default                                           | Description                            |
 | ------------------ | ------------------------------------------------- | -------------------------------------- |
-| `mt.hide`          | <kbd>Command</kbd>+<kbd>H</kbd>                   | Hide MarkText                          |
-| `mt.hide-others`   | <kbd>Command</kbd>+<kbd>Option</kbd>+<kbd>H</kbd> | Hide all other windows except MarkText |
+| `mt.hide`          | <kbd>Command</kbd>+<kbd>H</kbd>                   | Hide MDComment                          |
+| `mt.hide-others`   | <kbd>Command</kbd>+<kbd>Option</kbd>+<kbd>H</kbd> | Hide all other windows except MDComment |
 | `file.preferences` | <kbd>Command</kbd>+<kbd>,</kbd>                   | Open settings window                   |
-| `file.quit`        | <kbd>Command</kbd>+<kbd>Q</kbd>                   | Quit MarkText                          |
+| `file.quit`        | <kbd>Command</kbd>+<kbd>Q</kbd>                   | Quit MDComment                          |
 
 #### File menu
 

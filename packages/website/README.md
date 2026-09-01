@@ -1,4 +1,4 @@
-# MarkText Website
+# MDComment Website
 
 
 
@@ -6,7 +6,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-purple?logo=vite&logoColor=white)](https://vitejs.dev/)
 
-The official website for [MarkText](https://github.com/marktext/marktext) - A simple and elegant markdown editor.
+The official website for [MDComment](https://github.com/MillerWu2014/marktext) - A simple and elegant markdown editor.
 
 ## ✨ Features
 
@@ -236,14 +236,14 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔗 Links
 
-- **Main Project**: [MarkText Editor](https://github.com/marktext/marktext)
+- **Main Project**: [MDComment Editor](https://github.com/marktext/marktext)
 - **Website**: [https://marktext.me](https://marktext.me)
-- **Documentation**: [MarkText Docs](https://marktext.me/docs)
+- **Documentation**: [MDComment Docs](https://marktext.me/docs)
 
 ## 💖 Sponsors
 
-Special thanks to all our sponsors for supporting the MarkText project!
+Special thanks to all our sponsors for supporting the MDComment project!
 
 ---
 
-Made with ❤️ by the MarkText Team
+Made with ❤️ by the MDComment Team

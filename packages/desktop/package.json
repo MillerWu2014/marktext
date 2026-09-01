@@ -1,7 +1,7 @@
 {
-  "name": "marktext",
+  "name": "mdcomment",
   "version": "0.20.0-dev",
-  "description": "MarkText",
+  "description": "MDComment",
   "main": "./out/main/index.js",
   "author": {
     "name": "Jocs",
@@ -25,10 +25,10 @@
       "url": "https://github.com/Tkaixiang"
     }
   ],
-  "homepage": "https://github.com/marktext/marktext",
+  "homepage": "https://github.com/MillerWu2014/marktext",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/marktext/marktext.git"
+    "url": "git+https://github.com/MillerWu2014/marktext.git"
   },
   "scripts": {
     "minify-locales": "tsx ../../scripts/minify-locales.ts",

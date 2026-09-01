@@ -1,9 +1,9 @@
-<p align="center"><img src="../assets/logo-small.png" alt="MarkText" width="100" height="100"></p>
+<p align="center"><img src="../assets/logo-small.png" alt="MDComment" width="100" height="100"></p>
 
-<h1 align="center">MarkText</h1>
+<h1 align="center">MDComment</h1>
 
 <div align="center">
-  <a href="https://twitter.com/intent/tweet?via=marktextme&url=https://github.com/marktext/marktext/&text=What%20do%20you%20want%20to%20say%20to%20app?&hashtags=happyMarkText">
+  <a href="https://twitter.com/intent/tweet?via=marktextme&url=https://github.com/marktext/marktext/&text=What%20do%20you%20want%20to%20say%20to%20app?&hashtags=happyMDComment">
     <img src="https://img.shields.io/twitter/url/https/github.com/marktext/marktext.svg?style=for-the-badge" alt="twitter">
   </a>
 </div>
@@ -105,9 +105,9 @@
 
 <br />
 
-<h2 align="center">MarkText unterstützen</h2>
+<h2 align="center">MDComment unterstützen</h2>
 
-MarkText ist ein Open-Source-Markdown-Editor, der von seiner Community unterstützt wird. Wenn MarkText Ihren Workflow verbessert, erwägen Sie bitte, [das Projekt zu sponsern](https://github.com/sponsors/marktext). Vielen Dank an alle Sponsoren ❤️
+MDComment ist ein Open-Source-Markdown-Editor, der von seiner Community unterstützt wird. Wenn MDComment Ihren Workflow verbessert, erwägen Sie bitte, [das Projekt zu sponsern](https://github.com/sponsors/marktext). Vielen Dank an alle Sponsoren ❤️
 
 **Besonderer Sponsor**
 
@@ -142,7 +142,7 @@ Möchtest du die neuen Funktionen der neuesten Version sehen? Bitte sieh dir das
 
 #### macOS
 
-Du kannst entweder die neueste `marktext-%version%.dmg` von der [Release-Seite](https://github.com/marktext/marktext/releases/latest) herunterladen oder MarkText über [**homebrew cask**](https://github.com/caskroom/homebrew-cask) installieren. Für Homebrew-Cask muss [Homebrew](https://brew.sh/) installiert sein.
+Du kannst entweder die neueste `marktext-%version%.dmg` von der [Release-Seite](https://github.com/marktext/marktext/releases/latest) herunterladen oder MDComment über [**homebrew cask**](https://github.com/caskroom/homebrew-cask) installieren. Für Homebrew-Cask muss [Homebrew](https://brew.sh/) installiert sein.
 
 ```bash
 brew install --cask mark-text
@@ -150,7 +150,7 @@ brew install --cask mark-text
 
 #### Windows
 
-Lade MarkText einfach über den Setup-Assistenten (`marktext-setup-%version%.exe`) herunter und installiere es, wähle dabei zwischen Benutzer- oder systemweiter Installation. Alternativ kann MarkText über einen Paketmanager wie [Chocolatey](https://chocolatey.org/) oder [Winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/) installiert werden.
+Lade MDComment einfach über den Setup-Assistenten (`marktext-setup-%version%.exe`) herunter und installiere es, wähle dabei zwischen Benutzer- oder systemweiter Installation. Alternativ kann MDComment über einen Paketmanager wie [Chocolatey](https://chocolatey.org/) oder [Winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/) installiert werden.
 
 Für Chocolatey muss [Chocolatey](https://chocolatey.org/install) installiert sein:
 
@@ -174,21 +174,21 @@ Alle Binärdateien für Linux, macOS und Windows können von der [Release-Seite]
 
 ## Entwicklung
 
-Wenn du MarkText selbst erstellen möchtest, sieh dir bitte unsere [Build-Anleitung](../dev/BUILD.md) an.
+Wenn du MDComment selbst erstellen möchtest, sieh dir bitte unsere [Build-Anleitung](../dev/BUILD.md) an.
 
 - [Benutzerdokumentation](../README.md)
 - [Entwicklerdokumentation](../dev/README.md)
 
-Bei Fragen zu MarkText kannst du gerne ein Issue erstellen. Bitte verwende dabei das Standardformat. Natürlich ist auch ein direkter PR sehr willkommen.
+Bei Fragen zu MDComment kannst du gerne ein Issue erstellen. Bitte verwende dabei das Standardformat. Natürlich ist auch ein direkter PR sehr willkommen.
 
 ## Beitrag
 
-MarkText befindet sich in der Entwicklung. Bitte lies den [Beitragsleitfaden](../../.github/CONTRIBUTING.md) vor dem Erstellen eines Pull Requests. Möchtest du Funktionen zu MarkText hinzufügen? Sieh dir unsere [Roadmap](https://github.com/marktext/marktext/projects) und offene Issues an.
+MDComment befindet sich in der Entwicklung. Bitte lies den [Beitragsleitfaden](../../.github/CONTRIBUTING.md) vor dem Erstellen eines Pull Requests. Möchtest du Funktionen zu MDComment hinzufügen? Sieh dir unsere [Roadmap](https://github.com/marktext/marktext/projects) und offene Issues an.
 
 
 ## Mitwirkende
 
-Danke an alle, die bereits zu MarkText beigetragen haben[[Mitwirkende](https://github.com/marktext/marktext/graphs/contributors)].
+Danke an alle, die bereits zu MDComment beigetragen haben[[Mitwirkende](https://github.com/marktext/marktext/graphs/contributors)].
 
 <a href="https://github.com/marktext/marktext/graphs/contributors"><img src="https://opencollective.com/marktext/contributors.svg?width=890" /></a>
 

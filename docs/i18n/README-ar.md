@@ -1,9 +1,9 @@
-<p align="center"><img src="../assets/logo-small.png" alt="MarkText" width="100" height="100"></p>
+<p align="center"><img src="../assets/logo-small.png" alt="MDComment" width="100" height="100"></p>
 
-<h1 dir="rtl" align="center">MarkText</h1>
+<h1 dir="rtl" align="center">MDComment</h1>
 
 <div dir="rtl" align="center">
-  <a href="https://twitter.com/intent/tweet?via=marktextme&url=https://github.com/marktext/marktext/&text=What%20do%20you%20want%20to%20say%20to%20app?&hashtags=happyMarkText">
+  <a href="https://twitter.com/intent/tweet?via=marktextme&url=https://github.com/marktext/marktext/&text=What%20do%20you%20want%20to%20say%20to%20app?&hashtags=happyMDComment">
     <img src="https://img.shields.io/twitter/url/https/github.com/marktext/marktext.svg?style=for-the-badge" alt="twitter">
   </a>
 </div>
@@ -105,9 +105,9 @@
 
 <br />
 
-<h2 dir="rtl" align="center">دعم MarkText</h2>
+<h2 dir="rtl" align="center">دعم MDComment</h2>
 
-MarkText هو محرر Markdown مفتوح المصدر يعتمد على دعم مجتمعه. إذا كان MarkText يُحسّن سير عملك، يُرجى التفكير في [دعم المشروع](https://github.com/sponsors/marktext). شكراً لجميع الداعمين ❤️
+MDComment هو محرر Markdown مفتوح المصدر يعتمد على دعم مجتمعه. إذا كان MDComment يُحسّن سير عملك، يُرجى التفكير في [دعم المشروع](https://github.com/sponsors/marktext). شكراً لجميع الداعمين ❤️
 
 **الراعي المميز**
 
@@ -142,7 +142,7 @@ MarkText هو محرر Markdown مفتوح المصدر يعتمد على دعم
 
 #### macOS
 
-يمكنك تنزيل أحدث `marktext-%version%.dmg` من [صفحة الإصدارات](https://github.com/marktext/marktext/releases/latest) أو تثبيت MarkText باستخدام [**homebrew cask**](https://github.com/caskroom/homebrew-cask). لاستخدام Homebrew-Cask تحتاج فقط إلى تثبيت [Homebrew](https://brew.sh/).
+يمكنك تنزيل أحدث `marktext-%version%.dmg` من [صفحة الإصدارات](https://github.com/marktext/marktext/releases/latest) أو تثبيت MDComment باستخدام [**homebrew cask**](https://github.com/caskroom/homebrew-cask). لاستخدام Homebrew-Cask تحتاج فقط إلى تثبيت [Homebrew](https://brew.sh/).
 
 ```bash
 brew install --cask mark-text
@@ -150,7 +150,7 @@ brew install --cask mark-text
 
 #### Windows
 
-ما عليك سوى تنزيل وتثبيت MarkText عبر معالج الإعداد (`marktext-setup-%version%.exe`) واختيار ما إذا كنت تريد التثبيت لكل مستخدم أو على مستوى الجهاز. بدلاً من ذلك، قم بتثبيت MarkText باستخدام مدير الحزم مثل [Chocolatey](https://chocolatey.org/) أو [Winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/).
+ما عليك سوى تنزيل وتثبيت MDComment عبر معالج الإعداد (`marktext-setup-%version%.exe`) واختيار ما إذا كنت تريد التثبيت لكل مستخدم أو على مستوى الجهاز. بدلاً من ذلك، قم بتثبيت MDComment باستخدام مدير الحزم مثل [Chocolatey](https://chocolatey.org/) أو [Winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/).
 
 لاستخدام Chocolatey، تحتاج إلى تثبيت [Chocolatey](https://chocolatey.org/install):
 
@@ -174,21 +174,21 @@ winget install marktext
 
 ## التطوير
 
-إذا كنت ترغب في بناء MarkText بنفسك، يرجى الاطلاع على [تعليمات البناء](../dev/BUILD.md).
+إذا كنت ترغب في بناء MDComment بنفسك، يرجى الاطلاع على [تعليمات البناء](../dev/BUILD.md).
 
 - [توثيق المستخدم](../README.md)
 - [توثيق المطور](../dev/README.md)
 
-إذا كانت لديك أي أسئلة بخصوص MarkText، فمرحبًا بك في كتابة مشكلة. عند القيام بذلك، يرجى استخدام التنسيق الافتراضي. بالطبع، إذا قدمت طلب دمج (PR) مباشرة، فسيتم تقديره كثيرًا.
+إذا كانت لديك أي أسئلة بخصوص MDComment، فمرحبًا بك في كتابة مشكلة. عند القيام بذلك، يرجى استخدام التنسيق الافتراضي. بالطبع، إذا قدمت طلب دمج (PR) مباشرة، فسيتم تقديره كثيرًا.
 
 ## المساهمة
 
-MarkText قيد التطوير، يرجى التأكد من قراءة [دليل المساهمة](../../.github/CONTRIBUTING.md) قبل إنشاء طلب دمج. هل تريد إضافة ميزات إلى MarkText؟ راجع [خارطة الطريق](https://github.com/marktext/marktext/projects) والمشكلات المفتوحة.
+MDComment قيد التطوير، يرجى التأكد من قراءة [دليل المساهمة](../../.github/CONTRIBUTING.md) قبل إنشاء طلب دمج. هل تريد إضافة ميزات إلى MDComment؟ راجع [خارطة الطريق](https://github.com/marktext/marktext/projects) والمشكلات المفتوحة.
 
 
 ## المساهمون
 
-شكراً لجميع الأشخاص الذين ساهموا بالفعل في MarkText[[المساهمون](https://github.com/marktext/marktext/graphs/contributors)].
+شكراً لجميع الأشخاص الذين ساهموا بالفعل في MDComment[[المساهمون](https://github.com/marktext/marktext/graphs/contributors)].
 
 <a href="https://github.com/marktext/marktext/graphs/contributors"><img src="https://opencollective.com/marktext/contributors.svg?width=890" /></a>
 

@@ -38,7 +38,7 @@ export default function Preview() {
                 delay="d3"
                 icon={<GridSmallIcon />}
                 title="Paste & go"
-                description="Paste rich text and MarkText converts it to clean Markdown."
+                description="Paste rich text and MDComment converts it to clean Markdown."
               />
             </div>
           </div>

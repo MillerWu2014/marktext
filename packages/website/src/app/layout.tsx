@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 })
 
 const SITE_URL = 'https://marktext.me'
-const TITLE = 'MarkText — The Markdown editor that gets out of your way'
+const TITLE = 'MDComment — The Markdown editor that gets out of your way'
 const DESCRIPTION =
   'A free, open-source, real-time preview Markdown editor for macOS, Windows and Linux. Beautiful typography, 33 built-in themes, math, diagrams, footnotes — all rendered live.'
 
@@ -24,10 +24,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: TITLE,
-    template: '%s | MarkText'
+    template: '%s | MDComment'
   },
   description: DESCRIPTION,
-  applicationName: 'MarkText',
+  applicationName: 'MDComment',
   keywords: [
     'markdown editor',
     'WYSIWYG markdown',
@@ -50,10 +50,10 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: SITE_URL,
-    siteName: 'MarkText',
+    siteName: 'MDComment',
     title: TITLE,
     description: DESCRIPTION,
-    images: [{ url: '/favicon.png', width: 512, height: 512, alt: 'MarkText logo' }]
+    images: [{ url: '/favicon.png', width: 512, height: 512, alt: 'MDComment logo' }]
   },
   twitter: {
     card: 'summary_large_image',
@@ -73,7 +73,7 @@ export const viewport: Viewport = {
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
-  name: 'MarkText',
+  name: 'MDComment',
   applicationCategory: 'DeveloperApplication',
   operatingSystem: 'macOS, Windows, Linux',
   description: DESCRIPTION,

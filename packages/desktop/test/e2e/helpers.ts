@@ -13,7 +13,7 @@ const getDateAsFilename = (): string => {
 
 const getTempPath = (suffix = ''): string => {
   const name =
-    'marktext-e2etest-' +
+    'mdcomment-e2etest-' +
     getDateAsFilename() +
     '-' +
     Math.random().toString(36).slice(2, 8) +

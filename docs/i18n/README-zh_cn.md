@@ -1,9 +1,9 @@
-<p align="center"><img src="../assets/logo-small.png" alt="MarkText" width="100" height="100"></p>
+<p align="center"><img src="../assets/logo-small.png" alt="MDComment" width="100" height="100"></p>
 
-<h1 align="center">MarkText</h1>
+<h1 align="center">MDComment</h1>
 
 <div align="center">
-  <a href="https://twitter.com/intent/tweet?via=marktextme&url=https://github.com/marktext/marktext/&text=What%20do%20you%20want%20to%20say%20to%20app?&hashtags=happyMarkText">
+  <a href="https://twitter.com/intent/tweet?via=marktextme&url=https://github.com/marktext/marktext/&text=What%20do%20you%20want%20to%20say%20to%20app?&hashtags=happyMDComment">
     <img src="https://img.shields.io/twitter/url/https/github.com/marktext/marktext.svg?style=for-the-badge" alt="twitter">
   </a>
 </div>
@@ -106,9 +106,9 @@
 
 <br />
 
-<h2 align="center">支持 MarkText</h2>
+<h2 align="center">支持 MDComment</h2>
 
-MarkText 是一款由社区支持驱动的开源 Markdown 编辑器。如果 MarkText 改善了您的工作流程，请考虑[赞助本项目](https://github.com/sponsors/marktext)。感谢所有赞助者 ❤️
+MDComment 是一款由社区支持驱动的开源 Markdown 编辑器。如果 MDComment 改善了您的工作流程，请考虑[赞助本项目](https://github.com/sponsors/marktext)。感谢所有赞助者 ❤️
 
 **特别赞助商**
 
@@ -143,7 +143,7 @@ MarkText 是一款由社区支持驱动的开源 Markdown 编辑器。如果 Mar
 
 #### macOS
 
-你可以从[发布页](https://github.com/marktext/marktext/releases/latest)下载最新的 `marktext-%version%.dmg`，或通过 [**homebrew cask**](https://github.com/caskroom/homebrew-cask) 安装 MarkText。使用 Homebrew-Cask 只需先安装 [Homebrew](https://brew.sh/)。
+你可以从[发布页](https://github.com/marktext/marktext/releases/latest)下载最新的 `marktext-%version%.dmg`，或通过 [**homebrew cask**](https://github.com/caskroom/homebrew-cask) 安装 MDComment。使用 Homebrew-Cask 只需先安装 [Homebrew](https://brew.sh/)。
 
 ```bash
 brew install --cask mark-text
@@ -151,7 +151,7 @@ brew install --cask mark-text
 
 #### Windows
 
-只需下载并通过安装向导（`marktext-setup-%version%.exe`）安装 MarkText，并选择用户级或系统级安装。或者，使用包管理器 [Chocolatey](https://chocolatey.org/) 或 [Winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/) 安装 MarkText。
+只需下载并通过安装向导（`marktext-setup-%version%.exe`）安装 MDComment，并选择用户级或系统级安装。或者，使用包管理器 [Chocolatey](https://chocolatey.org/) 或 [Winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/) 安装 MDComment。
 
 使用 Chocolatey，需先安装 [Chocolatey](https://chocolatey.org/install)：
 
@@ -175,21 +175,21 @@ winget install marktext
 
 ## 开发
 
-如果你希望自行构建 MarkText，请参阅我们的[构建说明](../dev/BUILD.md)。
+如果你希望自行构建 MDComment，请参阅我们的[构建说明](../dev/BUILD.md)。
 
 - [用户文档](../README.md)
 - [开发者文档](../dev/README.md)
 
-如果你对 MarkText 有任何疑问，欢迎提交 issue。提交时请使用打开 issue 时的默认格式。当然，如果你直接提交 PR，将不胜感激。
+如果你对 MDComment 有任何疑问，欢迎提交 issue。提交时请使用打开 issue 时的默认格式。当然，如果你直接提交 PR，将不胜感激。
 
 ## 贡献
 
-MarkText 正在开发中，请在提交 pull request 之前确保阅读[贡献指南](../../.github/CONTRIBUTING.md)。想为 MarkText 添加新功能？请参阅我们的[路线图](https://github.com/marktext/marktext/projects)和开放 issue。
+MDComment 正在开发中，请在提交 pull request 之前确保阅读[贡献指南](../../.github/CONTRIBUTING.md)。想为 MDComment 添加新功能？请参阅我们的[路线图](https://github.com/marktext/marktext/projects)和开放 issue。
 
 
 ## 贡献者
 
-感谢所有已经为 MarkText 做出贡献的人[[贡献者](https://github.com/marktext/marktext/graphs/contributors)]。
+感谢所有已经为 MDComment 做出贡献的人[[贡献者](https://github.com/marktext/marktext/graphs/contributors)]。
 
 <a href="https://github.com/marktext/marktext/graphs/contributors"><img src="https://opencollective.com/marktext/contributors.svg?width=890" /></a>
 

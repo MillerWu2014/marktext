@@ -1,9 +1,9 @@
-<p align="center"><img src="../assets/logo-small.png" alt="MarkText" width="100" height="100"></p>
+<p align="center"><img src="../assets/logo-small.png" alt="MDComment" width="100" height="100"></p>
 
-<h1 align="center">MarkText</h1>
+<h1 align="center">MDComment</h1>
 
 <div align="center">
-  <a href="https://twitter.com/intent/tweet?via=marktextme&url=https://github.com/marktext/marktext/&text=What%20do%20you%20want%20to%20say%20to%20app?&hashtags=happyMarkText">
+  <a href="https://twitter.com/intent/tweet?via=marktextme&url=https://github.com/marktext/marktext/&text=What%20do%20you%20want%20to%20say%20to%20app?&hashtags=happyMDComment">
     <img src="https://img.shields.io/twitter/url/https/github.com/marktext/marktext.svg?style=for-the-badge" alt="twitter">
   </a>
 </div>
@@ -106,9 +106,9 @@
 
 <br />
 
-<h2 align="center">MarkText を支援する</h2>
+<h2 align="center">MDComment を支援する</h2>
 
-MarkText はコミュニティの支援によって成り立つオープンソースの Markdown エディターです。MarkText があなたのワークフローを改善するなら、[プロジェクトへのスポンサー](https://github.com/sponsors/marktext)をご検討ください。すべてのスポンサーに感謝します ❤️
+MDComment はコミュニティの支援によって成り立つオープンソースの Markdown エディターです。MDComment があなたのワークフローを改善するなら、[プロジェクトへのスポンサー](https://github.com/sponsors/marktext)をご検討ください。すべてのスポンサーに感謝します ❤️
 
 **スペシャルスポンサー**
 
@@ -143,7 +143,7 @@ MarkText はコミュニティの支援によって成り立つオープンソ�
 
 #### macOS
 
-[リリースページ](https://github.com/marktext/marktext/releases/latest)から最新の `marktext-%version%.dmg` をダウンロードするか、[**homebrew cask**](https://github.com/caskroom/homebrew-cask) を使って MarkText をインストールできます。Homebrew-Cask を使用するには [Homebrew](https://brew.sh/) がインストールされている必要があります。
+[リリースページ](https://github.com/marktext/marktext/releases/latest)から最新の `marktext-%version%.dmg` をダウンロードするか、[**homebrew cask**](https://github.com/caskroom/homebrew-cask) を使って MDComment をインストールできます。Homebrew-Cask を使用するには [Homebrew](https://brew.sh/) がインストールされている必要があります。
 
 ```bash
 brew install --cask mark-text
@@ -151,7 +151,7 @@ brew install --cask mark-text
 
 #### Windows
 
-セットアップウィザード（`marktext-setup-%version%.exe`）をダウンロードして MarkText をインストールし、ユーザーごとまたはシステム全体へのインストールを選択します。または、[Chocolatey](https://chocolatey.org/) や [Winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/) などのパッケージマネージャーを使ってインストールすることもできます。
+セットアップウィザード（`marktext-setup-%version%.exe`）をダウンロードして MDComment をインストールし、ユーザーごとまたはシステム全体へのインストールを選択します。または、[Chocolatey](https://chocolatey.org/) や [Winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/) などのパッケージマネージャーを使ってインストールすることもできます。
 
 Chocolatey を使用するには、[Chocolatey](https://chocolatey.org/install) がインストールされている必要があります：
 
@@ -175,21 +175,21 @@ Linux、macOS、Windows 用のすべてのバイナリは[リリースページ]
 
 ## 開発
 
-MarkText を自分でビルドしたい場合は、[ビルド手順](../dev/BUILD.md)をご確認ください。
+MDComment を自分でビルドしたい場合は、[ビルド手順](../dev/BUILD.md)をご確認ください。
 
 - [ユーザードキュメント](../README.md)
 - [開発者ドキュメント](../dev/README.md)
 
-MarkText に関してご質問がある場合は、issue を作成していただければ幸いです。その際はデフォルトのフォーマットをご使用ください。もちろん、直接 PR を提出していただけると大変ありがたいです。
+MDComment に関してご質問がある場合は、issue を作成していただければ幸いです。その際はデフォルトのフォーマットをご使用ください。もちろん、直接 PR を提出していただけると大変ありがたいです。
 
 ## コントリビューション
 
-MarkText は開発中です。プルリクエストを作成する前に必ず[コントリビューションガイド](../../.github/CONTRIBUTING.md)をお読みください。MarkText に機能を追加したい場合は、[ロードマップ](https://github.com/marktext/marktext/projects)とオープン issue をご確認ください。
+MDComment は開発中です。プルリクエストを作成する前に必ず[コントリビューションガイド](../../.github/CONTRIBUTING.md)をお読みください。MDComment に機能を追加したい場合は、[ロードマップ](https://github.com/marktext/marktext/projects)とオープン issue をご確認ください。
 
 
 ## コントリビューター
 
-MarkText にすでに貢献してくださったすべての方々に感謝します[[コントリビューター](https://github.com/marktext/marktext/graphs/contributors)]。
+MDComment にすでに貢献してくださったすべての方々に感謝します[[コントリビューター](https://github.com/marktext/marktext/graphs/contributors)]。
 
 <a href="https://github.com/marktext/marktext/graphs/contributors"><img src="https://opencollective.com/marktext/contributors.svg?width=890" /></a>
 

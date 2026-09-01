@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add a right-hand Word-like comments pane to MarkText: select WYSIWYG text, store comments in a sidecar `*.md.comments.json`, underline quotes, and jump between cards and body text.
+**Goal:** Add a right-hand Word-like comments pane to MDComment: select WYSIWYG text, store comments in a sidecar `*.md.comments.json`, underline quotes, and jump between cards and body text.
 
 **Architecture:** Comments are a desktop overlay. Pure bind/follow logic lives in `packages/desktop/src/common/comments/` (no Electron). Main process loads/saves the sidecar over typed `mt::comments::*` IPC. A Pinia store holds per-tab comments; Vue renders the pane, underlines, and a single dashed leader. Markdown and Muya serialize paths stay untouched.
 
@@ -14,7 +14,7 @@
 - Do not reuse the left sidebar `rightColumn` for this pane.
 - New IPC channels use the `mt::` prefix and the typed contract in `packages/desktop/src/shared/types/ipc.ts`.
 - Comments that dirty a tab must participate in the existing unsaved-close dialog (`isSaved === false`).
-- Visual style follows MarkText CSS variables (`--editorBgColor`, `--sideBarBgColor`, theme accent). Underline uses the theme accent, not Word yellow.
+- Visual style follows MDComment CSS variables (`--editorBgColor`, `--sideBarBgColor`, theme accent). Underline uses the theme accent, not Word yellow.
 - Sidecar name is exactly `${markdownPath}.comments.json` (so `/path/notes.md` → `/path/notes.md.comments.json`).
 - New Comment shortcut: Windows `Ctrl+Alt+M`, macOS `Command+Alt+M`, Linux `Ctrl+Shift+M` (Linux avoids `Ctrl+Alt` per `keybindingsLinux.ts` / GH#2370).
 - Prefix/suffix context is at most 32 characters of surrounding plain text.
