@@ -153,6 +153,15 @@ const textBoxesForMatch = (match: QuoteDomRange): DOMRect[] => {
   return boxes
 }
 
+export const clientRectsForQuoteRange = (match: QuoteDomRange): DOMRect[] => {
+  const range = document.createRange()
+  range.setStart(match.startNode, match.startOffset)
+  range.setEnd(match.endNode, match.endOffset)
+  const clientRects = filterQuoteClientRects(Array.from(range.getClientRects()), textBoxesForMatch(match))
+  range.detach()
+  return clientRects
+}
+
 export const rectsForQuoteRange = (
   match: QuoteDomRange,
   commentId: string,
@@ -160,12 +169,8 @@ export const rectsForQuoteRange = (
   markdownEnd: number,
   overlayEl: HTMLElement
 ): UnderlineRect[] => {
-  const range = document.createRange()
-  range.setStart(match.startNode, match.startOffset)
-  range.setEnd(match.endNode, match.endOffset)
   const overlayRect = overlayEl.getBoundingClientRect()
-  const clientRects = filterQuoteClientRects(Array.from(range.getClientRects()), textBoxesForMatch(match))
-  range.detach()
+  const clientRects = clientRectsForQuoteRange(match)
 
   return clientRects.map((rect, index) => ({
     key: `${commentId}-${index}`,

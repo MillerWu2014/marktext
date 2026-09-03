@@ -135,7 +135,7 @@ git diff e52106fd..HEAD
 | 文件 | 本仓库加了什么 |
 |---|---|
 | `packages/desktop/src/renderer/src/store/editor.ts` | `loadCommentsForTab`：会话恢复、打开已有 tab、打开新文件；`mt::tab-saved` / `mt::set-pathname` 里 `tryPersistForPath`；`comments:dirty` 把 tab 标脏 |
-| `packages/desktop/src/renderer/src/components/editorWithTabs/editor.vue` | 取选区（`getCursorOffset` → markdown 偏移，**不要** `indexOf`）、`muya-new-comment`、`comments:scroll-to`、正文变化时 `followMarkdown` |
+| `packages/desktop/src/renderer/src/components/editorWithTabs/editor.vue` | 取选区（`getCursorOffset` → markdown 偏移，**不要** `indexOf`）、`muya-new-comment`、`comments:scroll-to`（滚 `.editor-component`，不要对覆盖层 `scrollIntoView`）、正文变化时 `followMarkdown` |
 | `packages/desktop/src/renderer/src/pages/app.vue` | 挂载 `<comments-pane />`；`beginNewComment`；监听 `mt::editor-new-comment` / `mt::toggle-comments-pane` |
 | `packages/desktop/src/renderer/src/store/layout.ts` | `showCommentsPane`、`commentsPaneWidth`（独立于左侧栏，默认关，宽度进 localStorage） |
 | `packages/desktop/src/shared/types/ipc.ts` | 4 条 invoke + 2 条 main→renderer 事件（见下） |
@@ -236,7 +236,7 @@ JSON `version: 1` 要点：
 
 1. `prefix + quote + suffix` 唯一命中
 2. `quote` 唯一命中
-3. `quote` 多命中：取离 `startOffset` 最近的（距离相同取更靠后的）。划线定位要把 markdown 偏移按**出现次序**对齐到 `.mu-content` 文本，不能把 markdown 偏移当 DOM 偏移（表格管道符会把提示撑到最后一个命中）。`Range.getClientRects()` 在表格里会额外给出表头/其它列的幽灵盒子（`td::before` 绝对定位也会掺进来）；下划线只保留与引文文本节点相交的盒子，引导线不要取 `querySelector` 的第一个，要用 `pickLeaderBox` 丢掉坍缩盒子后再按卡片垂直中心就近
+3. `quote` 多命中：取离 `startOffset` 最近的（距离相同取更靠后的）。划线定位要把 markdown 偏移按**出现次序**对齐到 `.mu-content` 文本，不能把 markdown 偏移当 DOM 偏移（表格管道符会把提示撑到最后一个命中）。`Range.getClientRects()` 在表格里会额外给出表头/其它列的幽灵盒子（`td::before` 绝对定位也会掺进来）；下划线只保留与引文文本节点相交的盒子，引导线不要取 `querySelector` 的第一个，要用 `pickLeaderBox` 丢掉坍缩盒子后再按卡片垂直中心就近。点卡片跳转时只滚 `.editor-component`（`commentJumpScrollTop`，与目录同一套 `scrollTop + viewportY - STANDAR_Y`）；**不要**对覆盖层下划线 `scrollIntoView`——下划线是滚动容器的兄弟节点，会带动外层 `overflow: hidden` 把正文移出视口
 4. 否则 `orphaned: true`
 
 编辑中用 `followComment`：先 bind；失败则用 prefix/suffix 夹住中间文本。范围没了就标记 Orphaned。
@@ -265,7 +265,7 @@ JSON `version: 1` 要点：
 pnpm -C packages/desktop exec vitest run test/unit/specs/comments-
 ```
 
-约 12 个文件。合入后这条必须绿。
+约 13 个文件。合入后这条必须绿。
 
 ### 5.2 格式工具栏「新建批注」
 
@@ -317,6 +317,7 @@ packages/desktop/src/common/comments/sidecarPath.ts
 packages/desktop/src/common/comments/bind.ts
 packages/desktop/src/common/comments/replyTree.ts
 packages/desktop/src/common/comments/leader.ts
+packages/desktop/src/common/comments/jump.ts
 packages/desktop/src/common/comments/relativeTime.ts
 packages/desktop/src/main/comments/sidecar.ts
 packages/desktop/src/main/ipc/comments.ts
@@ -343,6 +344,7 @@ packages/desktop/test/unit/specs/comments-layout.spec.ts
 packages/desktop/test/unit/specs/comments-commands.spec.ts
 packages/desktop/test/unit/specs/comments-decorations.spec.ts
 packages/desktop/test/unit/specs/comments-quote-dom.spec.ts
+packages/desktop/test/unit/specs/comments-jump.spec.ts
 packages/desktop/test/unit/specs/comments-selection.spec.ts
 packages/desktop/test/unit/specs/comments-card-click.spec.ts
 packages/desktop/test/unit/specs/comments-reply-tree.spec.ts

@@ -136,10 +136,12 @@ import { usePreferencesStore } from '@/store/preferences'
 import { useEditorStore } from '@/store/editor'
 import { useCommentsStore } from '@/store/comments'
 import {
+  clientRectsForQuoteRange,
   findQuoteDomRange,
   prepareQuoteSearch,
   setDomSelectionForRange
 } from '@/util/commentQuoteDom'
+import { commentJumpScrollTop, resetAncestorScroll } from 'common/comments/jump'
 import { commentSelectionFromEditor } from '@/util/commentSelection'
 import { useProjectStore } from '@/store/project'
 import { storeToRefs } from 'pinia'
@@ -308,48 +310,40 @@ interface CommentsScrollToPayload {
 
 const handleCommentsScrollTo = (payload: unknown): void => {
   if (sourceCode.value) return
-  const { id, startOffset, quote } = payload as CommentsScrollToPayload
+  const { startOffset, quote } = payload as CommentsScrollToPayload
 
-  const tryScroll = (): boolean => {
-    const scrollId = id ?? commentsStore.selectedId
-    const el = scrollId
-      ? document.querySelector(`.comment-decorations [data-comment-id="${scrollId}"]`)
-      : null
-    if (el instanceof HTMLElement) {
-      el.scrollIntoView({ block: 'center' })
-      return true
-    }
-    return false
-  }
+  // Overlay underlines are siblings of `.editor-component`, not descendants.
+  // scrollIntoView would move overflow:hidden ancestors and blank the editor.
+  resetAncestorScroll(document.querySelector('.comment-decorations'), 'editor-body')
 
-  const applyDomSelection = (): void => {
-    const root =
-      (editor.value?.domNode as HTMLElement | undefined)?.querySelector('.mu-editor') ??
-      (editor.value?.domNode as Element | undefined)
-    if (!root) return
+  const root =
+    (editor.value?.domNode as HTMLElement | undefined)?.querySelector('.mu-editor') ??
+    (editor.value?.domNode as Element | undefined)
+  if (!root) return
 
-    const match = findQuoteDomRange(
-      prepareQuoteSearch(root),
-      quote,
-      startOffset,
-      editor.value.getMarkdown?.()
+  const match = findQuoteDomRange(
+    prepareQuoteSearch(root),
+    quote,
+    startOffset,
+    editor.value.getMarkdown?.()
+  )
+  if (!match) return
+
+  const container = getScrollContainer()
+  if (container) {
+    const target = commentJumpScrollTop(
+      container.scrollTop,
+      clientRectsForQuoteRange(match).map((rect) => ({
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height
+      })),
+      STANDAR_Y
     )
-    if (match) {
-      setDomSelectionForRange(match)
-    }
+    if (target != null) animatedScrollTo(container, target, 300)
   }
-
-  if (tryScroll()) {
-    applyDomSelection()
-    return
-  }
-
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      tryScroll()
-      applyDomSelection()
-    })
-  })
+  setDomSelectionForRange(match)
 }
 
 const handleEditorChromeClick = (event: MouseEvent): void => {
