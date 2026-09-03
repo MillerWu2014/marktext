@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { activeLeaderCommentId, leaderPath, shouldDrawUnderline } from 'common/comments/leader'
+import { activeLeaderCommentId, leaderPath, pickLeaderBox, shouldDrawUnderline } from 'common/comments/leader'
 import { pickOverlappingComment } from 'common/comments'
 import type { ICommentThread } from '@shared/types/comments'
 import { useCommentsStore } from '@/store/comments'
@@ -127,9 +127,9 @@ const recomputeLeader = (): void => {
     return
   }
 
-  const underlineEl = overlay.querySelector(`[data-comment-id="${leaderId}"]`)
+  const underlineEls = overlay.querySelectorAll(`[data-comment-id="${leaderId}"]`)
   const cardEl = document.querySelector(`.comment-card[data-comment-id="${leaderId}"]`)
-  if (!underlineEl || !cardEl) {
+  if (!underlineEls.length || !cardEl) {
     leaderD.value = ''
     return
   }
@@ -137,16 +137,22 @@ const recomputeLeader = (): void => {
   // The leader lives in `.editor-body`, so both endpoints are expressed in that
   // element's coordinate space rather than the editor overlay's.
   const hostRect = leaderHost.getBoundingClientRect()
-  const uRect = underlineEl.getBoundingClientRect()
   const cRect = cardEl.getBoundingClientRect()
-  if (cRect.width === 0) {
+  const picked = pickLeaderBox(
+    Array.from(underlineEls, (el) => {
+      const rect = el.getBoundingClientRect()
+      return { left: rect.left, top: rect.top, width: rect.width, height: rect.height }
+    }),
+    { left: cRect.left, top: cRect.top, width: cRect.width, height: cRect.height }
+  )
+  if (!picked || cRect.width === 0) {
     leaderD.value = ''
     return
   }
 
   const from = {
-    x: uRect.right - hostRect.left,
-    y: uRect.top + uRect.height / 2 - hostRect.top
+    x: picked.left + picked.width - hostRect.left,
+    y: picked.top + picked.height / 2 - hostRect.top
   }
   const to = {
     x: cRect.left - hostRect.left,

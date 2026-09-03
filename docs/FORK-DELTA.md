@@ -236,7 +236,7 @@ JSON `version: 1` 要点：
 
 1. `prefix + quote + suffix` 唯一命中
 2. `quote` 唯一命中
-3. `quote` 多命中：取离 `startOffset` 最近的（距离相同取更靠后的）。划线定位要把 markdown 偏移按**出现次序**对齐到 `.mu-content` 文本，不能把 markdown 偏移当 DOM 偏移（表格管道符会把提示撑到最后一个命中）
+3. `quote` 多命中：取离 `startOffset` 最近的（距离相同取更靠后的）。划线定位要把 markdown 偏移按**出现次序**对齐到 `.mu-content` 文本，不能把 markdown 偏移当 DOM 偏移（表格管道符会把提示撑到最后一个命中）。`Range.getClientRects()` 在表格里会额外给出表头/其它列的幽灵盒子（`td::before` 绝对定位也会掺进来）；下划线只保留与引文文本节点相交的盒子，引导线不要取 `querySelector` 的第一个，要用 `pickLeaderBox` 丢掉坍缩盒子后再按卡片垂直中心就近
 4. 否则 `orphaned: true`
 
 编辑中用 `followComment`：先 bind；失败则用 prefix/suffix 夹住中间文本。范围没了就标记 Orphaned。

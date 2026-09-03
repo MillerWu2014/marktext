@@ -39,8 +39,9 @@ const appendTextSegments = (scope: Element, segments: TextSegment[], startPos: n
   let pos = startPos
   let node: Node | null
   while ((node = walker.nextNode())) {
-    if (SKIP_PREVIEW_CLASSES.some((cls) => isInsideClass(node, cls, scope))) continue
-    const textNode = node as Text
+    const current = node
+    if (SKIP_PREVIEW_CLASSES.some((cls) => isInsideClass(current, cls, scope))) continue
+    const textNode = current as Text
     const len = textNode.data.length
     if (len === 0) continue
     segments.push({ node: textNode, start: pos, end: pos + len })
@@ -124,6 +125,34 @@ export interface UnderlineRect {
   style: Record<string, string>
 }
 
+const rectRight = (rect: DOMRect): number => rect.left + rect.width
+const rectBottom = (rect: DOMRect): number => rect.top + rect.height
+
+const rectsOverlap = (a: DOMRect, b: DOMRect): boolean =>
+  a.left < rectRight(b) && rectRight(a) > b.left && a.top < rectBottom(b) && rectBottom(a) > b.top
+
+// Chromium/WebKit emit extra Range.getClientRects() boxes inside tables
+// (collapsed fragments, other columns). Keep only boxes that actually cover
+// the quote's text nodes. Fall back rather than drawing nothing.
+export const filterQuoteClientRects = (clientRects: DOMRect[], textBoxes: DOMRect[]): DOMRect[] => {
+  const sized = clientRects.filter((rect) => rect.width >= 1 && rect.height >= 1)
+  const clipped = textBoxes.length
+    ? sized.filter((rect) => textBoxes.some((box) => rectsOverlap(rect, box)))
+    : sized
+  if (clipped.length) return clipped
+  if (sized.length) return sized
+  return clientRects
+}
+
+const textBoxesForMatch = (match: QuoteDomRange): DOMRect[] => {
+  const boxes: DOMRect[] = []
+  const startEl = match.startNode.parentElement
+  const endEl = match.endNode.parentElement
+  if (startEl) boxes.push(startEl.getBoundingClientRect())
+  if (endEl && endEl !== startEl) boxes.push(endEl.getBoundingClientRect())
+  return boxes
+}
+
 export const rectsForQuoteRange = (
   match: QuoteDomRange,
   commentId: string,
@@ -135,7 +164,7 @@ export const rectsForQuoteRange = (
   range.setStart(match.startNode, match.startOffset)
   range.setEnd(match.endNode, match.endOffset)
   const overlayRect = overlayEl.getBoundingClientRect()
-  const clientRects = Array.from(range.getClientRects())
+  const clientRects = filterQuoteClientRects(Array.from(range.getClientRects()), textBoxesForMatch(match))
   range.detach()
 
   return clientRects.map((rect, index) => ({

@@ -150,4 +150,30 @@ describe('rectsForQuoteRange', () => {
     const rects = rectsForQuoteRange(match, 'c1', 6, 11, overlay)
     expect(rects.map((r) => r.key)).toEqual(['c1-0', 'c1-1'])
   })
+
+  it('drops collapsed and out-of-cell table ghost rects from getClientRects', () => {
+    const cell = document.createElement('span')
+    cell.className = 'mu-content'
+    cell.textContent = '机型 (IATA)'
+    const root = document.createElement('div')
+    root.appendChild(cell)
+    const match = findQuoteDomRange(prepareQuoteSearch(root), '机型 (IATA)', 0)!
+
+    cell.getBoundingClientRect = () =>
+      ({ left: 24, top: 92, right: 110, bottom: 110, width: 86, height: 18 }) as DOMRect
+
+    const ghostHeader = { left: 400, top: 40, width: 48, height: 0, right: 448, bottom: 40 } as DOMRect
+    const ghostColumn = { left: 400, top: 40, width: 80, height: 16, right: 480, bottom: 56 } as DOMRect
+    const quote = { left: 24, top: 92, width: 86, height: 18, right: 110, bottom: 110 } as DOMRect
+    Range.prototype.getClientRects = vi.fn(
+      () => [ghostHeader, ghostColumn, quote] as unknown as DOMRectList
+    )
+
+    const overlay = document.createElement('div')
+    overlay.getBoundingClientRect = () => ({ left: 0, top: 0, width: 0, height: 0 }) as DOMRect
+
+    const rects = rectsForQuoteRange(match, 'c1', 0, 8, overlay)
+    expect(rects).toHaveLength(1)
+    expect(rects[0]!.style).toMatchObject({ left: '24px', top: '92px', width: '86px', height: '18px' })
+  })
 })
