@@ -152,7 +152,25 @@ export default function htmlTag(
         }
 
         case 'br': {
-            return [h(`span.${CLASS_NAMES.MU_HTML_TAG}`, [...openContent, h(tag)])];
+            // Keep a live `<br>` for the line break, and treat `<br/>` like
+            // other syntax markers: hide it until the caret sits on the token.
+            // Wrapping both in one `.mu-html-tag` span leaked the source into
+            // table cells (Shift+Enter stores a literal `<br/>`).
+            const markerClass = this.getClassName(outerClass, block, token, cursor);
+            const tagClassName
+                = markerClass === CLASS_NAMES.MU_HIDE ? markerClass : CLASS_NAMES.MU_HTML_TAG;
+            return [
+                h(
+                    `span.${tagClassName}.${CLASS_NAMES.MU_OUTPUT_REMOVE}`,
+                    {
+                        attrs: {
+                            spellcheck: 'false',
+                        },
+                    },
+                    openContent,
+                ),
+                h(tag),
+            ];
         }
 
         default:
