@@ -218,6 +218,13 @@ describe('useCommentsStore', () => {
     expect(store.isDirty('t1')).toBe(true)
   })
 
+  it('commitDraft keeps internal newlines after trimming ends', () => {
+    const store = useCommentsStore()
+    store.createDraft({ tabId: 't1', sourceCode: false, authorName: 'Ada', selection })
+    store.commitDraft('t1', '  first\n\nsecond  ')
+    expect(store.threadsForTab('t1')[0]?.body).toBe('first\n\nsecond')
+  })
+
   it('commitDraft trims the body and keeps the draft id', () => {
     const store = useCommentsStore()
     const draftId = store.createDraft({

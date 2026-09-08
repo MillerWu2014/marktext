@@ -230,6 +230,7 @@ JSON `version: 1` 要点：
 
 - 线程：`quote` / `prefix` / `suffix`（前后各最多 32 字符）/ `startOffset` / `endOffset`（UTF-16 提示，不是真理来源）/ `orphaned` / `status: open|resolved`
 - 回复扁平数组；一层回复不写 `parentId`；二层写一层回复的 `id`
+- 正文是纯文本，换行是 `\n`。展示用 `.comment-body` / `.reply-body { white-space: pre-wrap }`，不要把 `\n` 收成空格
 - 未知字段用 `[key: string]: unknown` 保留，保存时不要剥掉
 
 绑定顺序（打开时 `bindComment`）：
@@ -265,7 +266,7 @@ JSON `version: 1` 要点：
 pnpm -C packages/desktop exec vitest run test/unit/specs/comments-
 ```
 
-约 13 个文件。合入后这条必须绿。
+约 14 个文件。合入后这条必须绿。
 
 ### 5.2 格式工具栏「新建批注」
 
@@ -345,6 +346,7 @@ packages/desktop/test/unit/specs/comments-commands.spec.ts
 packages/desktop/test/unit/specs/comments-decorations.spec.ts
 packages/desktop/test/unit/specs/comments-quote-dom.spec.ts
 packages/desktop/test/unit/specs/comments-jump.spec.ts
+packages/desktop/test/unit/specs/comments-body-wrap.spec.ts
 packages/desktop/test/unit/specs/comments-selection.spec.ts
 packages/desktop/test/unit/specs/comments-card-click.spec.ts
 packages/desktop/test/unit/specs/comments-reply-tree.spec.ts

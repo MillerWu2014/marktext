@@ -495,6 +495,7 @@ const handleDeleteReply = (replyId: string): void => {
   font-size: 13px;
   line-height: 1.4;
   color: var(--editorColor);
+  white-space: pre-wrap;
 }
 
 .comment-body-input,
