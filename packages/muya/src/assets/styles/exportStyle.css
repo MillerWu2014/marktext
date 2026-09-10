@@ -175,4 +175,16 @@
     padding: 20px 0;
 
     text-align: center;
+    text-align-last: center;
+}
+
+.markdown-body div.plantuml > img,
+.markdown-body div.plantuml > svg,
+.markdown-body div.mermaid > svg,
+.markdown-body div.vega-lite > svg,
+.markdown-body div.flowchart > svg,
+.markdown-body div.sequence > svg {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
 }

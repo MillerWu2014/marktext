@@ -97,6 +97,7 @@ body article.print-container {
   body article.markdown-body .mermaid,
   body article.markdown-body .vega-embed {
     text-align: center;
+    text-align-last: center;
   }
   body article.markdown-body .flowchart > svg,
   body article.markdown-body .sequence > svg,
@@ -104,6 +105,16 @@ body article.print-container {
   body article.markdown-body .plantuml > img,
   body article.markdown-body .mermaid > svg,
   body article.markdown-body .vega-embed > svg {
+    display: block;
     max-width: 100%;
+    margin: 0 auto;
+  }
+  body article.markdown-body img[data-align='center'] {
+    display: block;
+    margin: 0 auto;
+  }
+  body article.markdown-body img[data-align='right'] {
+    display: block;
+    margin: 0 0 0 auto;
   }
 }

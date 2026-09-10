@@ -769,16 +769,22 @@ figure.mu-math-block .mu-math-preview .katex-display::-webkit-scrollbar {
     height: 6px;
 }
 
-/* to prevent plantuml img overflow */
+/* to prevent plantuml img overflow. Mermaid/plantuml emit block-level
+   svg/img; `text-align: center` on the preview does not move those, so
+   auto side margins do the centering. */
 figure.mu-diagram-block .mu-diagram-preview img {
+    display: block;
     max-width: 100%;
+    margin: 0 auto;
 }
 
 /* to prevent rendered diagram <svg> (e.g. a wide sequence diagram) overflowing
    and getting clipped by the block */
 figure.mu-diagram-block .mu-diagram-preview > svg {
+    display: block;
     max-width: 100%;
     height: auto;
+    margin: 0 auto;
 }
 
 figure.mu-html-block .mu-html-preview > pre {
@@ -812,6 +818,7 @@ figure.mu-diagram-block div.mu-diagram-preview {
     width: 100%;
 
     text-align: center;
+    text-align-last: center;
 }
 
 figure.mu-math-block div.mu-math-preview > svg {

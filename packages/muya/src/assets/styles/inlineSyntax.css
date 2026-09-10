@@ -345,6 +345,11 @@ blockquote .mu-hide.mu-math > .mu-math-render {
 .mu-inline-image.right {
     display: block;
     margin: 30px auto 40px;
+
+    /* Justified paragraphs inherit `text-align-last: start`. A block-level
+       image is one line, so last-line start would pin it left even when
+       `text-align` is center/right. `auto` follows `text-align`. */
+    text-align-last: auto;
 }
 
 .mu-inline-image.left {

@@ -75,7 +75,7 @@
 |---|---|
 | 对齐 | `text-align: justify` + `text-align-last: start` |
 | 作用对象 | 段落、列表项、引用 |
-| 不动 | 标题、代码、表格、公式、源码模式 |
+| 不动 | 标题、代码、表格、公式、源码模式。图片左/中/右对齐必须把 `text-align-last` 设回 `auto`，否则会继承段落的 `start` 导致居中无效 |
 | 偏好开关 | 本轮没有，这是新默认 |
 
 ### 2.5 表格列右键菜单
@@ -311,6 +311,8 @@ macOS 安装包必须在 Mac 上打：`pnpm run build:mac:arm64` 或 `:x64`，�
 ### 5.5 两端对齐（CSS）
 
 编辑器：`.mu-container p, li, blockquote`。导出/打印：`.markdown-body p, li, blockquote`。
+
+图片：`.mu-inline-image.left/center/right` 必须 `text-align-last: auto`（图在 `<p>` 里，会继承 `start`，单行块等于左对齐）。流程图 SVG/img 是 `display:block`，预览上的 `text-align:center` 移不动它们，要用 `margin-left/right: auto`。
 
 测试：`packages/desktop/test/unit/specs/justify-prose.spec.ts`。
 
