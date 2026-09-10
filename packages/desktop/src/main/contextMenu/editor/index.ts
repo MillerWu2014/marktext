@@ -11,8 +11,10 @@ import {
   getInsertBefore,
   getInsertAfter
 } from './menuItems'
+import { getTableColumnMenuItems } from './tableColumnItems'
 import spellcheckMenuBuilder from './spellcheck'
 import { t } from '../../i18n'
+import { isTableColumnProbeResult, type TableColumnProbeResult } from '@shared/types/tableColumnMenu'
 
 // Electron's ContextMenuParams shape we rely on. Kept narrow — the renderer
 // supplies the full surface so we only annotate the fields we use.
@@ -65,12 +67,33 @@ const isInsideEditor = (params: ContextMenuParams): boolean => {
   return isEditable && !inputFieldType && !!editFlags.canEditRichly
 }
 
-export const showEditorContextMenu = (
+const probeTableColumnFromRenderer = async(
+  win: BrowserWindow,
+  x: number,
+  y: number
+): Promise<TableColumnProbeResult | null> => {
+  const xi = Math.round(Number(x))
+  const yi = Math.round(Number(y))
+  if (!Number.isFinite(xi) || !Number.isFinite(yi)) return null
+  try {
+    // Main cannot see Muya's cell block. The renderer stashes the clicked
+    // column during this probe so later menu clicks can insert/delete/align
+    // without re-hit-testing after the cursor has moved.
+    const result: unknown = await win.webContents.executeJavaScript(
+      `window.marktext&&typeof window.marktext.probeTableColumnContext==='function'?window.marktext.probeTableColumnContext(${xi},${yi}):null`
+    )
+    return isTableColumnProbeResult(result) ? result : null
+  } catch {
+    return null
+  }
+}
+
+export const showEditorContextMenu = async(
   win: BrowserWindow,
   event: ContextMenuEvent,
   params: ContextMenuParams,
   isSpellcheckerEnabled: boolean
-): void => {
+): Promise<void> => {
   const {
     isEditable,
     hasImageContents,
@@ -105,6 +128,13 @@ export const showEditorContextMenu = (
       )
       menu.append(new MenuItem(SEPARATOR))
     }
+
+    const tableItems = getTableColumnMenuItems(
+      await probeTableColumnFromRenderer(win, params.x, params.y)
+    )
+    tableItems.forEach((item) => {
+      menu.append(new MenuItem(item))
+    })
 
     const contextItems = getContextItems()
     const copyItems = [contextItems[3], contextItems[4], contextItems[8], contextItems[7]] // CUT, COPY, COPY_AS_HTML, COPY_AS_RICH

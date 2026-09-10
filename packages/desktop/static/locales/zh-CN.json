@@ -211,7 +211,13 @@
       "copyPath": "复制路径",
       "showInFolder": "在文件夹中显示"
     },
-    "newComment": "新建评论"
+    "newComment": "新建评论",
+    "insertColumnLeft": "在左侧插入列",
+    "insertColumnRight": "在右侧插入列",
+    "deleteColumn": "删除列",
+    "alignColumnLeft": "左对齐",
+    "alignColumnCenter": "居中对齐",
+    "alignColumnRight": "右对齐"
   },
   "search": {
     "searchPlaceholder": "搜索",

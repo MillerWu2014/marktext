@@ -211,7 +211,13 @@
       "copyPath": "Copiar caminho",
       "showInFolder": "Mostrar na pasta"
     },
-    "newComment": "New Comment"
+    "newComment": "New Comment",
+    "insertColumnLeft": "Inserir coluna à esquerda",
+    "insertColumnRight": "Inserir coluna à direita",
+    "deleteColumn": "Excluir coluna",
+    "alignColumnLeft": "Alinhar à esquerda",
+    "alignColumnCenter": "Centralizar",
+    "alignColumnRight": "Alinhar à direita"
   },
   "search": {
     "searchPlaceholder": "Pesquisar",

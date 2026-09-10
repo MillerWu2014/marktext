@@ -33,6 +33,7 @@ import type {
 import type { BufferedState as BufferedStateType } from './bufferedState'
 import type { MenuTemplate, MenuPopupPosition } from './menu'
 import type { ICommentsFile } from './comments'
+import type { TableColumnAction } from './tableColumnMenu'
 
 // =================================================================
 // Invoke channels (renderer → main, returns Promise<T>)
@@ -232,6 +233,7 @@ export interface IpcMainEventChannels {
   'mt::cm-copy-as-rich': []
   'mt::cm-insert-paragraph': [direction: 'before' | 'after']
   'mt::cm-paste-as-plain-text': []
+  'mt::cm-table-column': [action: TableColumnAction]
   'mt::current-language': [language: string]
   'mt::editor-ask-file-save': []
   'mt::editor-ask-file-save-as': []

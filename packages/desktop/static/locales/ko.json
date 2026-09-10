@@ -211,7 +211,13 @@
       "copyPath": "경로 복사",
       "showInFolder": "폴더에서 보기"
     },
-    "newComment": "New Comment"
+    "newComment": "New Comment",
+    "insertColumnLeft": "왼쪽에 열 삽입",
+    "insertColumnRight": "오른쪽에 열 삽입",
+    "deleteColumn": "열 삭제",
+    "alignColumnLeft": "왼쪽 정렬",
+    "alignColumnCenter": "가운데 정렬",
+    "alignColumnRight": "오른쪽 정렬"
   },
   "search": {
     "searchPlaceholder": "검색",

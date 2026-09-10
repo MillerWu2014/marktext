@@ -211,7 +211,13 @@
       "copyPath": "パスをコピー",
       "showInFolder": "フォルダで表示"
     },
-    "newComment": "New Comment"
+    "newComment": "New Comment",
+    "insertColumnLeft": "左側へ列を挿入する",
+    "insertColumnRight": "右側へ列を挿入する",
+    "deleteColumn": "列を削除する",
+    "alignColumnLeft": "左揃え",
+    "alignColumnCenter": "中央揃え",
+    "alignColumnRight": "右揃え"
   },
   "search": {
     "searchPlaceholder": "検索",

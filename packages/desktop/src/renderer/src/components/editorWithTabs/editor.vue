@@ -143,6 +143,11 @@ import {
 } from '@/util/commentQuoteDom'
 import { commentJumpScrollTop, resetAncestorScroll } from 'common/comments/jump'
 import { commentSelectionFromEditor } from '@/util/commentSelection'
+import {
+  applyTableColumnAction,
+  attachTableColumnContextBridge,
+  detachTableColumnContextBridge
+} from '@/util/tableColumnContext'
 import { useProjectStore } from '@/store/project'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
@@ -1711,6 +1716,10 @@ const handleInsertParagraph = (location: unknown) => {
   editor.value && editor.value.insertParagraph(location)
 }
 
+const handleTableColumnAction = (action: unknown) => {
+  applyTableColumnAction(action)
+}
+
 const blurEditor = () => {
   editor.value?.blur(false, true)
 }
@@ -1943,6 +1952,8 @@ onMounted(() => {
   bus.on('createParagraph', handleParagraph)
   bus.on('deleteParagraph', handleParagraph)
   bus.on('insertParagraph', handleInsertParagraph)
+  bus.on('tableColumnAction', handleTableColumnAction)
+  attachTableColumnContextBridge()
   bus.on('scroll-to-header', scrollToHeader)
   bus.on('scroll-to-anchor-element', scrollToAnchorElement)
   bus.on('screenshot-captured', handleScreenShot)
@@ -2097,6 +2108,8 @@ onBeforeUnmount(() => {
   bus.off('createParagraph', handleParagraph)
   bus.off('deleteParagraph', handleParagraph)
   bus.off('insertParagraph', handleInsertParagraph)
+  bus.off('tableColumnAction', handleTableColumnAction)
+  detachTableColumnContextBridge()
   bus.off('scroll-to-header', scrollToHeader)
   bus.off('scroll-to-anchor-element', scrollToAnchorElement)
   bus.off('screenshot-captured', handleScreenShot)

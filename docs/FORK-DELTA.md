@@ -78,7 +78,17 @@
 | 不动 | 标题、代码、表格、公式、源码模式 |
 | 偏好开关 | 本轮没有，这是新默认 |
 
-### 2.5 明确不做（合入时也不要顺手做）
+### 2.5 表格列右键菜单
+
+| 主题 | 锁定选择 |
+|---|---|
+| 入口 | 在表格单元格上右键（含整列选中）时，Electron 原生菜单顶部增加列操作 |
+| 操作 | 左侧插入列、右侧插入列、删除列、左/中/右对齐 |
+| 对齐 | 绝对设置；已是该对齐时不再调用 `alignColumn`（引擎同值会 toggle 回 `none`） |
+| 最后一列 | 删除整张表，与表头悬停工具栏一致 |
+| 不取代 | 表头悬停 `TableColumnToolbar`、底边拖条菜单仍保留 |
+
+### 2.6 明确不做（合入时也不要顺手做）
 
 - 源码模式新建批注 / 下划线 / 引导线
 - 多人账号、在线协同、sidecar 三路合并
@@ -158,7 +168,7 @@ git diff e52106fd..HEAD
 | `packages/desktop/src/main/keyboard/keybindings{Darwin,Linux,Windows}.ts` | 上述两条快捷键 |
 | `packages/desktop/src/main/menu/templates/edit.ts` + `actions/edit.ts` | 新建批注 |
 | `packages/desktop/src/main/menu/templates/view.ts` + `actions/view.ts` | 开关批注栏 |
-| `packages/desktop/src/main/contextMenu/editor/{index,menuItems}.ts` | 右键「新建批注」 |
+| `packages/desktop/src/main/contextMenu/editor/{index,menuItems,tableColumnItems}.ts` | 右键「新建批注」；表格单元格上再加列插入/删除/对齐 |
 | `packages/desktop/src/renderer/src/commands/{index,descriptions}.ts` | 命令面板 |
 | `packages/desktop/src/main/preferences/schema.json` | `commentAuthorName` |
 | `packages/desktop/src/renderer/src/store/preferences.ts` | 同名字段，默认 `''` |
@@ -185,6 +195,7 @@ Main → renderer：
 |---|---|
 | `mt::editor-new-comment` | 菜单/右键触发新建 |
 | `mt::toggle-comments-pane` | 菜单触发开关侧栏 |
+| `mt::cm-table-column` | 右键表格列：insert / remove / align |
 
 渲染进程内部 bus（不是 IPC，但接入点要在）：
 
@@ -334,6 +345,14 @@ packages/desktop/src/renderer/src/util/commentCardClick.ts
 packages/desktop/src/renderer/src/util/commentReplyComposer.ts
 ```
 
+表格列右键：
+
+```
+packages/desktop/src/shared/types/tableColumnMenu.ts
+packages/desktop/src/renderer/src/util/tableColumnContext.ts
+packages/desktop/src/main/contextMenu/editor/tableColumnItems.ts
+```
+
 测试：
 
 ```
@@ -353,6 +372,8 @@ packages/desktop/test/unit/specs/comments-reply-tree.spec.ts
 packages/desktop/test/unit/specs/comments-reply-composer.spec.ts
 packages/desktop/test/unit/specs/table-page-width.spec.ts
 packages/desktop/test/unit/specs/justify-prose.spec.ts
+packages/desktop/test/unit/specs/table-column-context.spec.ts
+packages/desktop/test/unit/specs/table-column-menu.spec.ts
 ```
 
 ### 6.2 新增（品牌）
@@ -375,6 +396,8 @@ packages/desktop/build/icons/md.png
 - `commands.edit.newComment` / `commands.view.toggleComments`
 - `preferences.general.comments.title|authorName|authorNameNotes`
 - `comments.*`（title, open, resolved, empty, reply, edit, resolve, reopen, delete, deleteConfirm, deleteReplyConfirm, orphaned, newComment, closePane）
+- `contextMenu.newComment`
+- `contextMenu.insertColumnLeft|insertColumnRight|deleteColumn|alignColumnLeft|alignColumnCenter|alignColumnRight`
 - `notifications.commentsUnreadable` / `notifications.commentsSaveFailed`
 
 Muya `packages/muya/src/locales/*.ts`：`New Comment`。
@@ -389,7 +412,8 @@ Muya `packages/muya/src/locales/*.ts`：`New Comment`。
 # 批注
 pnpm -C packages/desktop exec vitest run test/unit/specs/comments-
 
-# 表格 / 两端对齐 CSS 未丢
+# 表格列右键
+pnpm -C packages/desktop exec vitest run test/unit/specs/table-column-
 pnpm -C packages/desktop exec vitest run test/unit/specs/table-page-width.spec.ts
 pnpm -C packages/desktop exec vitest run test/unit/specs/justify-prose.spec.ts
 

@@ -1835,6 +1835,9 @@ export const useEditorStore = defineStore('editor', {
       window.electron.ipcRenderer.on('mt::cm-insert-paragraph', (_, location) => {
         bus.emit('insertParagraph', location)
       })
+      window.electron.ipcRenderer.on('mt::cm-table-column', (_, action) => {
+        bus.emit('tableColumnAction', action)
+      })
 
       // Spelling
       window.electron.ipcRenderer.on('mt::spelling-replace-misspelling', (_, info) => {

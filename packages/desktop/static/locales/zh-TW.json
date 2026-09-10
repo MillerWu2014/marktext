@@ -211,7 +211,13 @@
       "copyPath": "複製路徑",
       "showInFolder": "在資料夾中顯示"
     },
-    "newComment": "New Comment"
+    "newComment": "New Comment",
+    "insertColumnLeft": "在左邊插入欄",
+    "insertColumnRight": "在右邊插入欄",
+    "deleteColumn": "刪除欄",
+    "alignColumnLeft": "靠左對齊",
+    "alignColumnCenter": "置中對齊",
+    "alignColumnRight": "靠右對齊"
   },
   "search": {
     "searchPlaceholder": "搜尋",

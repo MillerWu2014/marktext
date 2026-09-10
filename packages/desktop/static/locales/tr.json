@@ -211,7 +211,13 @@
       "copyPath": "Yolu kopyala",
       "showInFolder": "Klasörde göster"
     },
-    "newComment": "New Comment"
+    "newComment": "New Comment",
+    "insertColumnLeft": "Sola Sütun Ekle",
+    "insertColumnRight": "Sağa Sütun Ekle",
+    "deleteColumn": "Sütunu Sil",
+    "alignColumnLeft": "Sola Hizala",
+    "alignColumnCenter": "Ortala",
+    "alignColumnRight": "Sağa Hizala"
   },
   "search": {
     "searchPlaceholder": "Ara",

@@ -211,7 +211,13 @@
       "copyPath": "Copy path",
       "showInFolder": "Show in folder"
     },
-    "newComment": "New Comment"
+    "newComment": "New Comment",
+    "insertColumnLeft": "Insert Column Left",
+    "insertColumnRight": "Insert Column Right",
+    "deleteColumn": "Delete Column",
+    "alignColumnLeft": "Align Left",
+    "alignColumnCenter": "Align Center",
+    "alignColumnRight": "Align Right"
   },
   "search": {
     "searchPlaceholder": "Search",

@@ -211,7 +211,13 @@
       "copyPath": "Pfad kopieren",
       "showInFolder": "Im Ordner anzeigen"
     },
-    "newComment": "New Comment"
+    "newComment": "New Comment",
+    "insertColumnLeft": "Spalte links einfügen",
+    "insertColumnRight": "Spalte rechts einfügen",
+    "deleteColumn": "Spalte löschen",
+    "alignColumnLeft": "Linksbündig",
+    "alignColumnCenter": "Zentriert",
+    "alignColumnRight": "Rechtsbündig"
   },
   "search": {
     "searchPlaceholder": "Suchen",
