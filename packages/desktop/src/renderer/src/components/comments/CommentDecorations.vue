@@ -54,7 +54,7 @@ const layoutStore = useLayoutStore()
 
 const { filter, selectedId, hoveredId, visibleThreads } = storeToRefs(commentsStore)
 const { currentFile } = storeToRefs(editorStore)
-const { showCommentsPane } = storeToRefs(layoutStore)
+const { showCommentsPane, editorZoom } = storeToRefs(layoutStore)
 
 const overlayRef = ref<HTMLDivElement | null>(null)
 const underlineRects = ref<UnderlineRect[]>([])
@@ -274,6 +274,10 @@ watch([threadsToDraw, selectedId, hoveredId, filter, visibleThreads], () => {
 
 watch(showCommentsPane, () => {
   tryAttachCommentsList()
+  scheduleRecompute()
+})
+
+watch(editorZoom, () => {
   scheduleRecompute()
 })
 

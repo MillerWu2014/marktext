@@ -8,6 +8,7 @@
     <div
       ref="editorRef"
       class="editor-component"
+      :style="editorZoomStyle(editorZoom)"
     />
     <div
       v-show="imageViewerVisible"
@@ -152,6 +153,8 @@ import { useProjectStore } from '@/store/project'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { SyntheticHistory, type IFileHistoryLike } from './syntheticHistory'
+import { useLayoutStore } from '@/store/layout'
+import { editorZoomStyle } from '@/util/editorZoom'
 
 // Importing the engine entrypoint auto-injects its editor CSS (the muya.ts
 // module imports its stylesheets at load time). Desktop themes still target the
@@ -225,6 +228,7 @@ const preferencesStore = usePreferencesStore()
 const editorStore = useEditorStore()
 const commentsStore = useCommentsStore()
 const projectStore = useProjectStore()
+const layoutStore = useLayoutStore()
 
 // Use storeToRefs to extract reactive properties from the stores
 const {
@@ -275,6 +279,7 @@ const {
 
 // Editor store refs
 const { currentFile, tabs } = storeToRefs(editorStore)
+const { editorZoom } = storeToRefs(layoutStore)
 
 // Project store refs
 const { projectTree } = storeToRefs(projectStore)
@@ -2192,6 +2197,8 @@ onBeforeUnmount(() => {
   pointer-events: none;
 }
 
+/* Presentation zoom is an inline `zoom` on this scroll container so the
+   sibling decorations overlay and search UI stay unzoomed. */
 .editor-component {
   height: 100%;
   overflow: auto;

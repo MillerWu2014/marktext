@@ -121,7 +121,10 @@
       "reloadImages": "Görselleri Yeniden Yükle",
       "showDeveloperTools": "Geliştirici Araçlarını Göster",
       "reloadWindow": "Pencereyi Yeniden Yükle",
-      "toggleComments": "Toggle Comments"
+      "toggleComments": "Toggle Comments",
+      "editorZoomIn": "Düzenleyiciyi Büyüt",
+      "editorZoomOut": "Düzenleyiciyi Küçült",
+      "editorActualSize": "Düzenleyici Boyutunu Sıfırla"
     },
     "format": {
       "format": "Biçim",
@@ -861,7 +864,10 @@
       "textDirection": "Metin Yönü",
       "actualSize": "Gerçek Boyut",
       "devToggleDeveloperTools": "Geliştirici Araçlarını Aç/Kapat",
-      "toggleComments": "Toggle Comments"
+      "toggleComments": "Toggle Comments",
+      "editorZoomIn": "Düzenleyiciyi Büyüt",
+      "editorZoomOut": "Düzenleyiciyi Küçült",
+      "editorActualSize": "Düzenleyici Boyutunu Sıfırla"
     },
     "tabs": {
       "cycleForward": "İleri Geç",

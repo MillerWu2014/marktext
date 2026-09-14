@@ -121,7 +121,10 @@
       "reloadImages": "重新載入圖片",
       "showDeveloperTools": "顯示開發者工具",
       "reloadWindow": "重新載入視窗",
-      "toggleComments": "Toggle Comments"
+      "toggleComments": "Toggle Comments",
+      "editorZoomIn": "放大編輯器",
+      "editorZoomOut": "縮小編輯器",
+      "editorActualSize": "還原編輯器大小"
     },
     "format": {
       "format": "格式",
@@ -861,7 +864,10 @@
       "textDirection": "文字方向",
       "actualSize": "實際大小",
       "devToggleDeveloperTools": "切換開發者工具",
-      "toggleComments": "Toggle Comments"
+      "toggleComments": "Toggle Comments",
+      "editorZoomIn": "放大編輯器",
+      "editorZoomOut": "縮小編輯器",
+      "editorActualSize": "還原編輯器大小"
     },
     "tabs": {
       "cycleForward": "向前循環",

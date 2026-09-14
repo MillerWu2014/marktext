@@ -2,6 +2,7 @@
   <div
     ref="sourceCodeContainer"
     class="source-code"
+    :style="editorZoomStyle(editorZoom)"
   />
 </template>
 
@@ -9,6 +10,8 @@
 import { ref, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useEditorStore } from '@/store/editor'
 import { usePreferencesStore } from '@/store/preferences'
+import { useLayoutStore } from '@/store/layout'
+import { editorZoomStyle } from '@/util/editorZoom'
 import { findMarkdownHeadingLine, scrollSourceEditorToLine } from '@/util/sourceModeToc'
 import { storeToRefs } from 'pinia'
 import codeMirror, { setCursorAtFirstLine, setTextDirection } from '../../codeMirror'
@@ -35,6 +38,7 @@ const props = defineProps<{
 
 const editorStore = useEditorStore()
 const preferencesStore = usePreferencesStore()
+const layoutStore = useLayoutStore()
 
 const sourceCodeContainer = ref<HTMLDivElement | null>(null)
 
@@ -45,6 +49,7 @@ const tabId = ref<string | null>(null)
 
 const { theme, sourceCode } = storeToRefs(preferencesStore)
 const { currentFile: currentTab } = storeToRefs(editorStore)
+const { editorZoom } = storeToRefs(layoutStore)
 
 const isValidMuyaIndexCursor = (cursor: unknown): cursor is MuyaIndexCursorLike => {
   const c = cursor as MuyaIndexCursorLike | null | undefined

@@ -176,6 +176,9 @@ const COMMAND_KEY_MAP: Record<string, string> = {
 
   // View features
   'view.command-palette': 'commands.view.commandPalette',
+  'view.editor-zoom-in': 'commands.view.editorZoomIn',
+  'view.editor-zoom-out': 'commands.view.editorZoomOut',
+  'view.editor-zoom-reset': 'commands.view.editorActualSize',
   'view.actual-size': 'commands.view.actualSize',
   'view.text-direction': 'commands.view.textDirection',
 

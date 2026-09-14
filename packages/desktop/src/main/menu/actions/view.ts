@@ -83,6 +83,24 @@ export const reloadImageCache = (win: Win): void => {
   }
 }
 
+const sendEditorZoom = (win: Win, direction: 'in' | 'out' | 'reset'): void => {
+  if (win && win.webContents) {
+    win.webContents.send('mt::editor-zoom', direction)
+  }
+}
+
+export const editorZoomIn = (win: Win): void => {
+  sendEditorZoom(win, 'in')
+}
+
+export const editorZoomOut = (win: Win): void => {
+  sendEditorZoom(win, 'out')
+}
+
+export const editorZoomReset = (win: Win): void => {
+  sendEditorZoom(win, 'reset')
+}
+
 // --- Commands -------------------------------------------------------------
 
 export const loadViewCommands = (commandManager: CommandManager): void => {
@@ -95,6 +113,9 @@ export const loadViewCommands = (commandManager: CommandManager): void => {
   commandManager.add(COMMANDS.VIEW_TOGGLE_TABBAR, toggleTabBar)
   commandManager.add(COMMANDS.VIEW_TOGGLE_TOC, showTableOfContents)
   commandManager.add(COMMANDS.VIEW_TYPEWRITER_MODE, toggleTypewriterMode)
+  commandManager.add(COMMANDS.VIEW_EDITOR_ZOOM_IN, editorZoomIn)
+  commandManager.add(COMMANDS.VIEW_EDITOR_ZOOM_OUT, editorZoomOut)
+  commandManager.add(COMMANDS.VIEW_EDITOR_ZOOM_RESET, editorZoomReset)
 
   commandManager.add(COMMANDS.VIEW_DEV_RELOAD, debugReloadWindow)
   commandManager.add(COMMANDS.VIEW_TOGGLE_DEV_TOOLS, debugToggleDevTools)

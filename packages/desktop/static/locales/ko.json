@@ -121,7 +121,10 @@
       "reloadImages": "이미지 새로고침",
       "showDeveloperTools": "개발자 도구 보기",
       "reloadWindow": "창 새로고침",
-      "toggleComments": "Toggle Comments"
+      "toggleComments": "Toggle Comments",
+      "editorZoomIn": "편집기 확대",
+      "editorZoomOut": "편집기 축소",
+      "editorActualSize": "편집기 실제 크기"
     },
     "format": {
       "format": "서식",
@@ -861,7 +864,10 @@
       "textDirection": "텍스트 방향",
       "actualSize": "실제 크기",
       "devToggleDeveloperTools": "개발자 도구 전환",
-      "toggleComments": "Toggle Comments"
+      "toggleComments": "Toggle Comments",
+      "editorZoomIn": "편집기 확대",
+      "editorZoomOut": "편집기 축소",
+      "editorActualSize": "편집기 실제 크기"
     },
     "tabs": {
       "cycleForward": "앞으로 순환",

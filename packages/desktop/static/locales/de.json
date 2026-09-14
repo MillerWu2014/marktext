@@ -121,7 +121,10 @@
       "reloadImages": "Bilder neu laden",
       "showDeveloperTools": "Entwicklertools anzeigen",
       "reloadWindow": "Fenster neu laden",
-      "toggleComments": "Toggle Comments"
+      "toggleComments": "Toggle Comments",
+      "editorZoomIn": "Editor vergrößern",
+      "editorZoomOut": "Editor verkleinern",
+      "editorActualSize": "Editorgröße zurücksetzen"
     },
     "format": {
       "format": "Format",
@@ -861,7 +864,10 @@
       "textDirection": "Textrichtung",
       "actualSize": "Tatsächliche Größe",
       "devToggleDeveloperTools": "Entwicklertools umschalten",
-      "toggleComments": "Toggle Comments"
+      "toggleComments": "Toggle Comments",
+      "editorZoomIn": "Editor vergrößern",
+      "editorZoomOut": "Editor verkleinern",
+      "editorActualSize": "Editorgröße zurücksetzen"
     },
     "tabs": {
       "cycleForward": "Vorwärts wechseln",

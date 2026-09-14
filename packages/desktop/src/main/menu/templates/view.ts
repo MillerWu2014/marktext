@@ -49,6 +49,30 @@ export default function(keybindings: Keybindings): MenuItemConstructorOptions {
       type: 'separator'
     },
     {
+      label: t('menu.view.editorZoomIn'),
+      accelerator: keybindings.getAccelerator('view.editor-zoom-in') ?? undefined,
+      click(_item, focusedWindow) {
+        actions.editorZoomIn(focusedWindow as BrowserWindow | undefined)
+      }
+    },
+    {
+      label: t('menu.view.editorZoomOut'),
+      accelerator: keybindings.getAccelerator('view.editor-zoom-out') ?? undefined,
+      click(_item, focusedWindow) {
+        actions.editorZoomOut(focusedWindow as BrowserWindow | undefined)
+      }
+    },
+    {
+      label: t('menu.view.editorActualSize'),
+      accelerator: keybindings.getAccelerator('view.editor-zoom-reset') ?? undefined,
+      click(_item, focusedWindow) {
+        actions.editorZoomReset(focusedWindow as BrowserWindow | undefined)
+      }
+    },
+    {
+      type: 'separator'
+    },
+    {
       label: t('menu.view.toggleSidebar'),
       id: 'sideBarMenuItem',
       accelerator: keybindings.getAccelerator('view.toggle-sidebar') ?? undefined,

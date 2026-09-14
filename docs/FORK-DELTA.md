@@ -88,7 +88,21 @@
 | 最后一列 | 删除整张表，与表头悬停工具栏一致 |
 | 不取代 | 表头悬停 `TableColumnToolbar`、底边拖条菜单仍保留 |
 
-### 2.6 明确不做（合入时也不要顺手做）
+### 2.6 编辑器按比例缩放（演示）
+
+| 主题 | 锁定选择 |
+|---|---|
+| 范围 | 只缩放编辑表面：WYSIWYG `.editor-component`、源码 `.source-code`。侧栏、批注栏、标题栏、窗口 chrome **不**缩放 |
+| 机制 | Chromium CSS `zoom`（参与布局）。不要用 `transform: scale`（会留空白、滚动错位） |
+| 幅度 | 50%–300%，步长 12.5%；默认 100%。上限高于窗口 zoom（2.0），方便演示 |
+| 持久化 | **不写入偏好**；重启回 100%，避免演示完还停在放大 |
+| 与窗口缩放 | 独立于 `webFrame.setZoomFactor` / 偏好 `zoom` |
+| 批注 | 下划线 overlay 不跟着 zoom；缩放后按视口矩形重算。引导线仍用 `getBoundingClientRect` |
+| 快捷键 macOS | `Command+Shift+=` / `Command+Shift+-` / `Command+Shift+0`（避开标题升级/降级和普通段落） |
+| 快捷键 Windows | `Ctrl+Shift+Plus` / `Ctrl+Shift+-` / `Ctrl+Alt+0`（`Ctrl+Shift+0` 是普通段落） |
+| 快捷键 Linux | `Ctrl+Shift+Plus` / `Ctrl+Alt+-` / `Ctrl+Alt+0`（`Ctrl+_` 是水平线，`Ctrl+Shift+0` 是普通段落） |
+
+### 2.7 明确不做（合入时也不要顺手做）
 
 - 源码模式新建批注 / 下划线 / 引导线
 - 多人账号、在线协同、sidecar 三路合并
@@ -145,9 +159,9 @@ git diff e52106fd..HEAD
 | 文件 | 本仓库加了什么 |
 |---|---|
 | `packages/desktop/src/renderer/src/store/editor.ts` | `loadCommentsForTab`：会话恢复、打开已有 tab、打开新文件；`mt::tab-saved` / `mt::set-pathname` 里 `tryPersistForPath`；`comments:dirty` 把 tab 标脏 |
-| `packages/desktop/src/renderer/src/components/editorWithTabs/editor.vue` | 取选区（`getCursorOffset` → markdown 偏移，**不要** `indexOf`）、`muya-new-comment`、`comments:scroll-to`（滚 `.editor-component`，不要对覆盖层 `scrollIntoView`）、正文变化时 `followMarkdown` |
+| `packages/desktop/src/renderer/src/components/editorWithTabs/editor.vue` | 取选区（`getCursorOffset` → markdown 偏移，**不要** `indexOf`）、`muya-new-comment`、`comments:scroll-to`（滚 `.editor-component`，不要对覆盖层 `scrollIntoView`）、正文变化时 `followMarkdown`；演示缩放用 inline CSS `zoom` 打在 `.editor-component` |
 | `packages/desktop/src/renderer/src/pages/app.vue` | 挂载 `<comments-pane />`；`beginNewComment`；监听 `mt::editor-new-comment` / `mt::toggle-comments-pane` |
-| `packages/desktop/src/renderer/src/store/layout.ts` | `showCommentsPane`、`commentsPaneWidth`（独立于左侧栏，默认关，宽度进 localStorage） |
+| `packages/desktop/src/renderer/src/store/layout.ts` | `showCommentsPane`、`commentsPaneWidth`（独立于左侧栏，默认关，宽度进 localStorage）；`editorZoom`（会话内，不持久化） |
 | `packages/desktop/src/shared/types/ipc.ts` | 4 条 invoke + 2 条 main→renderer 事件（见下） |
 | `packages/muya/src/assets/styles/blockSyntax.css` | 两端对齐 + 表格换行 |
 | `packages/muya/src/assets/styles/exportStyle.css` | 同上，选择器是 `.markdown-body` |
@@ -164,10 +178,10 @@ git diff e52106fd..HEAD
 | 文件 | 本仓库加了什么 |
 |---|---|
 | `packages/desktop/src/main/ipc/index.ts` | `registerCommentsHandlers()` |
-| `packages/desktop/src/common/commands/constants.ts` | `EDIT_NEW_COMMENT`、`VIEW_TOGGLE_COMMENTS` |
-| `packages/desktop/src/main/keyboard/keybindings{Darwin,Linux,Windows}.ts` | 上述两条快捷键 |
+| `packages/desktop/src/main/menu/templates/view.ts` + `actions/view.ts` | 开关批注栏；编辑器放大/缩小/还原 |
+| `packages/desktop/src/common/commands/constants.ts` | `EDIT_NEW_COMMENT`、`VIEW_TOGGLE_COMMENTS`、`VIEW_EDITOR_ZOOM_{IN,OUT,RESET}` |
+| `packages/desktop/src/main/keyboard/keybindings{Darwin,Linux,Windows}.ts` | 批注两条 + 编辑器缩放三条 |
 | `packages/desktop/src/main/menu/templates/edit.ts` + `actions/edit.ts` | 新建批注 |
-| `packages/desktop/src/main/menu/templates/view.ts` + `actions/view.ts` | 开关批注栏 |
 | `packages/desktop/src/main/contextMenu/editor/{index,menuItems,tableColumnItems}.ts` | 右键「新建批注」；表格单元格上再加列插入/删除/对齐 |
 | `packages/desktop/src/renderer/src/commands/{index,descriptions}.ts` | 命令面板 |
 | `packages/desktop/src/main/preferences/schema.json` | `commentAuthorName` |
@@ -196,10 +210,11 @@ Main → renderer：
 | `mt::editor-new-comment` | 菜单/右键触发新建 |
 | `mt::toggle-comments-pane` | 菜单触发开关侧栏 |
 | `mt::cm-table-column` | 右键表格列：insert / remove / align |
+| `mt::editor-zoom` | `'in' \| 'out' \| 'reset'`，只缩放编辑表面 |
 
 渲染进程内部 bus（不是 IPC，但接入点要在）：
 
-- `edit:new-comment`、`view:toggle-comments`
+- `edit:new-comment`、`view:toggle-comments`、`view:editor-zoom`
 - `comments:get-selection`、`comments:scroll-to`、`comments:dirty`
 - Muya 事件 `muya-new-comment`
 
@@ -345,6 +360,7 @@ packages/desktop/src/renderer/src/util/commentQuoteDom.ts
 packages/desktop/src/renderer/src/util/commentSelection.ts
 packages/desktop/src/renderer/src/util/commentCardClick.ts
 packages/desktop/src/renderer/src/util/commentReplyComposer.ts
+packages/desktop/src/renderer/src/util/editorZoom.ts
 ```
 
 表格列右键：
@@ -376,6 +392,8 @@ packages/desktop/test/unit/specs/table-page-width.spec.ts
 packages/desktop/test/unit/specs/justify-prose.spec.ts
 packages/desktop/test/unit/specs/table-column-context.spec.ts
 packages/desktop/test/unit/specs/table-column-menu.spec.ts
+packages/desktop/test/unit/specs/editor-zoom.spec.ts
+packages/desktop/test/unit/specs/editor-zoom-commands.spec.ts
 ```
 
 ### 6.2 新增（品牌）
@@ -395,7 +413,9 @@ packages/desktop/build/icons/md.png
 桌面 `packages/desktop/static/locales/{en,zh-CN,zh-TW,de,es,fr,ja,ko,pt,tr}.json`：
 
 - `menu.edit.newComment` / `menu.view.toggleComments`
+- `menu.view.editorZoomIn|editorZoomOut|editorActualSize`
 - `commands.edit.newComment` / `commands.view.toggleComments`
+- `commands.view.editorZoomIn|editorZoomOut|editorActualSize`
 - `preferences.general.comments.title|authorName|authorNameNotes`
 - `comments.*`（title, open, resolved, empty, reply, edit, resolve, reopen, delete, deleteConfirm, deleteReplyConfirm, orphaned, newComment, closePane）
 - `contextMenu.newComment`
@@ -418,6 +438,9 @@ pnpm -C packages/desktop exec vitest run test/unit/specs/comments-
 pnpm -C packages/desktop exec vitest run test/unit/specs/table-column-
 pnpm -C packages/desktop exec vitest run test/unit/specs/table-page-width.spec.ts
 pnpm -C packages/desktop exec vitest run test/unit/specs/justify-prose.spec.ts
+
+# 编辑器演示缩放
+pnpm -C packages/desktop exec vitest run test/unit/specs/editor-zoom
 
 # Muya 工具栏仍把 comment 当 action
 pnpm -C packages/muya exec vitest run src/ui/inlineFormatToolbar/__tests__/config.spec.ts

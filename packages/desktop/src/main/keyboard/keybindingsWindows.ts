@@ -95,6 +95,9 @@ const keybindings: Map<string, string> = new Map([
 
   // View menu
   ['view.command-palette', 'Ctrl+Shift+P'],
+  ['view.editor-zoom-in', 'Ctrl+Shift+Plus'],
+  ['view.editor-zoom-out', 'Ctrl+Shift+-'],
+  ['view.editor-zoom-reset', 'Ctrl+Alt+0'],
   ['view.source-code-mode', 'Ctrl+E'],
   ['view.typewriter-mode', 'Ctrl+Shift+G'],
   ['view.focus-mode', 'Ctrl+Shift+J'],

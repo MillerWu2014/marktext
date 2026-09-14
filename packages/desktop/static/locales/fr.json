@@ -121,7 +121,10 @@
       "reloadImages": "Recharger les images",
       "showDeveloperTools": "Afficher les outils de développement",
       "reloadWindow": "Recharger la fenêtre",
-      "toggleComments": "Toggle Comments"
+      "toggleComments": "Toggle Comments",
+      "editorZoomIn": "Agrandir l’éditeur",
+      "editorZoomOut": "Réduire l’éditeur",
+      "editorActualSize": "Taille réelle de l’éditeur"
     },
     "format": {
       "format": "Format",
@@ -861,7 +864,10 @@
       "textDirection": "Direction du texte",
       "actualSize": "Taille réelle",
       "devToggleDeveloperTools": "Basculer les outils de développement",
-      "toggleComments": "Toggle Comments"
+      "toggleComments": "Toggle Comments",
+      "editorZoomIn": "Agrandir l’éditeur",
+      "editorZoomOut": "Réduire l’éditeur",
+      "editorActualSize": "Taille réelle de l’éditeur"
     },
     "tabs": {
       "cycleForward": "Cycle vers l'avant",

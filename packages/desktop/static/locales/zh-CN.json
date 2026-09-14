@@ -121,7 +121,10 @@
       "reloadImages": "重新加载图片",
       "showDeveloperTools": "显示开发者工具",
       "reloadWindow": "重新加载窗口",
-      "toggleComments": "切换评论面板"
+      "toggleComments": "切换评论面板",
+      "editorZoomIn": "放大编辑器",
+      "editorZoomOut": "缩小编辑器",
+      "editorActualSize": "还原编辑器大小"
     },
     "format": {
       "format": "格式",
@@ -861,7 +864,10 @@
       "devReload": "开发者重载",
       "reloadImages": "重新加载图片",
       "textDirection": "文本方向",
-      "toggleComments": "切换评论面板"
+      "toggleComments": "切换评论面板",
+      "editorZoomIn": "放大编辑器",
+      "editorZoomOut": "缩小编辑器",
+      "editorActualSize": "还原编辑器大小"
     },
     "tabs": {
       "cycleForward": "向前循环",

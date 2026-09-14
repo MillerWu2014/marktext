@@ -93,6 +93,9 @@ const COMMANDS = Object.freeze({
 
   VIEW_COMMAND_PALETTE: 'view.command-palette',
   VIEW_DEV_RELOAD: 'view.dev-reload',
+  VIEW_EDITOR_ZOOM_IN: 'view.editor-zoom-in',
+  VIEW_EDITOR_ZOOM_OUT: 'view.editor-zoom-out',
+  VIEW_EDITOR_ZOOM_RESET: 'view.editor-zoom-reset',
   VIEW_FOCUS_MODE: 'view.focus-mode',
   VIEW_FORCE_RELOAD_IMAGES: 'view.reload-images',
   VIEW_SOURCE_CODE_MODE: 'view.source-code-mode',

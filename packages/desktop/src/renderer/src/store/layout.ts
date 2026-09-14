@@ -5,6 +5,7 @@ import { usePreferencesStore } from './preferences'
 import { debouncedSendBufferedState } from './bufferedState'
 import { useCommentsStore } from './comments'
 import { useEditorStore } from './editor'
+import { nextEditorZoom, type EditorZoomDirection } from '@/util/editorZoom'
 
 interface LayoutPartial {
   rightColumn?: string
@@ -62,6 +63,9 @@ export const useLayoutStore = defineStore('layout', () => {
   const sideBarWidth = ref<number>(initialSideBarWidth)
   const showCommentsPane = ref(false)
   const commentsPaneWidth = ref<number>(initialCommentsPaneWidth)
+  // Session-only presentation scale. Not persisted: a demo zoom must not
+  // survive restart as the default editing size.
+  const editorZoom = ref(1)
 
   // Actual rendered sidebar width. `sideBarWidth` is the right-column width
   // (clamped to ≥220 by `normalizeSideBarWidth`); when `rightColumn` is empty
@@ -186,6 +190,13 @@ export const useLayoutStore = defineStore('layout', () => {
         [name]: name === 'showSideBar' ? showSideBar.value : showTabBar.value
       })
     })
+
+    window.electron.ipcRenderer.on('mt::editor-zoom', (_e, direction) => {
+      ADJUST_EDITOR_ZOOM(direction)
+    })
+    bus.on('view:editor-zoom', (direction: unknown) => {
+      ADJUST_EDITOR_ZOOM(direction as EditorZoomDirection)
+    })
   }
 
   function DISPATCH_LAYOUT_MENU_ITEMS(): void {
@@ -224,6 +235,10 @@ export const useLayoutStore = defineStore('layout', () => {
     SET_COMMENTS_PANE(!showCommentsPane.value)
   }
 
+  function ADJUST_EDITOR_ZOOM(direction: EditorZoomDirection): void {
+    editorZoom.value = nextEditorZoom(editorZoom.value, direction)
+  }
+
   return {
     rightColumn,
     showSideBar,
@@ -233,6 +248,7 @@ export const useLayoutStore = defineStore('layout', () => {
     showCommentsPane,
     commentsPaneWidth,
     effectiveCommentsPaneWidth,
+    editorZoom,
     SET_LAYOUT,
     CREATE_BUFFERED_STATE,
     RESTORE_BUFFERED_STATE,
@@ -243,6 +259,7 @@ export const useLayoutStore = defineStore('layout', () => {
     CHANGE_SIDE_BAR_WIDTH,
     SET_COMMENTS_PANE,
     TOGGLE_COMMENTS_PANE,
-    SET_COMMENTS_PANE_WIDTH
+    SET_COMMENTS_PANE_WIDTH,
+    ADJUST_EDITOR_ZOOM
   }
 })

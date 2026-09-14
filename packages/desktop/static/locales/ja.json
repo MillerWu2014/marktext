@@ -121,7 +121,10 @@
       "reloadImages": "画像を再読み込み",
       "showDeveloperTools": "開発者ツールを表示",
       "reloadWindow": "ウィンドウを再読み込み",
-      "toggleComments": "Toggle Comments"
+      "toggleComments": "Toggle Comments",
+      "editorZoomIn": "エディターを拡大",
+      "editorZoomOut": "エディターを縮小",
+      "editorActualSize": "エディターを実際のサイズに"
     },
     "format": {
       "format": "フォーマット",
@@ -861,7 +864,10 @@
       "textDirection": "テキスト方向",
       "actualSize": "実際のサイズ",
       "devToggleDeveloperTools": "開発者ツールの切り替え",
-      "toggleComments": "Toggle Comments"
+      "toggleComments": "Toggle Comments",
+      "editorZoomIn": "エディターを拡大",
+      "editorZoomOut": "エディターを縮小",
+      "editorActualSize": "エディターを実際のサイズに"
     },
     "tabs": {
       "cycleForward": "前方に循環",

@@ -623,6 +623,24 @@ const commands: CommandDescriptor[] = [
       bus.emit('view:toggle-layout-entry', 'showTabBar')
     }
   },
+  {
+    id: 'view.editor-zoom-in',
+    execute: async() => {
+      bus.emit('view:editor-zoom', 'in')
+    }
+  },
+  {
+    id: 'view.editor-zoom-out',
+    execute: async() => {
+      bus.emit('view:editor-zoom', 'out')
+    }
+  },
+  {
+    id: 'view.editor-zoom-reset',
+    execute: async() => {
+      bus.emit('view:editor-zoom', 'reset')
+    }
+  },
 
   {
     id: 'view.text-direction',

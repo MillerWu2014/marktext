@@ -240,6 +240,7 @@ export interface IpcMainEventChannels {
   'mt::editor-close-tab': [tabId?: string]
   'mt::editor-edit-action': [action: string]
   'mt::editor-new-comment': []
+  'mt::editor-zoom': [direction: 'in' | 'out' | 'reset']
   'mt::editor-format-action': [payload: { type: string }]
   'mt::editor-move-file': []
   'mt::editor-paragraph-action': [payload: { type: string }]
