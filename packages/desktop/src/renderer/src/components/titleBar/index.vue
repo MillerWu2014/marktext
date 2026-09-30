@@ -22,20 +22,9 @@
         <span v-if="!filename">{{ appName }}</span>
         <span v-else>
           <span
-            v-for="(path, index) of paths"
-            :key="index"
-          >
-            {{ path }}
-            <el-icon
-              class="path-arrow"
-              :size="12"
-            >
-              <ArrowRight />
-            </el-icon>
-          </span>
-          <span
             class="filename"
             :class="{ isOsx: platform === 'darwin' }"
+            :title="pathname"
             @click="rename"
           >
             {{ filename }}
@@ -142,12 +131,10 @@ import { useLayoutStore } from '@/store/layout.js'
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { storeToRefs } from 'pinia'
 import { minimizePath, restorePath, maximizePath, closePath } from '../../assets/window-controls.js'
-import { PATH_SEPARATOR } from '../../config'
 import { isOsx as isOsxPlatform } from '@/util'
 import { shouldShowInAppTitleBar } from './visibility'
 import { useEditorStore } from '@/store/editor'
 import { useI18n } from 'vue-i18n'
-import { ArrowRight } from '@element-plus/icons-vue'
 import type { FileWordCount } from '@shared/types/files'
 import { APP_DISPLAY_NAME } from '@shared/appIdentity'
 
@@ -213,12 +200,6 @@ onMounted(async () => {
 
 const { titleBarStyle } = storeToRefs(preferencesStore)
 const { showTabBar } = storeToRefs(layoutStore)
-
-const paths = computed(() => {
-  if (!props.pathname) return []
-  const pathnameToken = props.pathname.split(PATH_SEPARATOR).filter((i) => i)
-  return pathnameToken.slice(0, pathnameToken.length - 1).slice(-3)
-})
 
 const showCustomTitleBar = computed(() => {
   return titleBarStyle.value === 'custom' && !isOsx
@@ -372,11 +353,9 @@ img {
   }
 }
 div.title > span {
-  /* Workaround for GH#339 */
   display: block;
-  direction: rtl;
   overflow: hidden;
-  text-overflow: clip;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 

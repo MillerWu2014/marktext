@@ -102,7 +102,16 @@
 | 快捷键 Windows | `Ctrl+Shift+Plus` / `Ctrl+Shift+-` / `Ctrl+Alt+0`（`Ctrl+Shift+0` 是普通段落） |
 | 快捷键 Linux | `Ctrl+Shift+Plus` / `Ctrl+Alt+-` / `Ctrl+Alt+0`（`Ctrl+_` 是水平线，`Ctrl+Shift+0` 是普通段落） |
 
-### 2.7 明确不做（合入时也不要顺手做）
+### 2.7 标题栏只显示文件名
+
+| 主题 | 锁定选择 |
+|---|---|
+| 标题栏 | 只显示当前文件名，**不要**用最后几级目录做面包屑 |
+| 完整路径 | 鼠标悬停文件名仍可通过 `title` 看到；标签页 `:title` 仍是 pathname |
+| 未打开文件 | 仍显示产品名 |
+| 不要恢复 | 上游若仍 `pathname.split(...).slice(-3)` 配 `ArrowRight`，合入时删掉 |
+
+### 2.8 明确不做（合入时也不要顺手做）
 
 - 源码模式新建批注 / 下划线 / 引导线
 - 多人账号、在线协同、sidecar 三路合并
@@ -189,6 +198,7 @@ git diff e52106fd..HEAD
 | `packages/desktop/src/shared/types/preferences.ts` | 类型 |
 | `packages/desktop/src/renderer/src/prefComponents/general/index.vue` | 「评论」分组：显示名 |
 | `packages/desktop/src/renderer/src/components/editorWithTabs/index.vue` | `max-width` 减去 `effectiveCommentsPaneWidth` |
+| `packages/desktop/src/renderer/src/components/titleBar/index.vue` | 标题只显示文件名；悬停 `title` 仍是完整路径 |
 | `packages/muya/src/locales/*.ts` | `New Comment` |
 | `.gitignore` | `.superpowers/` |
 
@@ -361,6 +371,7 @@ packages/desktop/src/renderer/src/util/commentSelection.ts
 packages/desktop/src/renderer/src/util/commentCardClick.ts
 packages/desktop/src/renderer/src/util/commentReplyComposer.ts
 packages/desktop/src/renderer/src/util/editorZoom.ts
+packages/desktop/src/renderer/src/components/titleBar/label.ts
 ```
 
 表格列右键：
@@ -394,6 +405,7 @@ packages/desktop/test/unit/specs/table-column-context.spec.ts
 packages/desktop/test/unit/specs/table-column-menu.spec.ts
 packages/desktop/test/unit/specs/editor-zoom.spec.ts
 packages/desktop/test/unit/specs/editor-zoom-commands.spec.ts
+packages/desktop/test/unit/specs/titlebar-label.spec.ts
 ```
 
 ### 6.2 新增（品牌）
@@ -441,6 +453,10 @@ pnpm -C packages/desktop exec vitest run test/unit/specs/justify-prose.spec.ts
 
 # 编辑器演示缩放
 pnpm -C packages/desktop exec vitest run test/unit/specs/editor-zoom
+
+# 标题栏只显示文件名
+pnpm -C packages/desktop exec vitest run test/unit/specs/titlebar-label.spec.ts
+pnpm -C packages/desktop exec vitest run test/unit/specs/titlebar-visibility.spec.ts
 
 # Muya 工具栏仍把 comment 当 action
 pnpm -C packages/muya exec vitest run src/ui/inlineFormatToolbar/__tests__/config.spec.ts
