@@ -27,7 +27,7 @@
             :title="pathname"
             @click="rename"
           >
-            {{ filename }}
+            {{ displayName }}
           </span>
           <span
             class="save-dot"
@@ -133,6 +133,7 @@ import { storeToRefs } from 'pinia'
 import { minimizePath, restorePath, maximizePath, closePath } from '../../assets/window-controls.js'
 import { isOsx as isOsxPlatform } from '@/util'
 import { shouldShowInAppTitleBar } from './visibility'
+import { titleBarDisplayName } from './label'
 import { useEditorStore } from '@/store/editor'
 import { useI18n } from 'vue-i18n'
 import type { FileWordCount } from '@shared/types/files'
@@ -209,6 +210,8 @@ const showTitleBar = computed(() => {
   return shouldShowInAppTitleBar(titleBarStyle.value, isOsx)
 })
 
+const displayName = computed(() => titleBarDisplayName(props.filename))
+
 watch(
   () => props.filename,
   (value) => {
@@ -217,7 +220,8 @@ watch(
     const projectName = props.project?.name ?? ''
     let title = ''
     if (value) {
-      title = hasOpenFolder ? `${value} - ${projectName}` : `${value} - ${APP_DISPLAY_NAME}`
+      const name = titleBarDisplayName(value)
+      title = hasOpenFolder ? `${name} - ${projectName}` : `${name} - ${APP_DISPLAY_NAME}`
     } else {
       title = hasOpenFolder ? projectName : APP_DISPLAY_NAME
     }

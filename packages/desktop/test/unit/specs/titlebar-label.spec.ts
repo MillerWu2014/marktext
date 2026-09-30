@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
-import { titleBarAncestors } from '@/components/titleBar/label'
+import { titleBarAncestors, titleBarDisplayName } from '@/components/titleBar/label'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const repo = resolve(here, '../../../../..')
@@ -10,6 +10,23 @@ const titleBarVue = readFileSync(
   resolve(repo, 'packages/desktop/src/renderer/src/components/titleBar/index.vue'),
   'utf8'
 )
+
+describe('titleBarDisplayName', () => {
+  it('strips the last extension from a markdown filename', () => {
+    expect(titleBarDisplayName('note.md')).toBe('note')
+    expect(titleBarDisplayName('app-server-api.zh.md')).toBe('app-server-api.zh')
+  })
+
+  it('keeps names that have no extension', () => {
+    expect(titleBarDisplayName('README')).toBe('README')
+    expect(titleBarDisplayName('.gitignore')).toBe('.gitignore')
+  })
+
+  it('returns an empty string when there is no filename', () => {
+    expect(titleBarDisplayName(undefined)).toBe('')
+    expect(titleBarDisplayName('')).toBe('')
+  })
+})
 
 describe('titleBarAncestors', () => {
   it('does not show directory crumbs for a nested markdown path', () => {
@@ -32,7 +49,8 @@ describe('titleBarAncestors', () => {
 
 describe('title bar template', () => {
   it('shows the filename without parent directory crumbs', () => {
-    expect(titleBarVue).toContain('{{ filename }}')
+    expect(titleBarVue).toContain('{{ displayName }}')
+    expect(titleBarVue).not.toContain('{{ filename }}')
     expect(titleBarVue).not.toContain('v-for="(path, index) of paths"')
     expect(titleBarVue).not.toContain('path-arrow')
     expect(titleBarVue).not.toContain('ArrowRight')
